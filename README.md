@@ -10,7 +10,7 @@ These samples transfer the EML patterns taught in the official SAP tutorials int
 
 | Tutorial | Content |
 |---|---|
-| [abap-platform-refscen-flight](https://github.com/SAP-samples/abap-platform-refscen-flight) | Flight reference scenario — provides the RAP BO `/DMO/I_TRAVEL_M` used by these samples |
+| [abap-platform-refscen-flight](https://github.com/SAP-samples/abap-platform-refscen-flight) | Flight reference scenario — provides the RAP BOs `/DMO/I_TRAVEL_M` and `/DMO/R_TRAVEL_D` used by these samples |
 | [abap-platform-rap-opensap](https://github.com/SAP-samples/abap-platform-rap-opensap) | openSAP course *Building Apps with RAP* — week 5/6 covers local BO consumption with EML |
 | [cloud-abap-rap](https://github.com/SAP-samples/cloud-abap-rap) | RAP examples for SAP BTP ABAP Environment |
 | [abap-platform-rap-workshops](https://github.com/SAP-samples/abap-platform-rap-workshops) | RAP workshop material (RAP100/RAP110), including EML exercises |
@@ -18,7 +18,7 @@ These samples transfer the EML patterns taught in the official SAP tutorials int
 ## Prerequisites
 
 * [abap2UI5](https://github.com/abap2UI5/abap2UI5) installed
-* The flight reference scenario installed ([abap-platform-refscen-flight](https://github.com/SAP-samples/abap-platform-refscen-flight), *managed* scenario) — it ships the RAP BO `/DMO/I_TRAVEL_M` incl. demo data generator
+* The flight reference scenario installed ([abap-platform-refscen-flight](https://github.com/SAP-samples/abap-platform-refscen-flight)) — it ships the RAP BOs `/DMO/I_TRAVEL_M` (*managed* scenario) and `/DMO/R_TRAVEL_D` (*draft* scenario) incl. demo data generator
 * ABAP Platform >= 1909 (on-premise) or SAP BTP ABAP Environment — EML is not available on older releases, so unlike other abap2UI5 sample repositories this one is **not** downported to NW 7.02
 
 Install this repository with [abapGit](https://abapgit.org) and start the apps like any other abap2UI5 app (e.g. add them to your startup app or call them via the generic HTTP handler).
@@ -71,6 +71,27 @@ IF data_save( ) = abap_true. " COMMIT ENTITIES RESPONSE OF ...
   client->view_model_update( ).
 ENDIF.
 ```
+
+### 3. `z2ui5_cl_sample_eml_draft` — Draft Handling
+
+The full draft roundtrip on the draft-enabled BO `/DMO/R_TRAVEL_D` — the same lifecycle a Fiori Elements app runs through, executed manually with EML:
+
+* **Edit** — the draft action `Edit` copies the active instance into a new draft (`%tky` with `%is_draft = if_abap_behv=>mk-off` addresses the active instance):
+
+  ```abap
+  MODIFY ENTITIES OF /dmo/r_travel_d
+    ENTITY travel
+      EXECUTE Edit FROM VALUE #( ( %tky = VALUE #( traveluuid = uuid
+                                                   %is_draft  = if_abap_behv=>mk-off ) ) )
+    FAILED s_failed
+    REPORTED s_reported.
+  ```
+
+* **Save Draft** — `MODIFY ... UPDATE` with `%is_draft = mk-on` plus `COMMIT ENTITIES` persists the draft in the draft table `/dmo/d_travel_d`; the changes survive the session and even a logoff, without any validation having to pass yet
+* **Resume** — when a travel already has a draft, the draft action `Resume` reactivates it and the user continues exactly where the last session ended
+* **Activate** — the draft action `Activate` turns the draft into the active instance; the BO validations run during activation, so an invalid draft stays a draft and the messages are displayed
+* **Discard** — the draft action `Discard` deletes the draft, the active instance stays untouched
+* **Draft indicator** — the travel list marks instances with an existing draft by reading the keys with `%is_draft = mk-on`: a draft shares the key of its active instance, so every key returned in `RESULT` has a draft (the rest comes back in `FAILED`)
 
 ## Why EML + abap2UI5?
 
