@@ -1,0 +1,132 @@
+CLASS z2ui5_cl_sample_eml_read DEFINITION PUBLIC.
+
+  PUBLIC SECTION.
+    INTERFACES z2ui5_if_app.
+
+    TYPES:
+      BEGIN OF ty_s_travel,
+        agency_id      TYPE string,
+        customer_id    TYPE string,
+        begin_date     TYPE string,
+        end_date       TYPE string,
+        total_price    TYPE string,
+        overall_status TYPE string,
+        description    TYPE string,
+      END OF ty_s_travel.
+    DATA s_travel TYPE ty_s_travel.
+
+    DATA travel_id TYPE string.
+
+  PROTECTED SECTION.
+    DATA client TYPE REF TO z2ui5_if_client.
+
+    METHODS data_read.
+    METHODS view_display.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+CLASS z2ui5_cl_sample_eml_read IMPLEMENTATION.
+
+  METHOD z2ui5_if_app~main.
+
+    me->client = client.
+    IF client->check_on_init( ).
+      view_display( ).
+    ELSEIF client->check_on_event( `READ` ).
+      data_read( ).
+    ENDIF.
+
+  ENDMETHOD.
+
+
+  METHOD data_read.
+
+    READ ENTITIES OF /dmo/i_travel_m
+      ENTITY travel
+        ALL FIELDS WITH VALUE #( ( travel_id = travel_id ) )
+      RESULT DATA(t_result)
+      FAILED DATA(s_failed).
+
+    IF s_failed-travel IS NOT INITIAL.
+
+      s_travel = VALUE #( ).
+      client->message_box_display(
+          text = |Travel { travel_id } does not exist|
+          type = `error` ).
+
+    ELSE.
+
+      DATA(s_result) = t_result[ 1 ].
+      s_travel = VALUE #(
+        agency_id      = |{ s_result-agency_id ALPHA = OUT }|
+        customer_id    = |{ s_result-customer_id ALPHA = OUT }|
+        begin_date     = |{ s_result-begin_date DATE = ISO }|
+        end_date       = |{ s_result-end_date DATE = ISO }|
+        total_price    = |{ s_result-total_price } { s_result-currency_code }|
+        overall_status = SWITCH #( s_result-overall_status
+                                   WHEN `O` THEN `Open`
+                                   WHEN `A` THEN `Accepted`
+                                   WHEN `X` THEN `Rejected` )
+        description    = |{ s_result-description }| ).
+
+    ENDIF.
+
+    client->view_model_update( ).
+
+  ENDMETHOD.
+
+
+  METHOD view_display.
+
+    DATA(view) = z2ui5_cl_xml_view=>factory( ).
+    view->shell(
+        )->page(
+            title          = `abap2UI5 - EML - Read Travel`
+            navbuttonpress = client->_event_nav_app_leave( )
+            shownavbutton  = client->check_app_prev_stack( )
+            )->simple_form(
+                title    = `READ ENTITIES OF /DMO/I_TRAVEL_M`
+                editable = abap_true
+                )->content( `form`
+                )->label( `Travel ID`
+                )->input(
+                    value       = client->_bind_edit( travel_id )
+                    placeholder = `Enter a travel id, e.g. 1`
+                )->button(
+                    text  = `Read`
+                    press = client->_event( `READ` )
+                    type  = `Emphasized`
+                )->label( `Agency`
+                )->input(
+                    value   = client->_bind( s_travel-agency_id )
+                    enabled = abap_false
+                )->label( `Customer`
+                )->input(
+                    value   = client->_bind( s_travel-customer_id )
+                    enabled = abap_false
+                )->label( `Begin Date`
+                )->input(
+                    value   = client->_bind( s_travel-begin_date )
+                    enabled = abap_false
+                )->label( `End Date`
+                )->input(
+                    value   = client->_bind( s_travel-end_date )
+                    enabled = abap_false
+                )->label( `Total Price`
+                )->input(
+                    value   = client->_bind( s_travel-total_price )
+                    enabled = abap_false
+                )->label( `Status`
+                )->input(
+                    value   = client->_bind( s_travel-overall_status )
+                    enabled = abap_false
+                )->label( `Description`
+                )->input(
+                    value   = client->_bind( s_travel-description )
+                    enabled = abap_false ).
+    client->view_display( view->stringify( ) ).
+
+  ENDMETHOD.
+
+ENDCLASS.

@@ -1,0 +1,42 @@
+{
+  "global": {
+    "files": "/src/**/*.*"
+  },
+  "dependencies": [
+    {
+      "url": "https://github.com/abapedia/steampunk-2305-api-intersect-702",
+      "folder": "/deps",
+      "files": "/src/**/*.*"
+    },
+    {
+      "url": "https://github.com/abap2UI5/abap2UI5",
+      "folder": "/abap2UI5",
+      "files": "/src/**/*.*"
+    }
+  ],
+  "syntax": {
+    // EML (READ/MODIFY/COMMIT ENTITIES) requires ABAP Platform >= 1909,
+    // therefore this sample is not downported like the other repositories
+    "version": "v757",
+    // the RAP business object /DMO/I_TRAVEL_M of the SAP flight reference
+    // scenario is not part of the dependencies, only Z2UI5* objects are
+    // resolved strictly
+    "errorNamespace": "^Z2UI5"
+  },
+  "rules": {
+    "exporting": true,
+    "omit_parameter_name": true,
+    "begin_end_names": true,
+    "check_ddic": true,
+    "check_include": true,
+    "check_syntax": true,
+    "global_class": true,
+    "definitions_top": false,
+    "implement_methods": true,
+    "method_implemented_twice": true,
+    "parser_error": true,
+    "superclass_final": true,
+    "unknown_types": true,
+    "xml_consistency": true
+  }
+}
