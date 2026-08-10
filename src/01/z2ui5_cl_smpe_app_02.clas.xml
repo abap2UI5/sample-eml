@@ -3,9 +3,9 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOCLASS>
-    <CLSNAME>Z2UI5_CL_SMPE_05_CRUD</CLSNAME>
+    <CLSNAME>Z2UI5_CL_SMPE_APP_02</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>abap2UI5 - EML sample 05 - manage travels</DESCRIPT>
+    <DESCRIPT>abap2UI5 - EML sample 02 - create travel</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

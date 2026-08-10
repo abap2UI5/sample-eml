@@ -1,4 +1,4 @@
-CLASS z2ui5_cl_smpe_01_read DEFINITION PUBLIC.
+CLASS z2ui5_cl_smpe_app_01 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -26,7 +26,7 @@ CLASS z2ui5_cl_smpe_01_read DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smpe_01_read IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_app_01 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 

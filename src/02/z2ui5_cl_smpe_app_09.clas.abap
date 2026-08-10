@@ -1,4 +1,4 @@
-CLASS z2ui5_cl_smpe_09_d_leave DEFINITION PUBLIC.
+CLASS z2ui5_cl_smpe_app_09 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -27,7 +27,7 @@ CLASS z2ui5_cl_smpe_09_d_leave DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smpe_09_d_leave IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_app_09 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 

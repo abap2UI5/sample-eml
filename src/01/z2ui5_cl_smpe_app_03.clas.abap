@@ -1,4 +1,4 @@
-CLASS z2ui5_cl_smpe_04_delete DEFINITION PUBLIC.
+CLASS z2ui5_cl_smpe_app_03 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -15,14 +15,14 @@ CLASS z2ui5_cl_smpe_04_delete DEFINITION PUBLIC.
     DATA client TYPE REF TO z2ui5_if_client.
 
     METHODS data_read.
-    METHODS data_delete.
+    METHODS data_update.
     METHODS view_display.
 
   PRIVATE SECTION.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smpe_04_delete IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_app_03 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
@@ -30,8 +30,8 @@ CLASS z2ui5_cl_smpe_04_delete IMPLEMENTATION.
     IF client->check_on_init( ).
       data_read( ).
       view_display( ).
-    ELSEIF client->check_on_event( `DELETE` ).
-      data_delete( ).
+    ELSEIF client->check_on_event( `UPDATE` ).
+      data_update( ).
     ENDIF.
 
   ENDMETHOD.
@@ -39,6 +39,8 @@ CLASS z2ui5_cl_smpe_04_delete IMPLEMENTATION.
 
   METHOD data_read.
 
+    " a plain SELECT on the CDS view - reading does not need EML, the list
+    " is only here so there is something to change
     SELECT FROM z2ui5_r_smpe_trv
       FIELDS TravelId,
              CustomerId,
@@ -55,15 +57,19 @@ CLASS z2ui5_cl_smpe_04_delete IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD data_delete.
+  METHOD data_update.
 
     DATA(travel_id) = client->get_event_arg( 1 ).
+    DATA(s_travel) = t_travels[ travel_id = travel_id ].
 
-    " DELETE only needs the key - and it can still fail, e.g. when the
-    " business object refuses the deletion or the instance is locked
+    " UPDATE FIELDS names exactly the fields that are changed - everything
+    " else on the instance stays untouched, which is why no read is needed
+    " before the change
     MODIFY ENTITIES OF z2ui5_r_smpe_trv
       ENTITY travel
-        DELETE FROM VALUE #( ( travelid = travel_id ) )
+        UPDATE FIELDS ( description )
+        WITH VALUE #( ( travelid    = travel_id
+                        description = s_travel-description ) )
       FAILED DATA(s_failed)
       REPORTED DATA(s_reported).
 
@@ -88,7 +94,7 @@ CLASS z2ui5_cl_smpe_04_delete IMPLEMENTATION.
 
     data_read( ).
     client->view_model_update( ).
-    client->message_toast_display( |Travel { travel_id } deleted| ).
+    client->message_toast_display( |Travel { travel_id } updated| ).
 
   ENDMETHOD.
 
@@ -98,13 +104,13 @@ CLASS z2ui5_cl_smpe_04_delete IMPLEMENTATION.
     DATA(view) = z2ui5_cl_xml_view=>factory( ).
     DATA(table) = view->shell(
         )->page(
-            title          = `abap2UI5 - EML - 04 Delete Travel`
+            title          = `abap2UI5 - EML - 03 Update Travel`
             navbuttonpress = client->_event_nav_app_leave( )
             shownavbutton  = client->check_app_prev_stack( )
             )->table( client->_bind( t_travels ) ).
 
     table->header_toolbar( )->toolbar(
-        )->title( `MODIFY ENTITIES OF Z2UI5_R_SMPE_TRV ... DELETE` ).
+        )->title( `MODIFY ENTITIES OF Z2UI5_R_SMPE_TRV ... UPDATE` ).
 
     table->columns(
         )->column( )->text( `ID` )->get_parent(
@@ -116,11 +122,10 @@ CLASS z2ui5_cl_smpe_04_delete IMPLEMENTATION.
         )->cells(
             )->text( `{TRAVEL_ID}`
             )->text( `{CUSTOMER_ID}`
-            )->text( `{DESCRIPTION}`
+            )->input( `{DESCRIPTION}`
             )->button(
-                text  = `Delete`
-                icon  = `sap-icon://delete`
-                press = client->_event( val   = `DELETE`
+                text  = `Update`
+                press = client->_event( val   = `UPDATE`
                                         t_arg = VALUE #( ( `${TRAVEL_ID}` ) ) ) ).
 
     client->view_display( view->stringify( ) ).

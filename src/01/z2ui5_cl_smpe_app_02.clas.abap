@@ -1,4 +1,4 @@
-CLASS z2ui5_cl_smpe_02_create DEFINITION PUBLIC.
+CLASS z2ui5_cl_smpe_app_02 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -27,7 +27,7 @@ CLASS z2ui5_cl_smpe_02_create DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smpe_02_create IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_app_02 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 

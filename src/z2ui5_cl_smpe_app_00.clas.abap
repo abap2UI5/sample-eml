@@ -1,6 +1,6 @@
 "! <p class="shorttext synchronized">abap2UI5 EML sample 00 - overview</p>
 "! The entry point of this repository: every sample in one list, one press
-"! away. Start it with ?app_start=z2ui5_cl_smpe_00_overview.
+"! away. Start it with ?app_start=z2ui5_cl_smpe_app_00.
 "!
 "! A row opens its sample in a NEW BROWSER TAB, so the overview stays where
 "! it is and several samples can run side by side. That is a pure frontend
@@ -8,7 +8,7 @@
 "! press is wired with _event_client( ), which opens the tab inside the click
 "! handler without a roundtrip - a window.open( ) from a server response
 "! would be swallowed by the popup blocker.
-CLASS z2ui5_cl_smpe_00_overview DEFINITION PUBLIC.
+CLASS z2ui5_cl_smpe_app_00 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -61,7 +61,7 @@ CLASS z2ui5_cl_smpe_00_overview DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smpe_00_overview IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_app_00 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
@@ -222,45 +222,45 @@ CLASS z2ui5_cl_smpe_00_overview IMPLEMENTATION.
       ( sample( no        = `01`
                 title     = `Read a travel`
                 statement = `READ ENTITIES`
-                app       = NEW z2ui5_cl_smpe_01_read( ) ) )
+                app       = NEW z2ui5_cl_smpe_app_01( ) ) )
       ( sample( no        = `02`
                 title     = `Create a travel`
                 statement = `MODIFY ... CREATE, key from MAPPED`
-                app       = NEW z2ui5_cl_smpe_02_create( ) ) )
+                app       = NEW z2ui5_cl_smpe_app_02( ) ) )
       ( sample( no        = `03`
                 title     = `Update a travel`
                 statement = `MODIFY ... UPDATE FIELDS`
-                app       = NEW z2ui5_cl_smpe_03_update( ) ) )
+                app       = NEW z2ui5_cl_smpe_app_03( ) ) )
       ( sample( no        = `04`
                 title     = `Delete a travel`
                 statement = `MODIFY ... DELETE FROM`
-                app       = NEW z2ui5_cl_smpe_04_delete( ) ) )
+                app       = NEW z2ui5_cl_smpe_app_04( ) ) )
       ( sample( no        = `05`
                 title     = `Manage travels - the whole app`
                 statement = `MODIFY ... EXECUTE, COMMIT ENTITIES RESPONSE OF`
-                app       = NEW z2ui5_cl_smpe_05_crud( ) ) ) ).
+                app       = NEW z2ui5_cl_smpe_app_05( ) ) ) ).
 
     t_draft = VALUE #(
       ( sample( no        = `06`
                 title     = `Which travels have a draft?`
                 statement = `READ ... %is_draft = mk-on`
-                app       = NEW z2ui5_cl_smpe_06_d_list( ) ) )
+                app       = NEW z2ui5_cl_smpe_app_06( ) ) )
       ( sample( no        = `07`
                 title     = `Enter draft mode`
                 statement = `EXECUTE Edit / Resume`
-                app       = NEW z2ui5_cl_smpe_07_d_edit( ) ) )
+                app       = NEW z2ui5_cl_smpe_app_07( ) ) )
       ( sample( no        = `08`
                 title     = `Change and save a draft`
                 statement = `UPDATE ... %is_draft = mk-on`
-                app       = NEW z2ui5_cl_smpe_08_d_save( ) ) )
+                app       = NEW z2ui5_cl_smpe_app_08( ) ) )
       ( sample( no        = `09`
                 title     = `Leave draft mode`
                 statement = `EXECUTE Activate / Discard`
-                app       = NEW z2ui5_cl_smpe_09_d_leave( ) ) )
+                app       = NEW z2ui5_cl_smpe_app_09( ) ) )
       ( sample( no        = `10`
                 title     = `Travels with draft handling - the whole app`
                 statement = `everything above`
-                app       = NEW z2ui5_cl_smpe_10_draft( ) ) ) ).
+                app       = NEW z2ui5_cl_smpe_app_10( ) ) ) ).
 
   ENDMETHOD.
 

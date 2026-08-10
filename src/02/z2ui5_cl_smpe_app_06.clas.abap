@@ -1,4 +1,4 @@
-CLASS z2ui5_cl_smpe_06_d_list DEFINITION PUBLIC.
+CLASS z2ui5_cl_smpe_app_06 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -24,7 +24,7 @@ CLASS z2ui5_cl_smpe_06_d_list DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smpe_06_d_list IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_app_06 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
