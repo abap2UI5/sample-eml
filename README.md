@@ -24,34 +24,48 @@ Install this repository with [abapGit](https://abapgit.org) and start the apps l
 
 ## Structure
 
-The abap2UI5 apps sit at the top of `src` — they are what you run and what you read to learn EML. The business objects they talk to live in a subpackage each, so the RAP artifacts stay out of the way:
+The samples are what you come for, so they sit in their own package per business object. Everything they need in order to run — the context class and the two RAP business objects that stand in for real ones — is scaffolding, and lives under `00`:
 
 ```
 src/
-│                              business object of 01, one EML statement each
-├── z2ui5_cl_smpe_read         READ ENTITIES
-├── z2ui5_cl_smpe_create       MODIFY ... CREATE
-├── z2ui5_cl_smpe_update       MODIFY ... UPDATE
-├── z2ui5_cl_smpe_delete       MODIFY ... DELETE
-├── z2ui5_cl_smpe_crud         all four plus the BO actions, in one app
+├── 00/                             scaffolding
+│   ├── 00/                         context: what the samples share
+│   │   └── z2ui5_cl_smpe_context
+│   └── 01/                         test data: the RAP business objects
+│       ├── 01/                     without draft
+│       │   ├── z2ui5_t_smpe_trv        persistent table
+│       │   ├── z2ui5_r_smpe_trv        root view entity + behavior definition
+│       │   ├── z2ui5_cl_smpe_bp_trv    behavior pool
+│       │   └── z2ui5_cl_smpe_data_trv  demo data
+│       └── 02/                     with draft
+│           ├── z2ui5_t_smpe_trd        persistent table
+│           ├── z2ui5_d_smpe_trd        draft table
+│           ├── z2ui5_r_smpe_trd        root view entity + behavior definition
+│           ├── z2ui5_cl_smpe_bp_trd    behavior pool
+│           └── z2ui5_cl_smpe_data_trd  demo data
 │
-│                              business object of 02, one draft aspect each
-├── z2ui5_cl_smpe_d_list       which travels have a draft?
-├── z2ui5_cl_smpe_d_edit       entering draft mode: Edit / Resume
-├── z2ui5_cl_smpe_d_save       changing a draft: UPDATE with %is_draft
-├── z2ui5_cl_smpe_d_activate   leaving draft mode: Activate / Discard
-├── z2ui5_cl_smpe_draft        the whole draft lifecycle, in one app
+├── 01/                             samples on the business object of 00/01/01
+│   ├── z2ui5_cl_smpe_read          READ ENTITIES
+│   ├── z2ui5_cl_smpe_create        MODIFY ... CREATE
+│   ├── z2ui5_cl_smpe_update        MODIFY ... UPDATE
+│   ├── z2ui5_cl_smpe_delete        MODIFY ... DELETE
+│   └── z2ui5_cl_smpe_crud          all four plus the BO actions, in one app
 │
-├── z2ui5_cl_smpe_context      what the apps above do more than once
-├── 01/                        RAP business object, no draft
-└── 02/                        RAP business object, draft enabled
+├── 02/                             samples on the business object of 00/01/02
+│   ├── z2ui5_cl_smpe_d_list        which travels have a draft?
+│   ├── z2ui5_cl_smpe_d_edit        entering draft mode: Edit / Resume
+│   ├── z2ui5_cl_smpe_d_save        changing a draft: UPDATE with %is_draft
+│   ├── z2ui5_cl_smpe_d_activate    leaving draft mode: Activate / Discard
+│   └── z2ui5_cl_smpe_draft         the whole draft lifecycle, in one app
+│
+└── 03/                             events - empty, to be filled later
 ```
 
-Every app in the two upper groups does exactly one thing, so you can read any of them end to end in a minute. `crud` and `draft` are the same material combined into working apps — start there if you want to see a whole app, start above if you want to see a single concept.
+Every app in `01` and `02` except the last of each does exactly one thing, so you can read any of them end to end in a minute. `crud` and `draft` are the same material combined into working apps — start there if you want to see a whole app, start above if you want to see a single concept.
 
-Each subpackage holds a complete RAP stack. Nothing is shared between them, so one can be deleted without breaking the other:
+The two business objects under `00/01` are independent of each other: nothing is shared between them, so one can be deleted together with the samples that use it.
 
-| Object | [`src/01`](src/01) — no draft | [`src/02`](src/02) — draft |
+| Object | [`00/01/01`](src/00/01/01) — no draft | [`00/01/02`](src/00/01/02) — draft |
 |---|---|---|
 | Persistent table | `Z2UI5_T_SMPE_TRV` | `Z2UI5_T_SMPE_TRD` |
 | Draft table | — | `Z2UI5_D_SMPE_TRD` |
@@ -60,14 +74,14 @@ Each subpackage holds a complete RAP stack. Nothing is shared between them, so o
 | Behavior pool | `Z2UI5_CL_SMPE_BP_TRV` | `Z2UI5_CL_SMPE_BP_TRD` |
 | Demo data | `Z2UI5_CL_SMPE_DATA_TRV` | `Z2UI5_CL_SMPE_DATA_TRD` |
 
-Both business objects model the same thing — a travel with an agency, a customer, a date range, a booking fee and a status — so the two stay comparable and the only real difference is the draft handling.
+Both model the same thing — a travel with an agency, a customer, a date range, a booking fee and a status — so the two stay comparable and the only real difference is the draft handling.
 
 ### What the business objects implement
 
 The point of consuming a RAP BO is that the business logic runs no matter who triggers the operation. Both BOs therefore carry more than plain CRUD:
 
-* **Early numbering** (`src/01`) — the readable key is drawn in `earlynumbering_create` and handed back in `MAPPED`
-* **Managed numbering + a determination** (`src/02`) — the UUID key comes from the runtime, the readable number is assigned by a `determination ... on save`, so a discarded draft does not burn one
+* **Early numbering** (`00/01/01`) — the readable key is drawn in `earlynumbering_create` and handed back in `MAPPED`
+* **Managed numbering + a determination** (`00/01/02`) — the UUID key comes from the runtime, the readable number is assigned by a `determination ... on save`, so a discarded draft does not burn one
 * **Determination `setInitialValues`** — sets the initial status and the total price on create
 * **Validations `validateCustomer` and `validateDates`** — run `on save`, i.e. during `COMMIT ENTITIES` and, for the draft BO, during `Activate`
 * **Actions `acceptTravel` and `rejectTravel`** — declared with `result [1] $self`, so they return the changed instance
