@@ -1,14 +1,11 @@
 "! <p class="shorttext synchronized">abap2UI5 EML sample - demo data</p>
 "! Demo data for the business object z2ui5_r_smpe_trv.
 "!
-"! Two ways to run it, both ending in the same method:
-"! <ul>
-"! <li>in ADT, press F9 on this class - it is a console application</li>
-"! <li>from the abap2UI5 apps, which call reset( ) behind their button</li>
-"! </ul>
+"! Run it in ADT with F9 - it is a console application - or press the button
+"! in one of the sample apps, which calls the same methods.
 "!
-"! The data is created through the business object with EML, never by an
-"! INSERT into z2ui5_t_smpe_trv. An INSERT would skip the determination
+"! Everything goes through the business object with EML, never with an INSERT
+"! into z2ui5_t_smpe_trv. An INSERT would skip the determination
 "! setInitialValues, so the rows would carry no status and no total price -
 "! data this business object could never have produced itself.
 CLASS z2ui5_cl_smpe_data_trv DEFINITION PUBLIC FINAL CREATE PUBLIC.
@@ -16,22 +13,27 @@ CLASS z2ui5_cl_smpe_data_trv DEFINITION PUBLIC FINAL CREATE PUBLIC.
   PUBLIC SECTION.
     INTERFACES if_oo_adt_classrun.
 
-    "! Deletes every travel and creates the demo set again.
+    "! Deletes everything, then creates the demo set. This is what F9 runs.
+    "!
     "! Deleting first is what makes the keys predictable: early numbering
     "! continues behind MAX( travel_id ), so on an empty table the demo
     "! travels always come out as 1, 2, 3.
-    "! @parameter result | one line describing what happened
-    CLASS-METHODS reset
+    CLASS-METHODS data_reset
+      RETURNING
+        VALUE(result) TYPE string.
+
+    "! Creates three demo travels, keeping whatever is already there.
+    CLASS-METHODS data_generate
+      RETURNING
+        VALUE(result) TYPE string.
+
+    "! Deletes every travel through the business object.
+    CLASS-METHODS data_delete
       RETURNING
         VALUE(result) TYPE string.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
-
-    CLASS-METHODS delete_all
-      RETURNING
-        VALUE(result) TYPE i.
-
 ENDCLASS.
 
 
@@ -39,14 +41,19 @@ CLASS z2ui5_cl_smpe_data_trv IMPLEMENTATION.
 
   METHOD if_oo_adt_classrun~main.
 
-    out->write( reset( ) ).
+    out->write( data_reset( ) ).
 
   ENDMETHOD.
 
 
-  METHOD reset.
+  METHOD data_reset.
 
-    DATA(deleted) = delete_all( ).
+    result = |{ data_delete( ) } { data_generate( ) }|.
+
+  ENDMETHOD.
+
+
+  METHOD data_generate.
 
     MODIFY ENTITIES OF z2ui5_r_smpe_trv
       ENTITY travel
@@ -79,7 +86,7 @@ CLASS z2ui5_cl_smpe_data_trv IMPLEMENTATION.
     IF s_failed-travel IS NOT INITIAL.
 
       ROLLBACK ENTITIES.
-      result = |Demo data could not be created, { lines( s_failed-travel ) } instance(s) rejected|.
+      result = |Demo data rejected, { lines( s_failed-travel ) } instance(s) refused.|.
       RETURN.
 
     ENDIF.
@@ -89,25 +96,23 @@ CLASS z2ui5_cl_smpe_data_trv IMPLEMENTATION.
       REPORTED DATA(s_reported_commit).
 
     IF s_failed_commit IS NOT INITIAL.
-
-      result = `Demo data was rejected by the business object on commit`.
+      result = `Demo data rejected by the business object on commit.`.
       RETURN.
-
     ENDIF.
 
-    result = |{ deleted } travel(s) deleted, 3 demo travels created|.
+    result = `3 demo travels created.`.
 
   ENDMETHOD.
 
 
-  METHOD delete_all.
+  METHOD data_delete.
 
     SELECT FROM z2ui5_r_smpe_trv
       FIELDS TravelId
       INTO TABLE @DATA(t_keys).
 
-    result = lines( t_keys ).
     IF t_keys IS INITIAL.
+      result = `Nothing to delete.`.
       RETURN.
     ENDIF.
 
@@ -117,14 +122,14 @@ CLASS z2ui5_cl_smpe_data_trv IMPLEMENTATION.
       FAILED DATA(s_failed).
 
     IF s_failed-travel IS NOT INITIAL.
-
       ROLLBACK ENTITIES.
-      result = 0.
+      result = `Deletion refused by the business object.`.
       RETURN.
-
     ENDIF.
 
     COMMIT ENTITIES.
+
+    result = |{ lines( t_keys ) } travel(s) deleted.|.
 
   ENDMETHOD.
 

@@ -105,7 +105,7 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
 
   METHOD on_event_generate.
 
-    client->message_toast_display( z2ui5_cl_smpe_data_trd=>reset( ) ).
+    client->message_toast_display( z2ui5_cl_smpe_data_trd=>data_reset( ) ).
     data_read( ).
     client->view_model_update( ).
 

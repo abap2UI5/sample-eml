@@ -1,36 +1,36 @@
 "! <p class="shorttext synchronized">abap2UI5 EML sample - demo data (draft)</p>
 "! Demo data for the draft enabled business object z2ui5_r_smpe_trd.
 "!
-"! Two ways to run it, both ending in the same method:
-"! <ul>
-"! <li>in ADT, press F9 on this class - it is a console application</li>
-"! <li>from the abap2UI5 apps, which call reset( ) behind their button</li>
-"! </ul>
+"! Run it in ADT with F9 - it is a console application - or press the button
+"! in one of the sample apps, which calls the same methods.
 "!
-"! A draft enabled business object is the case where writing the tables by
-"! hand really hurts: the draft table z2ui5_d_smpe_trd carries the admin
-"! fields of SYCH_BDL_DRAFT_ADMIN_INC, and getting those right outside the
-"! runtime is not worth attempting. Creating a draft and activating it is
-"! both correct and shorter - and it is the lifecycle the samples teach.
+"! Writing the tables by hand would hurt here: the draft table
+"! z2ui5_d_smpe_trd carries the admin fields of SYCH_BDL_DRAFT_ADMIN_INC.
+"! Creating a draft and activating it is both correct and shorter - and it is
+"! the lifecycle the samples teach.
 CLASS z2ui5_cl_smpe_data_trd DEFINITION PUBLIC FINAL CREATE PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES if_oo_adt_classrun.
 
-    "! Discards every draft, deletes every active travel and creates the
-    "! demo set again - as drafts, which are then activated.
-    "! @parameter result | one line describing what happened
-    CLASS-METHODS reset
+    "! Deletes everything, then creates the demo set. This is what F9 runs.
+    CLASS-METHODS data_reset
+      RETURNING
+        VALUE(result) TYPE string.
+
+    "! Creates three demo travels as drafts and activates them, keeping
+    "! whatever is already there.
+    CLASS-METHODS data_generate
+      RETURNING
+        VALUE(result) TYPE string.
+
+    "! Discards every draft and deletes every active travel.
+    CLASS-METHODS data_delete
       RETURNING
         VALUE(result) TYPE string.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
-
-    CLASS-METHODS delete_all
-      RETURNING
-        VALUE(result) TYPE i.
-
 ENDCLASS.
 
 
@@ -38,14 +38,19 @@ CLASS z2ui5_cl_smpe_data_trd IMPLEMENTATION.
 
   METHOD if_oo_adt_classrun~main.
 
-    out->write( reset( ) ).
+    out->write( data_reset( ) ).
 
   ENDMETHOD.
 
 
-  METHOD reset.
+  METHOD data_reset.
 
-    DATA(deleted) = delete_all( ).
+    result = |{ data_delete( ) } { data_generate( ) }|.
+
+  ENDMETHOD.
+
+
+  METHOD data_generate.
 
     " a new instance of a draft enabled business object is born as a draft
     MODIFY ENTITIES OF z2ui5_r_smpe_trd
@@ -78,17 +83,14 @@ CLASS z2ui5_cl_smpe_data_trd IMPLEMENTATION.
       FAILED DATA(s_failed).
 
     IF s_failed-travel IS NOT INITIAL.
-
       ROLLBACK ENTITIES.
-      result = |Demo drafts could not be created, { lines( s_failed-travel ) } instance(s) rejected|.
+      result = |Demo drafts rejected, { lines( s_failed-travel ) } instance(s) refused.|.
       RETURN.
-
     ENDIF.
 
     COMMIT ENTITIES.
 
-    " Activate turns them into active instances - and runs the validations,
-    " so anything wrong with the demo data surfaces here
+    " Activate runs the validations, so anything wrong surfaces here
     MODIFY ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
         EXECUTE Activate FROM VALUE #( FOR s_new IN s_mapped-travel
@@ -98,11 +100,9 @@ CLASS z2ui5_cl_smpe_data_trd IMPLEMENTATION.
       REPORTED DATA(s_reported_act).
 
     IF s_failed_act-travel IS NOT INITIAL.
-
       ROLLBACK ENTITIES.
-      result = `The demo drafts were created but rejected on activation`.
+      result = `The demo drafts were created but refused on activation.`.
       RETURN.
-
     ENDIF.
 
     COMMIT ENTITIES RESPONSE OF z2ui5_r_smpe_trd
@@ -110,25 +110,23 @@ CLASS z2ui5_cl_smpe_data_trd IMPLEMENTATION.
       REPORTED DATA(s_reported_commit).
 
     IF s_failed_commit IS NOT INITIAL.
-
-      result = `Demo data was rejected by the business object on commit`.
+      result = `Demo data rejected by the business object on commit.`.
       RETURN.
-
     ENDIF.
 
-    result = |{ deleted } travel(s) deleted, 3 demo travels created and activated|.
+    result = `3 demo travels created and activated.`.
 
   ENDMETHOD.
 
 
-  METHOD delete_all.
+  METHOD data_delete.
 
     SELECT FROM z2ui5_r_smpe_trd
       FIELDS TravelUuid
       INTO TABLE @DATA(t_keys).
 
-    result = lines( t_keys ).
     IF t_keys IS INITIAL.
+      result = `Nothing to delete.`.
       RETURN.
     ENDIF.
 
@@ -137,8 +135,8 @@ CLASS z2ui5_cl_smpe_data_trd IMPLEMENTATION.
     " which is why the response is not evaluated here
     MODIFY ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
-        EXECUTE Discard FROM VALUE #( FOR s_key IN t_keys
-                                      ( %tky = VALUE #( traveluuid = s_key-traveluuid
+        EXECUTE Discard FROM VALUE #( FOR s_draft IN t_keys
+                                      ( %tky = VALUE #( traveluuid = s_draft-traveluuid
                                                         %is_draft  = if_abap_behv=>mk-on ) ) )
       FAILED DATA(s_failed_discard).
 
@@ -152,14 +150,14 @@ CLASS z2ui5_cl_smpe_data_trd IMPLEMENTATION.
       FAILED DATA(s_failed).
 
     IF s_failed-travel IS NOT INITIAL.
-
       ROLLBACK ENTITIES.
-      result = 0.
+      result = `Deletion refused by the business object.`.
       RETURN.
-
     ENDIF.
 
     COMMIT ENTITIES.
+
+    result = |{ lines( t_keys ) } travel(s) deleted.|.
 
   ENDMETHOD.
 

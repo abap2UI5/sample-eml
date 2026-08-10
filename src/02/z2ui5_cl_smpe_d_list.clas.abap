@@ -38,7 +38,7 @@ CLASS z2ui5_cl_smpe_d_list IMPLEMENTATION.
           data_read( ).
           client->view_model_update( ).
         WHEN `GENERATE`.
-          client->message_toast_display( z2ui5_cl_smpe_data_trd=>reset( ) ).
+          client->message_toast_display( z2ui5_cl_smpe_data_trd=>data_reset( ) ).
           data_read( ).
           client->view_model_update( ).
       ENDCASE.

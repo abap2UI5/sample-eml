@@ -105,7 +105,7 @@ CLASS z2ui5_cl_smpe_crud IMPLEMENTATION.
 
     " the demo data lives with the business object it belongs to, so every
     " app and the ADT console application create exactly the same set
-    client->message_toast_display( z2ui5_cl_smpe_data_trv=>reset( ) ).
+    client->message_toast_display( z2ui5_cl_smpe_data_trv=>data_reset( ) ).
     data_read( ).
     client->view_model_update( ).
 
