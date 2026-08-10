@@ -2,12 +2,12 @@
 "! The entry point of this repository: every sample in one list, one press
 "! away. Start it with ?app_start=z2ui5_cl_smpe_app_00.
 "!
-"! A row opens its sample in a NEW BROWSER TAB, so the overview stays where
-"! it is and several samples can run side by side. That is a pure frontend
-"! action: the row carries the finished ?app_start= URL of its class and the
-"! press is wired with _event_client( ), which opens the tab inside the click
-"! handler without a roundtrip - a window.open( ) from a server response
-"! would be swallowed by the popup blocker.
+"! The Open button of a row starts its sample in a NEW BROWSER TAB, so the
+"! overview stays where it is and several samples can run side by side. That
+"! is a pure frontend action: the row carries the finished ?app_start= URL of
+"! its class and the button is wired with _event_client( ), which opens the
+"! tab inside the click handler without a roundtrip - a window.open( ) from a
+"! server response would be swallowed by the popup blocker.
 CLASS z2ui5_cl_smpe_app_00 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
@@ -122,7 +122,7 @@ CLASS z2ui5_cl_smpe_app_00 IMPLEMENTATION.
 
     page->leaf( `MessageStrip`
         )->a( n = `text`     v = `Every EML sample of this repository, in the order of the README. ` &&
-                                 `Press a row to open it in a new tab. Empty lists? Press ` &&
+                                 `Press Open to start one in a new tab. Empty lists? Press ` &&
                                  `Regenerate Demo Data above - it fills both business objects ` &&
                                  `with the same set Z2UI5_CL_SMPE_DATA_TRV / _TRD create with F9.`
         )->a( n = `showIcon` v = `true`
@@ -168,17 +168,16 @@ CLASS z2ui5_cl_smpe_app_00 IMPLEMENTATION.
         )->shut(
         )->open( `Column`
             )->leaf( `Text`
-                )->a( n = `text` v = `Class` ).
+                )->a( n = `text` v = `Class`
+        )->shut(
+        )->open( `Column`
+            )->a( n = `width`  v = `8rem`
+            )->a( n = `hAlign` v = `End`
+            )->leaf( `Text`
+                )->a( n = `text` v = `Demo` ).
 
     table->open( `items`
         )->open( `ColumnListItem`
-            )->a( n = `type`  v = `Navigation`
-            " ${URL} is resolved by UI5 against the pressed row, so one wire
-            " serves every sample - and _event_client keeps it a frontend
-            " action, which is what lets the browser accept the new tab
-            )->a( n = `press` v = client->_event_client(
-                                      val   = client->cs_event-open_new_tab
-                                      t_arg = VALUE #( ( `${URL}` ) ) )
             )->open( `cells`
                 )->leaf( `Text`
                     )->a( n = `text` v = `{NO}`
@@ -187,7 +186,17 @@ CLASS z2ui5_cl_smpe_app_00 IMPLEMENTATION.
                 )->leaf( `Text`
                     )->a( n = `text` v = `{STATEMENT}`
                 )->leaf( `Text`
-                    )->a( n = `text` v = `{CLASSNAME}` ).
+                    )->a( n = `text` v = `{CLASSNAME}`
+                )->leaf( `Button`
+                    )->a( n = `text` v = `Open`
+                    )->a( n = `icon` v = `sap-icon://play`
+                    " ${URL} is resolved by UI5 against the row the button
+                    " sits in, so one wire serves every sample - and
+                    " _event_client keeps it a frontend action, which is what
+                    " lets the browser accept the new tab
+                    )->a( n = `press` v = client->_event_client(
+                                              val   = client->cs_event-open_new_tab
+                                              t_arg = VALUE #( ( `${URL}` ) ) ) ).
 
   ENDMETHOD.
 
