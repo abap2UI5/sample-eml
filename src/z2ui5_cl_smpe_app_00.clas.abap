@@ -24,9 +24,13 @@ CLASS z2ui5_cl_smpe_app_00 DEFINITION PUBLIC.
       END OF ty_s_sample.
     TYPES ty_t_sample TYPE STANDARD TABLE OF ty_s_sample WITH EMPTY KEY.
 
-    "! samples 01-10, split by the business object they run against
+    "! one statement each, on the business object without draft
     DATA t_travel TYPE ty_t_sample.
+    "! one statement each, on the draft enabled business object
     DATA t_draft  TYPE ty_t_sample.
+    "! samples 05 and 10 - complete apps, three times the size of the others.
+    "! Their own list, so nobody reads them as "step 5 of 10".
+    DATA t_apps   TYPE ty_t_sample.
 
   PROTECTED SECTION.
     DATA client TYPE REF TO z2ui5_if_client.
@@ -40,11 +44,12 @@ CLASS z2ui5_cl_smpe_app_00 DEFINITION PUBLIC.
     METHODS view_display.
     METHODS model_init.
 
-    "! one table per business object - same markup, different binding
+    "! one table per group - same markup, different binding
     METHODS render_table
       IMPORTING
         page  TYPE REF TO z2ui5_cl_ai_xml
         title TYPE string
+        hint  TYPE string
         items TYPE string.
 
     "! one row of the list
@@ -121,20 +126,28 @@ CLASS z2ui5_cl_smpe_app_00 IMPLEMENTATION.
             )->a( n = `press` v = client->_event( cs_event-regenerate ) ).
 
     page->leaf( `MessageStrip`
-        )->a( n = `text`     v = `Every EML sample of this repository, in the order of the README. ` &&
-                                 `Press Open to start one in a new tab. Empty lists? Press ` &&
-                                 `Regenerate Demo Data above - it fills both business objects ` &&
-                                 `with the same set Z2UI5_CL_SMPE_DATA_TRV / _TRD create with F9.`
+        )->a( n = `text`     v = `Each of the first two lists shows one EML statement per sample - ` &&
+                                 `open the class and the statement is in the comment at the top. ` &&
+                                 `The third list holds the two complete apps; read the single ` &&
+                                 `statements first, the apps only put them together. Empty lists? ` &&
+                                 `Press Regenerate Demo Data above.`
         )->a( n = `showIcon` v = `true`
         )->a( n = `class`    v = `sapUiSmallMarginBottom` ).
 
     render_table( page  = page
-                  title = `Z2UI5_R_SMPE_TRV - business object without draft`
+                  title = `Single statements - business object without draft`
+                  hint  = `Z2UI5_R_SMPE_TRV - start at 01`
                   items = client->_bind( t_travel ) ).
 
     render_table( page  = page
-                  title = `Z2UI5_R_SMPE_TRD - draft enabled business object`
+                  title = `Single statements - draft enabled business object`
+                  hint  = `Z2UI5_R_SMPE_TRD - start at 06, it carries the trick the others use`
                   items = client->_bind( t_draft ) ).
+
+    render_table( page  = page
+                  title = `Complete apps`
+                  hint  = `everything above in one screen - roughly three times the size`
+                  items = client->_bind( t_apps ) ).
 
     client->view_display( view->stringify( ) ).
 
@@ -150,7 +163,10 @@ CLASS z2ui5_cl_smpe_app_00 IMPLEMENTATION.
     table->open( `headerToolbar`
         )->open( `Toolbar`
             )->leaf( `Title`
-                )->a( n = `text` v = title ).
+                )->a( n = `text` v = title
+            )->leaf( `Text`
+                )->a( n = `text`  v = hint
+                )->a( n = `class` v = `sapUiTinyMarginBegin` ).
 
     table->open( `columns`
         )->open( `Column`
@@ -243,11 +259,7 @@ CLASS z2ui5_cl_smpe_app_00 IMPLEMENTATION.
       ( sample( no        = `04`
                 title     = `Delete a travel`
                 statement = `MODIFY ... DELETE FROM`
-                app       = NEW z2ui5_cl_smpe_app_04( ) ) )
-      ( sample( no        = `05`
-                title     = `Manage travels - the whole app`
-                statement = `MODIFY ... EXECUTE, COMMIT ENTITIES RESPONSE OF`
-                app       = NEW z2ui5_cl_smpe_app_05( ) ) ) ).
+                app       = NEW z2ui5_cl_smpe_app_04( ) ) ) ).
 
     t_draft = VALUE #(
       ( sample( no        = `06`
@@ -265,10 +277,19 @@ CLASS z2ui5_cl_smpe_app_00 IMPLEMENTATION.
       ( sample( no        = `09`
                 title     = `Leave draft mode`
                 statement = `EXECUTE Activate / Discard`
-                app       = NEW z2ui5_cl_smpe_app_09( ) ) )
+                app       = NEW z2ui5_cl_smpe_app_09( ) ) ) ).
+
+    " the two complete apps keep their numbers - they are the end of each
+    " row above - but they get their own list, because they are a different
+    " kind of sample: not one statement to look up, but all of them in place
+    t_apps = VALUE #(
+      ( sample( no        = `05`
+                title     = `Manage travels - without draft`
+                statement = `01-04 plus EXECUTE and COMMIT ENTITIES RESPONSE OF`
+                app       = NEW z2ui5_cl_smpe_app_05( ) ) )
       ( sample( no        = `10`
-                title     = `Travels with draft handling - the whole app`
-                statement = `everything above`
+                title     = `Manage travels - with draft handling`
+                statement = `06-09 in one screen`
                 app       = NEW z2ui5_cl_smpe_app_10( ) ) ) ).
 
   ENDMETHOD.

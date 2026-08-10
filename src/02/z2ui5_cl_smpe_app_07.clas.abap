@@ -1,3 +1,18 @@
+"! <p class="shorttext synchronized">abap2UI5 - EML sample 07 - enter draft mode</p>
+"! Edit copies the active instance into a new draft, Resume picks up a draft
+"! that already exists.
+"!
+"!     MODIFY ENTITIES OF z2ui5_r_smpe_trd
+"!       ENTITY travel
+"!         EXECUTE Edit FROM VALUE #( ( %key-traveluuid = uuid ) )
+"!       FAILED s_failed
+"!       REPORTED s_reported.
+"!
+"! Worth knowing: a draft action takes the key and nothing else. Which of the
+"! two instances it addresses is part of the action - Edit always starts from
+"! the active one, Resume from the draft - so there is no %is_draft here. And
+"! Edit on an instance that already has a draft fails, which is why this sample
+"! asks first (sample 06) and calls Resume instead.
 CLASS z2ui5_cl_smpe_app_07 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

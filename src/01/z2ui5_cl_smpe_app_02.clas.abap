@@ -1,3 +1,23 @@
+"! <p class="shorttext synchronized">abap2UI5 - EML sample 02 - create travel</p>
+"! Creates one instance. The %cid is a temporary id you invent: the business
+"! object does not know the key yet, so it reports the new one back under that
+"! %cid in MAPPED.
+"!
+"!     MODIFY ENTITIES OF z2ui5_r_smpe_trv
+"!       ENTITY travel
+"!         CREATE FIELDS ( agencyid customerid begindate enddate ... )
+"!         WITH VALUE #( ( %cid = `CREATE_1` agencyid = ... ) )
+"!       MAPPED DATA(s_mapped)
+"!       FAILED DATA(s_failed)
+"!       REPORTED DATA(s_reported).
+"!
+"!     COMMIT ENTITIES RESPONSE OF z2ui5_r_smpe_trv
+"!       FAILED DATA(s_failed_commit)
+"!       REPORTED DATA(s_reported_commit).
+"!
+"! Worth knowing: nothing reaches the database before the COMMIT, and the
+"! validations only run there - a CREATE that came back clean can still fail at
+"! the COMMIT. That is why both responses are evaluated.
 CLASS z2ui5_cl_smpe_app_02 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

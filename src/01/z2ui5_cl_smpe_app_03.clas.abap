@@ -1,3 +1,18 @@
+"! <p class="shorttext synchronized">abap2UI5 - EML sample 03 - update travel</p>
+"! Changes single fields of one instance. UPDATE FIELDS names what may be
+"! written, everything else stays untouched.
+"!
+"!     MODIFY ENTITIES OF z2ui5_r_smpe_trv
+"!       ENTITY travel
+"!         UPDATE FIELDS ( description )
+"!         WITH VALUE #( ( travelid    = travel_id
+"!                         description = s_travel-description ) )
+"!       FAILED DATA(s_failed)
+"!       REPORTED DATA(s_reported).
+"!
+"! Worth knowing: fields the behavior definition marks readonly are refused.
+"! TotalPrice and OverallStatus belong to the business object, not to the
+"! caller - try it and read what comes back in REPORTED.
 CLASS z2ui5_cl_smpe_app_03 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

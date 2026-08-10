@@ -1,3 +1,16 @@
+"! <p class="shorttext synchronized">abap2UI5 - EML sample 09 - leave draft mode</p>
+"! Activate turns the draft into the active instance, Discard throws it away.
+"!
+"!     MODIFY ENTITIES OF z2ui5_r_smpe_trd
+"!       ENTITY travel
+"!         EXECUTE Activate FROM VALUE #( ( %key-traveluuid = uuid ) )
+"!       FAILED DATA(s_failed)
+"!       REPORTED DATA(s_reported).
+"!
+"! Worth knowing: Activate is where the validations finally run, so an invalid
+"! draft stays a draft and says why. Discard leaves the active instance exactly
+"! as it was. Both are draft actions like Edit and Resume - key only, no
+"! %is_draft.
 CLASS z2ui5_cl_smpe_app_09 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

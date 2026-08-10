@@ -1,3 +1,15 @@
+"! <p class="shorttext synchronized">abap2UI5 - EML sample 01 - read travel</p>
+"! Reads one instance by its key.
+"!
+"!     READ ENTITIES OF z2ui5_r_smpe_trv
+"!       ENTITY travel
+"!         ALL FIELDS WITH VALUE #( ( travelid = travel_id ) )
+"!       RESULT DATA(t_result)
+"!       FAILED DATA(s_failed).
+"!
+"! Worth knowing: a key that does not exist is not an exception. It comes back
+"! in FAILED and RESULT stays empty, so the response is what you check - never
+"! sy-subrc.
 CLASS z2ui5_cl_smpe_app_01 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

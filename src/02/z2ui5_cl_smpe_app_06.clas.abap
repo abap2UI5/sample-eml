@@ -1,3 +1,19 @@
+"! <p class="shorttext synchronized">abap2UI5 - EML sample 06 - which travels have a draft</p>
+"! A draft and its active instance share the key - only %is_draft separates
+"! them. So reading the keys with %is_draft = mk-on answers the question "which
+"! travels have a draft?": everything that comes back in RESULT has one,
+"! everything else lands in FAILED.
+"!
+"!     READ ENTITIES OF z2ui5_r_smpe_trd
+"!       ENTITY travel
+"!         FIELDS ( travelid ) WITH VALUE #( FOR s_row IN t_result
+"!                                           ( %tky = VALUE #( traveluuid = s_row-traveluuid
+"!                                                             %is_draft  = if_abap_behv=>mk-on ) ) )
+"!       RESULT DATA(t_drafts)
+"!       FAILED DATA(s_failed).
+"!
+"! Worth knowing: every other draft sample of this repository builds on this
+"! one trick. Start here.
 CLASS z2ui5_cl_smpe_app_06 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

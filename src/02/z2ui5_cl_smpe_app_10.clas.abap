@@ -1,3 +1,10 @@
+"! <p class="shorttext synchronized">abap2UI5 - EML sample 10 - draft handling</p>
+"! A WHOLE APP, not a single snippet. The complete draft lifecycle in one
+"! screen: list, Edit, Resume, change, Activate, Discard - roughly three times
+"! the size of samples 06-09.
+"!
+"! It repeats what those four show, nothing more. Read them first, then come
+"! here to see how the pieces sit together in one app.
 CLASS z2ui5_cl_smpe_app_10 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

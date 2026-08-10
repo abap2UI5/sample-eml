@@ -1,3 +1,20 @@
+"! <p class="shorttext synchronized">abap2UI5 - EML sample 05 - manage travels</p>
+"! A WHOLE APP, not a single snippet. Read, create, update, delete and both
+"! actions of the business object in one screen, with the message handling and
+"! the create popup a real app needs - roughly three times the size of samples
+"! 01-04. If EML is new to you, read those first.
+"!
+"! What it adds beyond them is the action call and the save with a response:
+"!
+"!     MODIFY ENTITIES OF z2ui5_r_smpe_trv
+"!       ENTITY travel
+"!         EXECUTE acceptTravel FROM VALUE #( ( travelid = travel_id ) )
+"!       FAILED DATA(s_failed)
+"!       REPORTED DATA(s_reported).
+"!
+"!     COMMIT ENTITIES RESPONSE OF z2ui5_r_smpe_trv
+"!       FAILED DATA(s_failed_commit)
+"!       REPORTED DATA(s_reported_commit).
 CLASS z2ui5_cl_smpe_app_05 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
@@ -83,9 +100,8 @@ CLASS z2ui5_cl_smpe_app_05 IMPLEMENTATION.
         on_event_generate( ).
       WHEN `CREATE`.
         " the popup opens on a set that passes both validations, so Create
-        " goes through on the first press - see z2ui5_cl_smpe_app_02
-        " see z2ui5_cl_smpe_app_02: without CONV d( ) the template renders the
-        " day number of sy-datum + 14, not a date
+        " goes through on the first press - see z2ui5_cl_smpe_app_02, which
+        " also explains why the end date needs the CONV d( )
         DATA(end_date) = CONV d( sy-datum + 14 ).
 
         s_create = VALUE #( agency_id   = `070001`
