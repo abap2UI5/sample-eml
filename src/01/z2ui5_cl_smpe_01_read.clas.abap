@@ -1,4 +1,4 @@
-CLASS z2ui5_cl_smpe_read DEFINITION PUBLIC.
+CLASS z2ui5_cl_smpe_01_read DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -26,7 +26,7 @@ CLASS z2ui5_cl_smpe_read DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smpe_read IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_01_read IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
@@ -79,7 +79,7 @@ CLASS z2ui5_cl_smpe_read IMPLEMENTATION.
     DATA(view) = z2ui5_cl_xml_view=>factory( ).
     view->shell(
         )->page(
-            title          = `abap2UI5 - EML - Read Travel`
+            title          = `abap2UI5 - EML - 01 Read Travel`
             navbuttonpress = client->_event_nav_app_leave( )
             shownavbutton  = client->check_app_prev_stack( )
             )->simple_form(

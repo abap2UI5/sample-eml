@@ -3,9 +3,9 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOCLASS>
-    <CLSNAME>Z2UI5_CL_SMPE_DRAFT</CLSNAME>
+    <CLSNAME>Z2UI5_CL_SMPE_04_DELETE</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>abap2UI5 - EML sample - draft handling</DESCRIPT>
+    <DESCRIPT>abap2UI5 - EML sample 04 - delete travel</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

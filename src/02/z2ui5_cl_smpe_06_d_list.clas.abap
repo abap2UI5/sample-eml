@@ -1,4 +1,4 @@
-CLASS z2ui5_cl_smpe_d_list DEFINITION PUBLIC.
+CLASS z2ui5_cl_smpe_06_d_list DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -24,7 +24,7 @@ CLASS z2ui5_cl_smpe_d_list DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smpe_d_list IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_06_d_list IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
@@ -92,7 +92,7 @@ CLASS z2ui5_cl_smpe_d_list IMPLEMENTATION.
     DATA(view) = z2ui5_cl_xml_view=>factory( ).
     DATA(table) = view->shell(
         )->page(
-            title          = `abap2UI5 - EML - Which Travels Have a Draft?`
+            title          = `abap2UI5 - EML - 06 Which Travels Have a Draft?`
             navbuttonpress = client->_event_nav_app_leave( )
             shownavbutton  = client->check_app_prev_stack( )
             )->table( client->_bind( t_travels ) ).

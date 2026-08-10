@@ -3,9 +3,9 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOCLASS>
-    <CLSNAME>Z2UI5_CL_SMPE_DELETE</CLSNAME>
+    <CLSNAME>Z2UI5_CL_SMPE_02_CREATE</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>abap2UI5 - EML sample - delete travel</DESCRIPT>
+    <DESCRIPT>abap2UI5 - EML sample 02 - create travel</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
