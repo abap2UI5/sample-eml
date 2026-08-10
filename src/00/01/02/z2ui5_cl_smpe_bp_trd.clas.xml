@@ -5,10 +5,8 @@
    <VSEOCLASS>
     <CLSNAME>Z2UI5_CL_SMPE_BP_TRD</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>abap2UI5 - EML sample - behavior pool (draft)</DESCRIPT>
+    <DESCRIPT>abap2UI5 EML sample - behavior pool (draft)</DESCRIPT>
     <STATE>1</STATE>
-    <CLSFINAL>X</CLSFINAL>
-    <CLSABSTRCT>X</CLSABSTRCT>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
