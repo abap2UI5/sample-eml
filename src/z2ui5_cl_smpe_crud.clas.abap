@@ -106,54 +106,11 @@ CLASS z2ui5_cl_smpe_crud IMPLEMENTATION.
 
   METHOD on_event_generate.
 
-    " There is no external demo data generator any more - the business object
-    " of this repository is filled through its own behavior, with the same
-    " EML CREATE the popup above uses. Early numbering assigns the keys.
-    MODIFY ENTITIES OF z2ui5_r_smpe_trv
-      ENTITY travel
-        CREATE FIELDS ( agencyid customerid begindate enddate bookingfee currencycode description )
-        WITH VALUE #( ( %cid         = `DEMO_1`
-                        agencyid     = '070001'
-                        customerid   = '000001'
-                        begindate    = sy-datum
-                        enddate      = sy-datum + 14
-                        bookingfee   = '20.00'
-                        currencycode = 'EUR'
-                        description  = 'Demo travel - sightseeing' )
-                      ( %cid         = `DEMO_2`
-                        agencyid     = '070002'
-                        customerid   = '000002'
-                        begindate    = sy-datum + 30
-                        enddate      = sy-datum + 37
-                        bookingfee   = '35.50'
-                        currencycode = 'EUR'
-                        description  = 'Demo travel - business trip' )
-                      ( %cid         = `DEMO_3`
-                        agencyid     = '070003'
-                        customerid   = '000003'
-                        begindate    = sy-datum + 60
-                        enddate      = sy-datum + 74
-                        bookingfee   = '12.75'
-                        currencycode = 'EUR'
-                        description  = 'Demo travel - city break' ) )
-      FAILED DATA(s_failed)
-      REPORTED DATA(s_reported).
-
-    IF s_failed-travel IS NOT INITIAL.
-
-      ROLLBACK ENTITIES.
-      messages_display( s_reported-travel ).
-      RETURN.
-
-    ENDIF.
-
-    IF data_save( ) = abap_true.
-
-      data_read( ).
-      client->view_model_update( ).
-      client->message_toast_display( `Demo travels created` ).
-
-    ENDIF.
+    " the demo data lives with the business object it belongs to, so every
+    " app and the ADT console application create exactly the same set
+    client->message_toast_display( z2ui5_cl_smpe_data_trv=>reset( ) ).
+    data_read( ).
+    client->view_model_update( ).
 
   ENDMETHOD.
 

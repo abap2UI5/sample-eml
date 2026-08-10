@@ -108,70 +108,9 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
 
   METHOD on_event_generate.
 
-    " The business object is draft enabled, so a new instance is born as a
-    " draft and only the draft action Activate turns it into an active one.
-    " That is the complete lifecycle a Fiori Elements app runs through, here
-    " executed in two EML round trips.
-    MODIFY ENTITIES OF z2ui5_r_smpe_trd
-      ENTITY travel
-        CREATE FIELDS ( agencyid customerid begindate enddate bookingfee currencycode description )
-        WITH VALUE #( %is_draft = if_abap_behv=>mk-on
-                      ( %cid         = `DEMO_1`
-                        agencyid     = '070001'
-                        customerid   = '000001'
-                        begindate    = sy-datum
-                        enddate      = sy-datum + 14
-                        bookingfee   = '20.00'
-                        currencycode = 'EUR'
-                        description  = 'Demo travel - sightseeing' )
-                      ( %cid         = `DEMO_2`
-                        agencyid     = '070002'
-                        customerid   = '000002'
-                        begindate    = sy-datum + 30
-                        enddate      = sy-datum + 37
-                        bookingfee   = '35.50'
-                        currencycode = 'EUR'
-                        description  = 'Demo travel - business trip' ) )
-      MAPPED DATA(s_mapped)
-      FAILED DATA(s_failed)
-      REPORTED DATA(s_reported).
-
-    IF s_failed-travel IS NOT INITIAL.
-
-      ROLLBACK ENTITIES.
-      messages_display( s_reported-travel ).
-      RETURN.
-
-    ENDIF.
-
-    IF data_save( ) = abap_false.
-      RETURN.
-    ENDIF.
-
-    " the drafts are persisted now - activating them runs the validations
-    MODIFY ENTITIES OF z2ui5_r_smpe_trd
-      ENTITY travel
-        EXECUTE Activate FROM VALUE #( FOR s_new IN s_mapped-travel
-                                       ( %tky = VALUE #( traveluuid = s_new-traveluuid
-                                                         %is_draft  = if_abap_behv=>mk-on ) ) )
-      FAILED DATA(s_failed_act)
-      REPORTED DATA(s_reported_act).
-
-    IF s_failed_act-travel IS NOT INITIAL.
-
-      ROLLBACK ENTITIES.
-      messages_display( s_reported_act-travel ).
-      RETURN.
-
-    ENDIF.
-
-    IF data_save( ) = abap_true.
-
-      data_read( ).
-      client->view_model_update( ).
-      client->message_toast_display( `Demo travels created as drafts and activated` ).
-
-    ENDIF.
+    client->message_toast_display( z2ui5_cl_smpe_data_trd=>reset( ) ).
+    data_read( ).
+    client->view_model_update( ).
 
   ENDMETHOD.
 

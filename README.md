@@ -13,7 +13,7 @@ Sample apps that show how to consume a RAP Business Object with the **Entity Man
 
 abap2UI5 apps are plain ABAP classes — so everything you learned about EML in the official RAP tutorials works here too. Instead of exposing the RAP BO via OData and Fiori Elements, the abap2UI5 app calls the BO directly with EML and renders the UI itself.
 
-**The business objects ship with this repository.** There is nothing else to install: no flight reference scenario, no demo data generator, no other sample repository. Pull it with abapGit, run an app, press *Generate Demo Data* — that is the whole setup.
+**The business objects ship with this repository.** There is nothing else to install: no flight reference scenario, no demo data generator, no other sample repository. Pull it with abapGit, run an app, press *Generate Demo Data* — that is the whole setup. See [Demo Data](#demo-data) if you would rather fill the tables from ADT.
 
 ## Prerequisites
 
@@ -27,18 +27,26 @@ Install this repository with [abapGit](https://abapgit.org) and start the apps l
 The abap2UI5 apps sit at the top of `src` — they are what you run and what you read to learn EML. The business objects they talk to live in a subpackage each, so the RAP artifacts stay out of the way:
 
 ```
-src/                       the abap2UI5 apps
-├── z2ui5_cl_smpe_read     one EML statement each: READ ENTITIES
-├── z2ui5_cl_smpe_create                           MODIFY ... CREATE
-├── z2ui5_cl_smpe_update                           MODIFY ... UPDATE
-├── z2ui5_cl_smpe_delete                           MODIFY ... DELETE
-├── z2ui5_cl_smpe_crud     all four plus the BO actions, in one app
-├── z2ui5_cl_smpe_draft    the draft lifecycle
-├── 01/                    RAP business object, no draft
-└── 02/                    RAP business object, draft enabled
+src/
+│                              business object of 01, one EML statement each
+├── z2ui5_cl_smpe_read         READ ENTITIES
+├── z2ui5_cl_smpe_create       MODIFY ... CREATE
+├── z2ui5_cl_smpe_update       MODIFY ... UPDATE
+├── z2ui5_cl_smpe_delete       MODIFY ... DELETE
+├── z2ui5_cl_smpe_crud         all four plus the BO actions, in one app
+│
+│                              business object of 02, one draft aspect each
+├── z2ui5_cl_smpe_d_list       which travels have a draft?
+├── z2ui5_cl_smpe_d_edit       entering draft mode: Edit / Resume
+├── z2ui5_cl_smpe_d_save       changing a draft: UPDATE with %is_draft
+├── z2ui5_cl_smpe_d_activate   leaving draft mode: Activate / Discard
+├── z2ui5_cl_smpe_draft        the whole draft lifecycle, in one app
+│
+├── 01/                        RAP business object, no draft
+└── 02/                        RAP business object, draft enabled
 ```
 
-The first four apps do exactly one thing, so you can read any of them end to end in a minute. `crud` is the same operations combined into a working app, `draft` is the only one talking to the draft-enabled business object of `02`.
+Every app in the two upper groups does exactly one thing, so you can read any of them end to end in a minute. `crud` and `draft` are the same material combined into working apps — start there if you want to see a whole app, start above if you want to see a single concept.
 
 Each subpackage holds a complete RAP stack. Nothing is shared between them, so one can be deleted without breaking the other:
 
@@ -49,6 +57,7 @@ Each subpackage holds a complete RAP stack. Nothing is shared between them, so o
 | Root view entity | `Z2UI5_R_SMPE_TRV` | `Z2UI5_R_SMPE_TRD` |
 | Behavior definition | `Z2UI5_R_SMPE_TRV` | `Z2UI5_R_SMPE_TRD` |
 | Behavior pool | `Z2UI5_CL_SMPE_BP_TRV` | `Z2UI5_CL_SMPE_BP_TRD` |
+| Demo data | `Z2UI5_CL_SMPE_DATA_TRV` | `Z2UI5_CL_SMPE_DATA_TRD` |
 
 Both business objects model the same thing — a travel with an agency, a customer, a date range, a booking fee and a status — so the two stay comparable and the only real difference is the draft handling.
 
@@ -63,6 +72,21 @@ The point of consuming a RAP BO is that the business logic runs no matter who tr
 * **Actions `acceptTravel` and `rejectTravel`** — declared with `result [1] $self`, so they return the changed instance
 * **Global authorization** — implemented, but deliberately granting everything; a productive BO would check an authorization object here
 
+## Demo Data
+
+Both business objects start out empty, and abapGit does not carry table content — so the data has to be produced in every system. One class per business object does that:
+
+| | run it |
+|---|---|
+| `Z2UI5_CL_SMPE_DATA_TRV` / `..._TRD` | in ADT press F9 — both are console applications (`if_oo_adt_classrun`) |
+| | or press *Generate Demo Data* in any app that offers it — the button calls the same `reset( )` |
+
+`reset( )` deletes everything and creates a fixed set again. Deleting first is what makes the keys predictable: early numbering continues behind `MAX( travel_id )`, so on an empty table the demo travels always come out as 1, 2, 3 — which is what lets the *Read a Travel* sample tell you to enter `1`.
+
+The data is created **through the business object with EML**, never with an `INSERT` into the table. An `INSERT` would be shorter and is what SAP's own flight data generator does, but it skips the determination `setInitialValues`, so the rows would carry no status and no total price — data this business object could never have produced itself. For the draft-enabled object the argument is even simpler: its draft table carries the admin fields of `SYCH_BDL_DRAFT_ADMIN_INC`, and creating a draft and activating it is far easier than getting those right by hand.
+
+For **automated tests** use neither — `CL_ABAP_BEHV_TEST_ENVIRONMENT` gives you a test double of the business object, so the real tables stay untouched and the test does not depend on what happens to be in them.
+
 ## Background — the RAP Tutorials
 
 The EML patterns shown here are the ones taught in the official SAP tutorials. Those tutorials build their own business objects too; this repository simply ships one so the samples run on their own:
@@ -74,7 +98,7 @@ The EML patterns shown here are the ones taught in the official SAP tutorials. T
 | [abap-platform-rap-workshops](https://github.com/SAP-samples/abap-platform-rap-workshops) | RAP workshop material (RAP100/RAP110), including EML exercises |
 | [abap-platform-refscen-flight](https://github.com/SAP-samples/abap-platform-refscen-flight) | Flight reference scenario — the BOs these samples used to depend on, kept here as a reading reference only |
 
-## The Samples
+## The Samples — Business Object Without Draft (`src/01`)
 
 ### 1. `z2ui5_cl_smpe_read` — Read a Travel
 
@@ -172,27 +196,78 @@ IF data_save( ) = abap_true. " COMMIT ENTITIES RESPONSE OF ...
 ENDIF.
 ```
 
-### 6. `z2ui5_cl_smpe_draft` — Draft Handling
+## The Samples — Business Object With Draft (`src/02`)
 
-The full draft roundtrip on the draft-enabled BO `Z2UI5_R_SMPE_TRD` — the same lifecycle a Fiori Elements app runs through, executed manually with EML:
+Draft handling is the one part of RAP where an app has to think about *which* instance it is addressing: the draft or the active one. Each of the next four apps isolates one aspect of that, the fifth puts them back together.
 
-* **Generate Demo Data** — creates the travels as *drafts* and then activates them, which is the complete lifecycle in two EML round trips
-* **Edit** — the draft action `Edit` copies the active instance into a new draft (`%tky` with `%is_draft = if_abap_behv=>mk-off` addresses the active instance):
+### 1. `z2ui5_cl_smpe_d_list` — Which Travels Have a Draft?
 
-  ```abap
-  MODIFY ENTITIES OF z2ui5_r_smpe_trd
-    ENTITY travel
-      EXECUTE Edit FROM VALUE #( ( %tky = VALUE #( traveluuid = uuid
-                                                   %is_draft  = if_abap_behv=>mk-off ) ) )
-    FAILED s_failed
-    REPORTED s_reported.
-  ```
+Read-only, and the foundation for everything below. A draft shares the key of its active instance — only `%is_draft` tells them apart. So asking "which travels have a draft?" is a read of the keys with `%is_draft = mk-on`: everything that comes back in `RESULT` has one, the rest lands in `FAILED`.
 
-* **Save Draft** — `MODIFY ... UPDATE` with `%is_draft = mk-on` plus `COMMIT ENTITIES` persists the draft in the draft table `Z2UI5_D_SMPE_TRD`; the changes survive the session and even a logoff, without any validation having to pass yet
-* **Resume** — when a travel already has a draft, the draft action `Resume` reactivates it and the user continues exactly where the last session ended
-* **Activate** — the draft action `Activate` turns the draft into the active instance; the BO validations run during activation, so an invalid draft stays a draft and the messages are displayed
-* **Discard** — the draft action `Discard` deletes the draft, the active instance stays untouched
-* **Draft indicator** — the travel list marks instances with an existing draft by reading the keys with `%is_draft = mk-on`: a draft shares the key of its active instance, so every key returned in `RESULT` has a draft (the rest comes back in `FAILED`)
+```abap
+READ ENTITIES OF z2ui5_r_smpe_trd
+  ENTITY travel
+    FIELDS ( travelid ) WITH VALUE #( FOR s_row IN t_result
+                                      ( %tky = VALUE #( traveluuid = s_row-traveluuid
+                                                        %is_draft  = if_abap_behv=>mk-on ) ) )
+  RESULT DATA(t_drafts)
+  FAILED DATA(s_failed).
+```
+
+### 2. `z2ui5_cl_smpe_d_edit` — Entering Draft Mode
+
+One button per travel, and it does one of two things depending on whether a draft already exists. That is the whole aspect: `Edit` and `Resume` are the two doors into the same room.
+
+```abap
+" no draft yet - Edit copies the ACTIVE instance into a new draft
+EXECUTE Edit FROM VALUE #( ( %tky = VALUE #( traveluuid = uuid
+                                             %is_draft  = if_abap_behv=>mk-off ) ) )
+
+" a draft exists - Edit would fail, Resume picks the DRAFT up again
+EXECUTE Resume FROM VALUE #( ( %tky = VALUE #( traveluuid = uuid
+                                               %is_draft  = if_abap_behv=>mk-on ) ) )
+```
+
+Note the `%is_draft` values: `Edit` addresses the active instance because that is the only one that exists yet, `Resume` addresses the draft.
+
+### 3. `z2ui5_cl_smpe_d_save` — Changing a Draft
+
+An ordinary `UPDATE`. The only thing that makes it a draft update is `%is_draft = mk-on` in the key:
+
+```abap
+MODIFY ENTITIES OF z2ui5_r_smpe_trd
+  ENTITY travel
+    UPDATE FIELDS ( description )
+    WITH VALUE #( ( %tky        = VALUE #( traveluuid = uuid
+                                           %is_draft  = if_abap_behv=>mk-on )
+                    description = s_draft-description ) )
+  FAILED DATA(s_failed)
+  REPORTED DATA(s_reported).
+```
+
+Watch what does *not* happen at the `COMMIT ENTITIES`: no validation runs. The draft is written to `Z2UI5_D_SMPE_TRD` even if it is incomplete or plainly wrong, and it survives the session and a logoff. That is the point of a draft — and the reason the validations are declared `on save`.
+
+### 4. `z2ui5_cl_smpe_d_activate` — Leaving Draft Mode
+
+The two ways out, side by side, because the contrast is the lesson:
+
+```abap
+" the validations run HERE - an invalid draft stays a draft
+EXECUTE Activate FROM VALUE #( ( %tky = VALUE #( traveluuid = uuid
+                                                 %is_draft  = if_abap_behv=>mk-on ) ) )
+
+" throws the changes away, the active travel is untouched
+EXECUTE Discard FROM VALUE #( ( %tky = VALUE #( traveluuid = uuid
+                                                %is_draft  = if_abap_behv=>mk-on ) ) )
+```
+
+`Activate` is the moment the `on save` validations `validateCustomer` and `validateDates` finally execute. If one fails, nothing is lost: the draft remains, the messages come back in `REPORTED`, the user fixes it and tries again.
+
+### 5. `z2ui5_cl_smpe_draft` — The Whole Lifecycle
+
+All four aspects above in one app: a travel list with a draft indicator, *Edit*/*Resume* to get in, a popup to change the draft and save it, *Activate* and *Discard* to get out. It is the same lifecycle a Fiori Elements app runs through, executed manually with EML.
+
+Read it once you have seen the four apps above — on its own it is a lot of `%is_draft` at the same time.
 
 ## Why EML + abap2UI5?
 
