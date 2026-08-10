@@ -1,4 +1,16 @@
-CLASS z2ui5_cl_smpe_read DEFINITION PUBLIC.
+"! <p class="shorttext synchronized">abap2UI5 - EML sample 01 - read travel</p>
+"! Reads one instance by its key.
+"!
+"!     READ ENTITIES OF z2ui5_r_smpe_trv
+"!       ENTITY travel
+"!         ALL FIELDS WITH VALUE #( ( travelid = travel_id ) )
+"!       RESULT DATA(t_result)
+"!       FAILED DATA(s_failed).
+"!
+"! Worth knowing: a key that does not exist is not an exception. It comes back
+"! in FAILED and RESULT stays empty, so the response is what you check - never
+"! sy-subrc.
+CLASS z2ui5_cl_smpe_app_01 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -20,22 +32,41 @@ CLASS z2ui5_cl_smpe_read DEFINITION PUBLIC.
   PROTECTED SECTION.
     DATA client TYPE REF TO z2ui5_if_client.
 
+    METHODS key_prefill.
     METHODS data_read.
     METHODS view_display.
   PRIVATE SECTION.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smpe_read IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_app_01 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
     me->client = client.
     IF client->check_on_init( ).
+      key_prefill( ).
       view_display( ).
     ELSEIF client->check_on_event( `READ` ).
       data_read( ).
     ENDIF.
+
+  ENDMETHOD.
+
+
+  METHOD key_prefill.
+
+    " Prefilled with a key that really exists, so Read answers on the first
+    " press instead of with "Travel does not exist". Read off the table
+    " rather than hard coded: the demo data only starts at 1 on an empty
+    " table, and after a few creates and deletes the lowest key is a
+    " different one.
+    SELECT SINGLE FROM z2ui5_r_smpe_trv
+      FIELDS MIN( TravelId )
+      INTO @DATA(first_id).
+
+    travel_id = COND #( WHEN first_id IS NOT INITIAL
+                        THEN |{ first_id ALPHA = OUT }| ).
 
   ENDMETHOD.
 
@@ -79,7 +110,7 @@ CLASS z2ui5_cl_smpe_read IMPLEMENTATION.
     DATA(view) = z2ui5_cl_xml_view=>factory( ).
     view->shell(
         )->page(
-            title          = `abap2UI5 - EML - Read Travel`
+            title          = `abap2UI5 - EML - 01 Read Travel`
             navbuttonpress = client->_event_nav_app_leave( )
             shownavbutton  = client->check_app_prev_stack( )
             )->simple_form(
@@ -89,7 +120,7 @@ CLASS z2ui5_cl_smpe_read IMPLEMENTATION.
                 )->label( `Travel ID`
                 )->input(
                     value       = client->_bind( travel_id )
-                    placeholder = `Enter a travel id, e.g. 1`
+                    placeholder = `No travel in the table - press Regenerate Demo Data in the overview`
                 )->button(
                     text  = `Read`
                     press = client->_event( `READ` )

@@ -1,4 +1,16 @@
-CLASS z2ui5_cl_smpe_delete DEFINITION PUBLIC.
+"! <p class="shorttext synchronized">abap2UI5 - EML sample 04 - delete travel</p>
+"! Deletes one instance.
+"!
+"!     MODIFY ENTITIES OF z2ui5_r_smpe_trv
+"!       ENTITY travel
+"!         DELETE FROM VALUE #( ( travelid = travel_id ) )
+"!       FAILED DATA(s_failed)
+"!       REPORTED DATA(s_reported).
+"!
+"! Worth knowing: DELETE FROM takes the key only, there is no field list. And
+"! like every other operation it only asks the transactional buffer - the row
+"! is gone after the COMMIT, not before.
+CLASS z2ui5_cl_smpe_app_04 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -22,7 +34,7 @@ CLASS z2ui5_cl_smpe_delete DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smpe_delete IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_app_04 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
@@ -98,7 +110,7 @@ CLASS z2ui5_cl_smpe_delete IMPLEMENTATION.
     DATA(view) = z2ui5_cl_xml_view=>factory( ).
     DATA(table) = view->shell(
         )->page(
-            title          = `abap2UI5 - EML - Delete Travel`
+            title          = `abap2UI5 - EML - 04 Delete Travel`
             navbuttonpress = client->_event_nav_app_leave( )
             shownavbutton  = client->check_app_prev_stack( )
             )->table( client->_bind( t_travels ) ).

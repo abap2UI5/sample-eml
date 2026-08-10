@@ -5,9 +5,8 @@
    <VSEOCLASS>
     <CLSNAME>Z2UI5_CL_SMPE_CONTEXT</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>abap2UI5 - EML sample - shared context</DESCRIPT>
+    <DESCRIPT>abap2UI5 EML sample - shared context</DESCRIPT>
     <STATE>1</STATE>
-    <CLSFINAL>X</CLSFINAL>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>

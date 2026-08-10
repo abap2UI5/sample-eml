@@ -1,4 +1,21 @@
-CLASS z2ui5_cl_smpe_crud DEFINITION PUBLIC.
+"! <p class="shorttext synchronized">abap2UI5 - EML sample 05 - manage travels</p>
+"! A WHOLE APP, not a single snippet. Read, create, update, delete and both
+"! actions of the business object in one screen, with the message handling and
+"! the create popup a real app needs - roughly three times the size of samples
+"! 01-04. If EML is new to you, read those first.
+"!
+"! What it adds beyond them is the action call and the save with a response:
+"!
+"!     MODIFY ENTITIES OF z2ui5_r_smpe_trv
+"!       ENTITY travel
+"!         EXECUTE acceptTravel FROM VALUE #( ( travelid = travel_id ) )
+"!       FAILED DATA(s_failed)
+"!       REPORTED DATA(s_reported).
+"!
+"!     COMMIT ENTITIES RESPONSE OF z2ui5_r_smpe_trv
+"!       FAILED DATA(s_failed_commit)
+"!       REPORTED DATA(s_reported_commit).
+CLASS z2ui5_cl_smpe_app_05 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -51,7 +68,7 @@ CLASS z2ui5_cl_smpe_crud DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smpe_crud IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_app_05 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
@@ -82,7 +99,18 @@ CLASS z2ui5_cl_smpe_crud IMPLEMENTATION.
       WHEN `GENERATE`.
         on_event_generate( ).
       WHEN `CREATE`.
-        s_create = VALUE #( currency = `EUR` ).
+        " the popup opens on a set that passes both validations, so Create
+        " goes through on the first press - see z2ui5_cl_smpe_app_02, which
+        " also explains why the end date needs the CONV d( )
+        DATA(end_date) = CONV d( sy-datum + 14 ).
+
+        s_create = VALUE #( agency_id   = `070001`
+                            customer_id = `000001`
+                            begin_date  = |{ sy-datum }|
+                            end_date    = |{ end_date }|
+                            booking_fee = `20.00`
+                            currency    = `EUR`
+                            description = `New travel created from sample 05` ).
         popup_create_display( ).
       WHEN `POPUP_CREATE_CONFIRM`.
         on_event_create( ).
@@ -317,7 +345,7 @@ CLASS z2ui5_cl_smpe_crud IMPLEMENTATION.
     DATA(view) = z2ui5_cl_xml_view=>factory( ).
     DATA(page) = view->shell(
         )->page(
-            title          = `abap2UI5 - EML - Manage Travels`
+            title          = `abap2UI5 - EML - 05 Manage Travels`
             navbuttonpress = client->_event_nav_app_leave( )
             shownavbutton  = client->check_app_prev_stack( ) ).
 
@@ -358,6 +386,7 @@ CLASS z2ui5_cl_smpe_crud IMPLEMENTATION.
             )->object_status(
                 text  = `{OVERALL_STATUS}`
                 state = `{STATUS_STATE}`
+            )->get_parent(
             )->input( `{DESCRIPTION}`
             )->hbox(
                 )->button(

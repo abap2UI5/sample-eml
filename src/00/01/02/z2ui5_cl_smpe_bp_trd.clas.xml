@@ -5,13 +5,13 @@
    <VSEOCLASS>
     <CLSNAME>Z2UI5_CL_SMPE_BP_TRD</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>abap2UI5 - EML sample - behavior pool (draft)</DESCRIPT>
+    <DESCRIPT>abap2UI5 EML sample - behavior pool (draft)</DESCRIPT>
+    <CATEGORY>06</CATEGORY>
     <STATE>1</STATE>
-    <CLSFINAL>X</CLSFINAL>
-    <CLSABSTRCT>X</CLSABSTRCT>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
+    <CLSDEFINT>Z2UI5_R_SMPE_TRD</CLSDEFINT>
    </VSEOCLASS>
   </asx:values>
  </asx:abap>

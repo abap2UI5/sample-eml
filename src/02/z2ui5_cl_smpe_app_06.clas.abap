@@ -1,4 +1,20 @@
-CLASS z2ui5_cl_smpe_d_list DEFINITION PUBLIC.
+"! <p class="shorttext synchronized">abap2UI5 - EML sample 06 - which travels have a draft</p>
+"! A draft and its active instance share the key - only %is_draft separates
+"! them. So reading the keys with %is_draft = mk-on answers the question "which
+"! travels have a draft?": everything that comes back in RESULT has one,
+"! everything else lands in FAILED.
+"!
+"!     READ ENTITIES OF z2ui5_r_smpe_trd
+"!       ENTITY travel
+"!         FIELDS ( travelid ) WITH VALUE #( FOR s_row IN t_result
+"!                                           ( %tky = VALUE #( traveluuid = s_row-traveluuid
+"!                                                             %is_draft  = if_abap_behv=>mk-on ) ) )
+"!       RESULT DATA(t_drafts)
+"!       FAILED DATA(s_failed).
+"!
+"! Worth knowing: every other draft sample of this repository builds on this
+"! one trick. Start here.
+CLASS z2ui5_cl_smpe_app_06 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -24,7 +40,7 @@ CLASS z2ui5_cl_smpe_d_list DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smpe_d_list IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_app_06 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
@@ -79,9 +95,9 @@ CLASS z2ui5_cl_smpe_d_list IMPLEMENTATION.
           customer_id = |{ s_result-customerid ALPHA = OUT }|
           description = |{ s_result-description }|
           status      = z2ui5_cl_smpe_context=>status_get_text( s_result-overallstatus )
-          draft_text  = COND #( WHEN line_exists( t_drafts[ traveluuid = s_result-traveluuid ] )
+          draft_text  = COND #( WHEN line_exists( t_drafts[ KEY entity traveluuid = s_result-traveluuid ] )
                                 THEN `Draft` ELSE `-` )
-          draft_state = COND #( WHEN line_exists( t_drafts[ traveluuid = s_result-traveluuid ] )
+          draft_state = COND #( WHEN line_exists( t_drafts[ KEY entity traveluuid = s_result-traveluuid ] )
                                 THEN `Warning` ELSE `None` ) ) ).
 
   ENDMETHOD.
@@ -92,7 +108,7 @@ CLASS z2ui5_cl_smpe_d_list IMPLEMENTATION.
     DATA(view) = z2ui5_cl_xml_view=>factory( ).
     DATA(table) = view->shell(
         )->page(
-            title          = `abap2UI5 - EML - Which Travels Have a Draft?`
+            title          = `abap2UI5 - EML - 06 Which Travels Have a Draft?`
             navbuttonpress = client->_event_nav_app_leave( )
             shownavbutton  = client->check_app_prev_stack( )
             )->table( client->_bind( t_travels ) ).

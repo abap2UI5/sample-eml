@@ -30,5 +30,7 @@ define root view entity z2ui5_r_smpe_trd
       @Semantics.user.lastChangedBy: true
       last_changed_by                      as LastChangedBy,
       @Semantics.systemDateTime.lastChangedAt: true
-      last_changed_at                      as LastChangedAt
+      last_changed_at                      as LastChangedAt,
+      @Semantics.systemDateTime.localInstanceLastChangedAt: true
+      local_last_changed_at                as LocalLastChangedAt
 }

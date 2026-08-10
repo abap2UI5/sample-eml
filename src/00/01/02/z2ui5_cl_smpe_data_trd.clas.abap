@@ -94,8 +94,7 @@ CLASS z2ui5_cl_smpe_data_trd IMPLEMENTATION.
     MODIFY ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
         EXECUTE Activate FROM VALUE #( FOR s_new IN s_mapped-travel
-                                       ( %tky = VALUE #( traveluuid = s_new-traveluuid
-                                                         %is_draft  = if_abap_behv=>mk-on ) ) )
+                                       ( %key-traveluuid = s_new-traveluuid ) )
       FAILED DATA(s_failed_act)
       REPORTED DATA(s_reported_act).
 
@@ -130,17 +129,40 @@ CLASS z2ui5_cl_smpe_data_trd IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    " an active instance may carry a draft, and that draft has to go first -
-    " Discard on an instance without a draft simply comes back in FAILED,
-    " which is why the response is not evaluated here
-    MODIFY ENTITIES OF z2ui5_r_smpe_trd
+    " An active instance may carry a draft, and that draft has to go first.
+    " Ask which ones actually have one instead of discarding blindly: a
+    " Discard on an instance without a draft lands in FAILED, and an EML
+    " failure that is neither rolled back nor evaluated leaves the RAP
+    " transaction marked for abortion. Every later statement of the same LUW
+    " then aborts - which is how this method used to end the whole request in
+    " a CX_SADL_DUMP_APPL_MODEL_ERROR instead of deleting anything.
+    "
+    " Reading the keys with %is_draft = mk-on is the same trick sample 06
+    " uses: what comes back in RESULT has a draft.
+    READ ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
-        EXECUTE Discard FROM VALUE #( FOR s_draft IN t_keys
-                                      ( %tky = VALUE #( traveluuid = s_draft-traveluuid
-                                                        %is_draft  = if_abap_behv=>mk-on ) ) )
-      FAILED DATA(s_failed_discard).
+        FIELDS ( travelid ) WITH VALUE #( FOR s_row IN t_keys
+                                          ( %tky = VALUE #( traveluuid = s_row-traveluuid
+                                                            %is_draft  = if_abap_behv=>mk-on ) ) )
+      RESULT DATA(t_drafts).
 
-    COMMIT ENTITIES.
+    IF t_drafts IS NOT INITIAL.
+
+      MODIFY ENTITIES OF z2ui5_r_smpe_trd
+        ENTITY travel
+          EXECUTE Discard FROM VALUE #( FOR s_draft IN t_drafts
+                                        ( %key-traveluuid = s_draft-traveluuid ) )
+        FAILED DATA(s_failed_discard).
+
+      IF s_failed_discard-travel IS NOT INITIAL.
+        ROLLBACK ENTITIES.
+        result = `Existing drafts could not be discarded.`.
+        RETURN.
+      ENDIF.
+
+      COMMIT ENTITIES.
+
+    ENDIF.
 
     MODIFY ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel

@@ -1,4 +1,17 @@
-CLASS z2ui5_cl_smpe_d_activate DEFINITION PUBLIC.
+"! <p class="shorttext synchronized">abap2UI5 - EML sample 09 - leave draft mode</p>
+"! Activate turns the draft into the active instance, Discard throws it away.
+"!
+"!     MODIFY ENTITIES OF z2ui5_r_smpe_trd
+"!       ENTITY travel
+"!         EXECUTE Activate FROM VALUE #( ( %key-traveluuid = uuid ) )
+"!       FAILED DATA(s_failed)
+"!       REPORTED DATA(s_reported).
+"!
+"! Worth knowing: Activate is where the validations finally run, so an invalid
+"! draft stays a draft and says why. Discard leaves the active instance exactly
+"! as it was. Both are draft actions like Edit and Resume - key only, no
+"! %is_draft.
+CLASS z2ui5_cl_smpe_app_09 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -27,7 +40,7 @@ CLASS z2ui5_cl_smpe_d_activate DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smpe_d_activate IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_app_09 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
@@ -58,8 +71,7 @@ CLASS z2ui5_cl_smpe_d_activate IMPLEMENTATION.
     " messages come back in REPORTED and the user can fix it and try again.
     MODIFY ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
-        EXECUTE Activate FROM VALUE #( ( %tky = VALUE #( traveluuid = uuid
-                                                         %is_draft  = if_abap_behv=>mk-on ) ) )
+        EXECUTE Activate FROM VALUE #( ( %key-traveluuid = uuid ) )
       FAILED DATA(s_failed)
       REPORTED DATA(s_reported).
 
@@ -91,8 +103,7 @@ CLASS z2ui5_cl_smpe_d_activate IMPLEMENTATION.
     " not the travel.
     MODIFY ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
-        EXECUTE Discard FROM VALUE #( ( %tky = VALUE #( traveluuid = uuid
-                                                        %is_draft  = if_abap_behv=>mk-on ) ) )
+        EXECUTE Discard FROM VALUE #( ( %key-traveluuid = uuid ) )
       FAILED DATA(s_failed)
       REPORTED DATA(s_reported).
 
@@ -160,7 +171,7 @@ CLASS z2ui5_cl_smpe_d_activate IMPLEMENTATION.
     DATA(view) = z2ui5_cl_xml_view=>factory( ).
     DATA(page) = view->shell(
         )->page(
-            title          = `abap2UI5 - EML - Leave Draft Mode`
+            title          = `abap2UI5 - EML - 09 Leave Draft Mode`
             navbuttonpress = client->_event_nav_app_leave( )
             shownavbutton  = client->check_app_prev_stack( ) ).
 

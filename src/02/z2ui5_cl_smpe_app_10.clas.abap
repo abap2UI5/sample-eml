@@ -1,4 +1,11 @@
-CLASS z2ui5_cl_smpe_draft DEFINITION PUBLIC.
+"! <p class="shorttext synchronized">abap2UI5 - EML sample 10 - draft handling</p>
+"! A WHOLE APP, not a single snippet. The complete draft lifecycle in one
+"! screen: list, Edit, Resume, change, Activate, Discard - roughly three times
+"! the size of samples 06-09.
+"!
+"! It repeats what those four show, nothing more. Read them first, then come
+"! here to see how the pieces sit together in one app.
+CLASS z2ui5_cl_smpe_app_10 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -58,7 +65,7 @@ CLASS z2ui5_cl_smpe_draft DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_app_10 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
@@ -125,8 +132,7 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
       " into a new draft instance
       MODIFY ENTITIES OF z2ui5_r_smpe_trd
         ENTITY travel
-          EXECUTE Edit FROM VALUE #( ( %tky = VALUE #( traveluuid = uuid
-                                                       %is_draft  = if_abap_behv=>mk-off ) ) )
+          EXECUTE Edit FROM VALUE #( ( %key-traveluuid = uuid ) )
         FAILED s_failed
         REPORTED s_reported.
 
@@ -136,8 +142,7 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
       " so the user continues exactly where the last session ended
       MODIFY ENTITIES OF z2ui5_r_smpe_trd
         ENTITY travel
-          EXECUTE Resume FROM VALUE #( ( %tky = VALUE #( traveluuid = uuid
-                                                         %is_draft  = if_abap_behv=>mk-on ) ) )
+          EXECUTE Resume FROM VALUE #( ( %key-traveluuid = uuid ) )
         FAILED s_failed
         REPORTED s_reported.
 
@@ -205,8 +210,7 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
     " an invalid draft stays a draft and the messages are displayed
     MODIFY ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
-        EXECUTE Activate FROM VALUE #( ( %tky = VALUE #( traveluuid = s_draft-travel_uuid
-                                                         %is_draft  = if_abap_behv=>mk-on ) ) )
+        EXECUTE Activate FROM VALUE #( ( %key-traveluuid = s_draft-travel_uuid ) )
       FAILED DATA(s_failed)
       REPORTED DATA(s_reported).
 
@@ -234,8 +238,7 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
 
     MODIFY ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
-        EXECUTE Discard FROM VALUE #( ( %tky = VALUE #( traveluuid = s_draft-travel_uuid
-                                                        %is_draft  = if_abap_behv=>mk-on ) ) )
+        EXECUTE Discard FROM VALUE #( ( %key-traveluuid = s_draft-travel_uuid ) )
       FAILED DATA(s_failed)
       REPORTED DATA(s_reported).
 
@@ -317,8 +320,8 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
           total_price    = |{ s_result-totalprice } { s_result-currencycode }|
           overall_status = z2ui5_cl_smpe_context=>status_get_text( s_result-overallstatus )
           status_state   = z2ui5_cl_smpe_context=>status_get_state( s_result-overallstatus )
-          has_draft      = xsdbool( line_exists( t_drafts[ traveluuid = s_result-traveluuid ] ) )
-          draft_text     = COND #( WHEN line_exists( t_drafts[ traveluuid = s_result-traveluuid ] )
+          has_draft      = xsdbool( line_exists( t_drafts[ KEY entity traveluuid = s_result-traveluuid ] ) )
+          draft_text     = COND #( WHEN line_exists( t_drafts[ KEY entity traveluuid = s_result-traveluuid ] )
                                    THEN `Draft` ) ) ).
 
   ENDMETHOD.
@@ -345,7 +348,7 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
     DATA(view) = z2ui5_cl_xml_view=>factory( ).
     DATA(page) = view->shell(
         )->page(
-            title          = `abap2UI5 - EML - Travels with Draft Handling`
+            title          = `abap2UI5 - EML - 10 Travels with Draft Handling`
             navbuttonpress = client->_event_nav_app_leave( )
             shownavbutton  = client->check_app_prev_stack( ) ).
 
@@ -382,9 +385,11 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
             )->object_status(
                 text  = `{OVERALL_STATUS}`
                 state = `{STATUS_STATE}`
+            )->get_parent(
             )->object_status(
                 text  = `{DRAFT_TEXT}`
                 state = `Warning`
+            )->get_parent(
             )->button(
                 icon    = `sap-icon://edit`
                 tooltip = `Edit Travel`

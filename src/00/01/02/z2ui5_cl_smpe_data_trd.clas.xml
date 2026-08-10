@@ -5,9 +5,8 @@
    <VSEOCLASS>
     <CLSNAME>Z2UI5_CL_SMPE_DATA_TRD</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>abap2UI5 - EML sample - demo data (draft)</DESCRIPT>
+    <DESCRIPT>abap2UI5 EML sample - demo data (draft)</DESCRIPT>
     <STATE>1</STATE>
-    <CLSFINAL>X</CLSFINAL>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>

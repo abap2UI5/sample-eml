@@ -26,6 +26,6 @@ define root view entity z2ui5_r_smpe_trv
       created_at                           as CreatedAt,
       @Semantics.user.lastChangedBy: true
       last_changed_by                      as LastChangedBy,
-      @Semantics.systemDateTime.lastChangedAt: true
+      @Semantics.systemDateTime.localInstanceLastChangedAt: true
       last_changed_at                      as LastChangedAt
 }

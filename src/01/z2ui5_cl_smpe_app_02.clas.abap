@@ -1,4 +1,24 @@
-CLASS z2ui5_cl_smpe_create DEFINITION PUBLIC.
+"! <p class="shorttext synchronized">abap2UI5 - EML sample 02 - create travel</p>
+"! Creates one instance. The %cid is a temporary id you invent: the business
+"! object does not know the key yet, so it reports the new one back under that
+"! %cid in MAPPED.
+"!
+"!     MODIFY ENTITIES OF z2ui5_r_smpe_trv
+"!       ENTITY travel
+"!         CREATE FIELDS ( agencyid customerid begindate enddate ... )
+"!         WITH VALUE #( ( %cid = `CREATE_1` agencyid = ... ) )
+"!       MAPPED DATA(s_mapped)
+"!       FAILED DATA(s_failed)
+"!       REPORTED DATA(s_reported).
+"!
+"!     COMMIT ENTITIES RESPONSE OF z2ui5_r_smpe_trv
+"!       FAILED DATA(s_failed_commit)
+"!       REPORTED DATA(s_reported_commit).
+"!
+"! Worth knowing: nothing reaches the database before the COMMIT, and the
+"! validations only run there - a CREATE that came back clean can still fail at
+"! the COMMIT. That is why both responses are evaluated.
+CLASS z2ui5_cl_smpe_app_02 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -27,15 +47,28 @@ CLASS z2ui5_cl_smpe_create DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smpe_create IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_app_02 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
     me->client = client.
     IF client->check_on_init( ).
-      s_travel = VALUE #( currency   = `EUR`
-                          begin_date = |{ sy-datum }|
-                          end_date   = |{ sy-datum + 14 }| ).
+      " prefilled with a set that passes both validations of the business
+      " object - CustomerId is filled and EndDate is not before BeginDate -
+      " so pressing Create right away produces a travel. Change a value and
+      " the same button shows what the validations answer instead.
+      " CONV d( ) is what turns the sum back into a date: sy-datum + 14 is
+      " calculated as a day number, and a string template renders that number
+      " instead of a date - the field showed 739853
+      DATA(end_date) = CONV d( sy-datum + 14 ).
+
+      s_travel = VALUE #( agency_id   = `070001`
+                          customer_id = `000001`
+                          begin_date  = |{ sy-datum }|
+                          end_date    = |{ end_date }|
+                          booking_fee = `20.00`
+                          currency    = `EUR`
+                          description = `New travel created from sample 02` ).
       view_display( ).
     ELSEIF client->check_on_event( `CREATE` ).
       data_create( ).
@@ -99,7 +132,7 @@ CLASS z2ui5_cl_smpe_create IMPLEMENTATION.
     DATA(view) = z2ui5_cl_xml_view=>factory( ).
     view->shell(
         )->page(
-            title          = `abap2UI5 - EML - Create Travel`
+            title          = `abap2UI5 - EML - 02 Create Travel`
             navbuttonpress = client->_event_nav_app_leave( )
             shownavbutton  = client->check_app_prev_stack( )
             )->simple_form(

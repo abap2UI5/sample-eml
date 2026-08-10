@@ -1,4 +1,21 @@
-CLASS z2ui5_cl_smpe_d_save DEFINITION PUBLIC.
+"! <p class="shorttext synchronized">abap2UI5 - EML sample 08 - change and save a draft</p>
+"! An ordinary UPDATE. The only thing that makes it a draft update is
+"! %is_draft = mk-on in the key.
+"!
+"!     MODIFY ENTITIES OF z2ui5_r_smpe_trd
+"!       ENTITY travel
+"!         UPDATE FIELDS ( description )
+"!         WITH VALUE #( ( %tky        = VALUE #( traveluuid = uuid
+"!                                                %is_draft  = if_abap_behv=>mk-on )
+"!                         description = s_draft-description ) )
+"!       FAILED DATA(s_failed)
+"!       REPORTED DATA(s_reported).
+"!
+"! Worth knowing: the COMMIT writes the draft table, not the application table,
+"! and the active instance stays untouched until someone activates the draft
+"! (sample 09). Validations do not run yet either - a draft may be
+"! incomplete.
+CLASS z2ui5_cl_smpe_app_08 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -22,7 +39,7 @@ CLASS z2ui5_cl_smpe_d_save DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smpe_d_save IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_app_08 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
@@ -114,7 +131,7 @@ CLASS z2ui5_cl_smpe_d_save IMPLEMENTATION.
     DATA(view) = z2ui5_cl_xml_view=>factory( ).
     DATA(page) = view->shell(
         )->page(
-            title          = `abap2UI5 - EML - Change and Save a Draft`
+            title          = `abap2UI5 - EML - 08 Change and Save a Draft`
             navbuttonpress = client->_event_nav_app_leave( )
             shownavbutton  = client->check_app_prev_stack( ) ).
 
