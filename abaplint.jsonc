@@ -26,6 +26,22 @@
   "rules": {
     "exporting": true,
     "omit_parameter_name": true,
+    "line_length": {
+      "length": 255
+    },
+    // Every class carries the EML sample token: Z2UI5_CL_SMPE_<object>,
+    // the same scheme the samples repository uses with its SMP token.
+    // Length is capped at 25 characters by the leading lookahead. ABAP
+    // allows 30, but build_rename (see abap2UI5) replaces the namespace
+    // z2ui5 (5 chars) with up to 9, which costs 4 - so 26 is the hard
+    // ceiling and 25 keeps one character in reserve. A parallel
+    // installation therefore never needs truncation patterns.
+    // "Z2UI5_CL_SMPE_" is 14 chars, so 11 remain for the object name.
+    "object_naming": {
+      "patternKind": "required",
+      "severity": "Error",
+      "clas": "^(?=.{1,25}$)Z2UI5_C(L|X)_SMPE_"
+    },
     "begin_end_names": true,
     "check_ddic": true,
     "check_include": true,

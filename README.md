@@ -1,3 +1,13 @@
+[![namespace](https://img.shields.io/badge/namespace-z2ui5__cl__smpe-blue)](abaplint.jsonc)
+[![dependency](https://img.shields.io/badge/dependency-abap2UI5-blue)](https://github.com/abap2UI5/abap2UI5)
+<br>
+<br>
+[![abap-standard](https://github.com/abap2UI5/sample-eml/actions/workflows/abap-standard.yaml/badge.svg)](https://github.com/abap2UI5/sample-eml/actions/workflows/abap-standard.yaml)
+[![abap-cloud](https://github.com/abap2UI5/sample-eml/actions/workflows/abap-cloud.yaml/badge.svg)](https://github.com/abap2UI5/sample-eml/actions/workflows/abap-cloud.yaml)
+<br>
+[![check-abap2UI5](https://github.com/abap2UI5/sample-eml/actions/workflows/check-abap2UI5.yaml/badge.svg)](https://github.com/abap2UI5/sample-eml/actions/workflows/check-abap2UI5.yaml)
+[![check-rename](https://github.com/abap2UI5/sample-eml/actions/workflows/check-rename.yaml/badge.svg)](https://github.com/abap2UI5/sample-eml/actions/workflows/check-rename.yaml)
+
 # abap2UI5 — Working with EML
 
 Sample apps that show how to consume a RAP Business Object with the **Entity Manipulation Language (EML)** inside an [abap2UI5](https://github.com/abap2UI5/abap2UI5) app.
@@ -25,7 +35,7 @@ Install this repository with [abapGit](https://abapgit.org) and start the apps l
 
 ## The Samples
 
-### 1. `z2ui5_cl_sample_eml_read` — Read a Travel
+### 1. `z2ui5_cl_smpe_read` — Read a Travel
 
 The smallest possible EML roundtrip: enter a travel id, press *Read* and the app reads the instance from the RAP BO — no SELECT, no OData:
 
@@ -39,7 +49,7 @@ READ ENTITIES OF /dmo/i_travel_m
 
 The `FAILED` response is checked to show an error message when the instance does not exist.
 
-### 2. `z2ui5_cl_sample_eml_crud` — Manage Travels
+### 2. `z2ui5_cl_smpe_crud` — Manage Travels
 
 A complete transactional app on top of `/DMO/I_TRAVEL_M`. The travel list is read from the CDS view; every change goes through the RAP BO with EML, so all validations, determinations and feature controls of the behavior definition are executed:
 
@@ -72,7 +82,7 @@ IF data_save( ) = abap_true. " COMMIT ENTITIES RESPONSE OF ...
 ENDIF.
 ```
 
-### 3. `z2ui5_cl_sample_eml_draft` — Draft Handling
+### 3. `z2ui5_cl_smpe_draft` — Draft Handling
 
 The full draft roundtrip on the draft-enabled BO `/DMO/R_TRAVEL_D` — the same lifecycle a Fiori Elements app runs through, executed manually with EML:
 

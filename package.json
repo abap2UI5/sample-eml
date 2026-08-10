@@ -1,0 +1,28 @@
+{
+  "name": "abap2UI5-sample-eml",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Consume a RAP Business Object with the EML inside abap2UI5.",
+  "scripts": {
+    "lint": "abaplint ./abaplint.jsonc",
+    "lint:cloud": "abaplint .github/abaplint/abap_cloud.jsonc",
+    "check:abap2ui5": "abap2ui5lint",
+    "rename": "abaplint .github/abaplint/rename_test.jsonc --rename"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abap2UI5/sample-eml.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/abap2UI5/abap2UI5/issues"
+  },
+  "homepage": "https://github.com/abap2UI5/sample-eml#readme",
+  "devDependencies": {
+    "@abap2ui5/linter": "github:abap2UI5/linter#8de79537a714adc34088afeea00fbea13c207a64",
+    "@abaplint/cli": "^2.119.66"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

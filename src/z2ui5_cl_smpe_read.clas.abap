@@ -1,4 +1,4 @@
-CLASS z2ui5_cl_sample_eml_read DEFINITION PUBLIC.
+CLASS z2ui5_cl_smpe_read DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -26,7 +26,7 @@ CLASS z2ui5_cl_sample_eml_read DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_sample_eml_read IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_read IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
