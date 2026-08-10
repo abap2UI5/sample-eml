@@ -24,16 +24,20 @@ Install this repository with [abapGit](https://abapgit.org) and start the apps l
 
 ## Structure
 
-Two self-contained business objects, one per folder — pick the folder that matches what you want to learn:
+The abap2UI5 apps sit at the top of `src` — they are what you run and what you read to learn EML. The business objects they talk to live in a subpackage each, so the RAP artifacts stay out of the way:
 
-| Folder | Business object | Draft | Apps |
-|---|---|---|---|
-| [`src/nodraft`](src/nodraft) | `Z2UI5_R_SMPE_TRV` | no | `z2ui5_cl_smpe_read`, `z2ui5_cl_smpe_crud` |
-| [`src/draft`](src/draft) | `Z2UI5_R_SMPE_TRD` | yes | `z2ui5_cl_smpe_draft` |
+```
+src/                       the abap2UI5 apps
+├── z2ui5_cl_smpe_read     reads a travel from the BO of 01
+├── z2ui5_cl_smpe_crud     manages the travels of the BO of 01
+├── z2ui5_cl_smpe_draft    drives the draft lifecycle of the BO of 02
+├── 01/                    RAP business object, no draft
+└── 02/                    RAP business object, draft enabled
+```
 
-Each folder holds a complete RAP stack — nothing is shared between the two, so you can delete one folder without breaking the other:
+Each subpackage holds a complete RAP stack. Nothing is shared between them, so one can be deleted without breaking the other:
 
-| Object | `src/nodraft` | `src/draft` |
+| Object | [`src/01`](src/01) — no draft | [`src/02`](src/02) — draft |
 |---|---|---|
 | Persistent table | `Z2UI5_T_SMPE_TRV` | `Z2UI5_T_SMPE_TRD` |
 | Draft table | — | `Z2UI5_D_SMPE_TRD` |
@@ -41,14 +45,14 @@ Each folder holds a complete RAP stack — nothing is shared between the two, so
 | Behavior definition | `Z2UI5_R_SMPE_TRV` | `Z2UI5_R_SMPE_TRD` |
 | Behavior pool | `Z2UI5_CL_SMPE_BP_TRV` | `Z2UI5_CL_SMPE_BP_TRD` |
 
-Both business objects model the same thing — a travel with an agency, a customer, a date range, a booking fee and a status — so the two folders stay comparable and the only real difference is the draft handling.
+Both business objects model the same thing — a travel with an agency, a customer, a date range, a booking fee and a status — so the two stay comparable and the only real difference is the draft handling.
 
 ### What the business objects implement
 
 The point of consuming a RAP BO is that the business logic runs no matter who triggers the operation. Both BOs therefore carry more than plain CRUD:
 
-* **Early numbering** (`src/nodraft`) — the readable key is drawn in `earlynumbering_create` and handed back in `MAPPED`
-* **Managed numbering + a determination** (`src/draft`) — the UUID key comes from the runtime, the readable number is assigned by a `determination ... on save`, so a discarded draft does not burn one
+* **Early numbering** (`src/01`) — the readable key is drawn in `earlynumbering_create` and handed back in `MAPPED`
+* **Managed numbering + a determination** (`src/02`) — the UUID key comes from the runtime, the readable number is assigned by a `determination ... on save`, so a discarded draft does not burn one
 * **Determination `setInitialValues`** — sets the initial status and the total price on create
 * **Validations `validateCustomer` and `validateDates`** — run `on save`, i.e. during `COMMIT ENTITIES` and, for the draft BO, during `Activate`
 * **Actions `acceptTravel` and `rejectTravel`** — declared with `result [1] $self`, so they return the changed instance
@@ -79,7 +83,7 @@ READ ENTITIES OF z2ui5_r_smpe_trv
   FAILED DATA(s_failed).
 ```
 
-The `FAILED` response is checked to show an error message when the instance does not exist. The table starts out empty — create a travel in the *Manage Travels* app of the same folder first, both apps work on the same BO.
+The `FAILED` response is checked to show an error message when the instance does not exist. The table starts out empty — create a travel in the *Manage Travels* app first, both apps work on the same business object.
 
 ### 2. `z2ui5_cl_smpe_crud` — Manage Travels
 
