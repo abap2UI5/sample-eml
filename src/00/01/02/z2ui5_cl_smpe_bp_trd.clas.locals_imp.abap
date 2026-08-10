@@ -30,8 +30,6 @@ CLASS lhc_travel IMPLEMENTATION.
 
   METHOD get_global_authorizations.
 
-    " the sample deliberately grants everything - a real business object would
-    " check an authorization object here. Only what was asked for is answered.
     IF requested_authorizations-%create = if_abap_behv=>mk-on.
       result-%create = if_abap_behv=>auth-allowed.
     ENDIF.

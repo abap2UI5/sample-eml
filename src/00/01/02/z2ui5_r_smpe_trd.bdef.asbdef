@@ -3,7 +3,7 @@
 // Discard and Resume plus the determine action Prepare, which the abap2UI5 app
 // z2ui5_cl_smpe_app_10 calls with EML exactly like a Fiori Elements app would.
 managed implementation in class z2ui5_cl_smpe_bp_trd unique;
-strict ( 2 );
+strict ( 1 );
 with draft;
 
 define behavior for z2ui5_r_smpe_trd alias Travel
@@ -11,7 +11,7 @@ persistent table z2ui5_t_smpe_trd
 draft table z2ui5_d_smpe_trd
 lock master total etag LastChangedAt
 authorization master ( global )
-etag master LastChangedAt
+etag master LocalLastChangedAt
 {
   create;
   update;
@@ -23,7 +23,7 @@ etag master LastChangedAt
   field ( readonly ) TravelId;
 
   field ( readonly ) OverallStatus, TotalPrice;
-  field ( readonly ) CreatedBy, CreatedAt, LastChangedBy, LastChangedAt;
+  field ( readonly ) CreatedBy, CreatedAt, LastChangedBy, LastChangedAt, LocalLastChangedAt;
 
   field ( mandatory ) AgencyId, CustomerId, BeginDate, EndDate;
 
@@ -65,5 +65,6 @@ etag master LastChangedAt
       CreatedAt     = created_at;
       LastChangedBy = last_changed_by;
       LastChangedAt = last_changed_at;
+      LocalLastChangedAt = local_last_changed_at;
     }
 }

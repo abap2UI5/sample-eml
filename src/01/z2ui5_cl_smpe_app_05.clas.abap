@@ -370,6 +370,7 @@ CLASS z2ui5_cl_smpe_app_05 IMPLEMENTATION.
             )->object_status(
                 text  = `{OVERALL_STATUS}`
                 state = `{STATUS_STATE}`
+            )->get_parent(
             )->input( `{DESCRIPTION}`
             )->hbox(
                 )->button(

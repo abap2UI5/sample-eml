@@ -378,9 +378,11 @@ CLASS z2ui5_cl_smpe_app_10 IMPLEMENTATION.
             )->object_status(
                 text  = `{OVERALL_STATUS}`
                 state = `{STATUS_STATE}`
+            )->get_parent(
             )->object_status(
                 text  = `{DRAFT_TEXT}`
                 state = `Warning`
+            )->get_parent(
             )->button(
                 icon    = `sap-icon://edit`
                 tooltip = `Edit Travel`
