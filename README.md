@@ -42,6 +42,7 @@ src/
 ├── z2ui5_cl_smpe_d_activate   leaving draft mode: Activate / Discard
 ├── z2ui5_cl_smpe_draft        the whole draft lifecycle, in one app
 │
+├── z2ui5_cl_smpe_context      what the apps above do more than once
 ├── 01/                        RAP business object, no draft
 └── 02/                        RAP business object, draft enabled
 ```
@@ -86,6 +87,21 @@ Both business objects start out empty, and abapGit does not carry table content 
 The data is created **through the business object with EML**, never with an `INSERT` into the table. An `INSERT` would be shorter and is what SAP's own flight data generator does, but it skips the determination `setInitialValues`, so the rows would carry no status and no total price — data this business object could never have produced itself. For the draft-enabled object the argument is even simpler: its draft table carries the admin fields of `SYCH_BDL_DRAFT_ADMIN_INC`, and creating a draft and activating it is far easier than getting those right by hand.
 
 For **automated tests** use neither — `CL_ABAP_BEHV_TEST_ENVIRONMENT` gives you a test double of the business object, so the real tables stay untouched and the test does not depend on what happens to be in them.
+
+## What the Apps Share
+
+`Z2UI5_CL_SMPE_CONTEXT` holds the handful of things every app needs — the stored status values and their readable texts, and one call to show the messages of a RAP response.
+
+Showing those messages is worth a note, because the obvious implementation is the wrong one. Looping over `%msg` and calling `get_text( )` works, but `z2ui5_cl_util=>msg_get_collect( )` already does it — and does more: it recognises a RAP structure by its `%MSG` / `%FAIL` components, accepts a whole `REPORTED` response as well as a single entity table, and pulls out the failure cause, the element, the action, `%cid` and `%tky`. abap2UI5 is a mandatory dependency here anyway, so the context class just calls it:
+
+```abap
+z2ui5_cl_smpe_context=>msg_display( client = client
+                                    val    = s_reported-travel ).
+```
+
+The same functions exist in [abap-util](https://github.com/abap-util/abap-util) as `zabaputil_cl_util_msg`, which is where the abap2UI5 ones are mirrored from. Use that one if you already have it installed — this repository does not, and does not want the extra dependency.
+
+Deliberately *not* shared: the `ty_s_travel` structures. Every app declares its own with just the fields it shows, which is what keeps each one readable on its own.
 
 ## Background — the RAP Tutorials
 

@@ -64,10 +64,7 @@ CLASS z2ui5_cl_smpe_read IMPLEMENTATION.
         begin_date     = |{ s_result-begindate DATE = ISO }|
         end_date       = |{ s_result-enddate DATE = ISO }|
         total_price    = |{ s_result-totalprice } { s_result-currencycode }|
-        overall_status = SWITCH #( s_result-overallstatus
-                                   WHEN `O` THEN `Open`
-                                   WHEN `A` THEN `Accepted`
-                                   WHEN `X` THEN `Rejected` )
+        overall_status = z2ui5_cl_smpe_context=>status_get_text( s_result-overallstatus )
         description    = |{ s_result-description }| ).
 
     ENDIF.

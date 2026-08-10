@@ -54,9 +54,6 @@ CLASS z2ui5_cl_smpe_draft DEFINITION PUBLIC.
       RETURNING
         VALUE(result) TYPE abap_bool.
 
-    METHODS messages_display
-      IMPORTING
-        t_reported TYPE ANY TABLE.
   PRIVATE SECTION.
 ENDCLASS.
 
@@ -149,7 +146,7 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
     IF s_failed-travel IS NOT INITIAL.
 
       ROLLBACK ENTITIES.
-      messages_display( s_reported-travel ).
+      z2ui5_cl_smpe_context=>msg_display( client = client val = s_reported-travel ).
       RETURN.
 
     ENDIF.
@@ -186,7 +183,7 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
     IF s_failed-travel IS NOT INITIAL.
 
       ROLLBACK ENTITIES.
-      messages_display( s_reported-travel ).
+      z2ui5_cl_smpe_context=>msg_display( client = client val = s_reported-travel ).
       RETURN.
 
     ENDIF.
@@ -216,7 +213,7 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
     IF s_failed-travel IS NOT INITIAL.
 
       ROLLBACK ENTITIES.
-      messages_display( s_reported-travel ).
+      z2ui5_cl_smpe_context=>msg_display( client = client val = s_reported-travel ).
       RETURN.
 
     ENDIF.
@@ -245,7 +242,7 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
     IF s_failed-travel IS NOT INITIAL.
 
       ROLLBACK ENTITIES.
-      messages_display( s_reported-travel ).
+      z2ui5_cl_smpe_context=>msg_display( client = client val = s_reported-travel ).
       RETURN.
 
     ENDIF.
@@ -318,14 +315,8 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
           begin_date     = |{ s_result-begindate DATE = ISO }|
           end_date       = |{ s_result-enddate DATE = ISO }|
           total_price    = |{ s_result-totalprice } { s_result-currencycode }|
-          overall_status = SWITCH #( s_result-overallstatus
-                                     WHEN `O` THEN `Open`
-                                     WHEN `A` THEN `Accepted`
-                                     WHEN `X` THEN `Rejected` )
-          status_state   = SWITCH #( s_result-overallstatus
-                                     WHEN `O` THEN `Information`
-                                     WHEN `A` THEN `Success`
-                                     WHEN `X` THEN `Error` )
+          overall_status = z2ui5_cl_smpe_context=>status_get_text( s_result-overallstatus )
+          status_state   = z2ui5_cl_smpe_context=>status_get_state( s_result-overallstatus )
           has_draft      = xsdbool( line_exists( t_drafts[ traveluuid = s_result-traveluuid ] ) )
           draft_text     = COND #( WHEN line_exists( t_drafts[ traveluuid = s_result-traveluuid ] )
                                    THEN `Draft` ) ) ).
@@ -343,34 +334,8 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
       result = abap_true.
 
     ELSE.
-      messages_display( s_reported-travel ).
+      z2ui5_cl_smpe_context=>msg_display( client = client val = s_reported-travel ).
     ENDIF.
-
-  ENDMETHOD.
-
-
-  METHOD messages_display.
-
-    DATA message TYPE REF TO if_message.
-    DATA text TYPE string.
-
-    LOOP AT t_reported ASSIGNING FIELD-SYMBOL(<s_reported>).
-
-      ASSIGN COMPONENT `%msg` OF STRUCTURE <s_reported> TO FIELD-SYMBOL(<message>).
-      IF sy-subrc = 0 AND <message> IS BOUND.
-        message ?= <message>.
-        text = |{ text }{ message->get_text( ) } |.
-      ENDIF.
-
-    ENDLOOP.
-
-    IF text IS INITIAL.
-      text = `The operation failed, no further details available`.
-    ENDIF.
-
-    client->message_box_display(
-        text = text
-        type = `error` ).
 
   ENDMETHOD.
 

@@ -18,9 +18,6 @@ CLASS z2ui5_cl_smpe_d_save DEFINITION PUBLIC.
     METHODS draft_save.
     METHODS view_display.
 
-    METHODS messages_display
-      IMPORTING
-        t_reported TYPE ANY TABLE.
   PRIVATE SECTION.
 ENDCLASS.
 
@@ -59,7 +56,7 @@ CLASS z2ui5_cl_smpe_d_save IMPLEMENTATION.
     IF s_failed-travel IS NOT INITIAL.
 
       ROLLBACK ENTITIES.
-      messages_display( s_reported-travel ).
+      z2ui5_cl_smpe_context=>msg_display( client = client val = s_reported-travel ).
       RETURN.
 
     ENDIF.
@@ -74,7 +71,7 @@ CLASS z2ui5_cl_smpe_d_save IMPLEMENTATION.
 
     IF s_failed_commit IS NOT INITIAL.
 
-      messages_display( s_reported_commit-travel ).
+      z2ui5_cl_smpe_context=>msg_display( client = client val = s_reported_commit-travel ).
       RETURN.
 
     ENDIF.
@@ -108,32 +105,6 @@ CLASS z2ui5_cl_smpe_d_save IMPLEMENTATION.
         ( travel_uuid = |{ s_result-traveluuid }|
           travel_id   = |{ s_result-travelid ALPHA = OUT }|
           description = |{ s_result-description }| ) ).
-
-  ENDMETHOD.
-
-
-  METHOD messages_display.
-
-    DATA message TYPE REF TO if_message.
-    DATA text TYPE string.
-
-    LOOP AT t_reported ASSIGNING FIELD-SYMBOL(<s_reported>).
-
-      ASSIGN COMPONENT `%msg` OF STRUCTURE <s_reported> TO FIELD-SYMBOL(<message>).
-      IF sy-subrc = 0 AND <message> IS BOUND.
-        message ?= <message>.
-        text = |{ text }{ message->get_text( ) } |.
-      ENDIF.
-
-    ENDLOOP.
-
-    IF text IS INITIAL.
-      text = `The operation failed, no further details available`.
-    ENDIF.
-
-    client->message_box_display(
-        text = text
-        type = `error` ).
 
   ENDMETHOD.
 

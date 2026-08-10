@@ -78,10 +78,7 @@ CLASS z2ui5_cl_smpe_d_list IMPLEMENTATION.
           travel_id   = |{ s_result-travelid ALPHA = OUT }|
           customer_id = |{ s_result-customerid ALPHA = OUT }|
           description = |{ s_result-description }|
-          status      = SWITCH #( s_result-overallstatus
-                                  WHEN `O` THEN `Open`
-                                  WHEN `A` THEN `Accepted`
-                                  WHEN `X` THEN `Rejected` )
+          status      = z2ui5_cl_smpe_context=>status_get_text( s_result-overallstatus )
           draft_text  = COND #( WHEN line_exists( t_drafts[ traveluuid = s_result-traveluuid ] )
                                 THEN `Draft` ELSE `-` )
           draft_state = COND #( WHEN line_exists( t_drafts[ traveluuid = s_result-traveluuid ] )
