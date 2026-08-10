@@ -49,12 +49,11 @@ CLASS z2ui5_cl_smpe_07_d_edit IMPLEMENTATION.
     IF t_travels[ travel_uuid = uuid ]-has_draft = abap_false.
 
       " No draft yet. Edit copies the active instance into a new draft.
-      " %is_draft = mk-off addresses the ACTIVE instance - which is the one
-      " that exists at this point, so this is the only possible addressing.
+      " Only the key is passed: a draft action already knows which of the
+      " two instances it works on - Edit always starts from the active one.
       MODIFY ENTITIES OF z2ui5_r_smpe_trd
         ENTITY travel
-          EXECUTE Edit FROM VALUE #( ( %key-traveluuid = uuid
-                                       %is_draft       = if_abap_behv=>mk-off ) )
+          EXECUTE Edit FROM VALUE #( ( %key-traveluuid = uuid ) )
         FAILED s_failed
         REPORTED s_reported.
 
@@ -64,12 +63,11 @@ CLASS z2ui5_cl_smpe_07_d_edit IMPLEMENTATION.
 
       " A draft already exists - Edit would fail here. Resume reactivates
       " the existing draft instead, so the user continues exactly where the
-      " last session ended. Now the draft is the instance being addressed,
-      " hence %is_draft = mk-on.
+      " last session ended. Again only the key: Resume addresses the draft
+      " by definition.
       MODIFY ENTITIES OF z2ui5_r_smpe_trd
         ENTITY travel
-          EXECUTE Resume FROM VALUE #( ( %key-traveluuid = uuid
-                                         %is_draft       = if_abap_behv=>mk-on ) )
+          EXECUTE Resume FROM VALUE #( ( %key-traveluuid = uuid ) )
         FAILED s_failed
         REPORTED s_reported.
 

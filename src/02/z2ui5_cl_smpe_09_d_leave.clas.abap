@@ -58,8 +58,7 @@ CLASS z2ui5_cl_smpe_09_d_leave IMPLEMENTATION.
     " messages come back in REPORTED and the user can fix it and try again.
     MODIFY ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
-        EXECUTE Activate FROM VALUE #( ( %key-traveluuid = uuid
-                                         %is_draft       = if_abap_behv=>mk-on ) )
+        EXECUTE Activate FROM VALUE #( ( %key-traveluuid = uuid ) )
       FAILED DATA(s_failed)
       REPORTED DATA(s_reported).
 
@@ -91,8 +90,7 @@ CLASS z2ui5_cl_smpe_09_d_leave IMPLEMENTATION.
     " not the travel.
     MODIFY ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
-        EXECUTE Discard FROM VALUE #( ( %key-traveluuid = uuid
-                                        %is_draft       = if_abap_behv=>mk-on ) )
+        EXECUTE Discard FROM VALUE #( ( %key-traveluuid = uuid ) )
       FAILED DATA(s_failed)
       REPORTED DATA(s_reported).
 
