@@ -313,8 +313,8 @@ CLASS z2ui5_cl_smpe_app_10 IMPLEMENTATION.
           total_price    = |{ s_result-totalprice } { s_result-currencycode }|
           overall_status = z2ui5_cl_smpe_context=>status_get_text( s_result-overallstatus )
           status_state   = z2ui5_cl_smpe_context=>status_get_state( s_result-overallstatus )
-          has_draft      = xsdbool( line_exists( t_drafts[ traveluuid = s_result-traveluuid ] ) )
-          draft_text     = COND #( WHEN line_exists( t_drafts[ traveluuid = s_result-traveluuid ] )
+          has_draft      = xsdbool( line_exists( t_drafts[ KEY entity traveluuid = s_result-traveluuid ] ) )
+          draft_text     = COND #( WHEN line_exists( t_drafts[ KEY entity traveluuid = s_result-traveluuid ] )
                                    THEN `Draft` ) ) ).
 
   ENDMETHOD.

@@ -124,8 +124,8 @@ CLASS z2ui5_cl_smpe_app_07 IMPLEMENTATION.
         ( travel_uuid = |{ s_result-traveluuid }|
           travel_id   = |{ s_result-travelid ALPHA = OUT }|
           description = |{ s_result-description }|
-          has_draft   = xsdbool( line_exists( t_drafts[ traveluuid = s_result-traveluuid ] ) )
-          draft_text  = COND #( WHEN line_exists( t_drafts[ traveluuid = s_result-traveluuid ] )
+          has_draft   = xsdbool( line_exists( t_drafts[ KEY entity traveluuid = s_result-traveluuid ] ) )
+          draft_text  = COND #( WHEN line_exists( t_drafts[ KEY entity traveluuid = s_result-traveluuid ] )
                                 THEN `Resume` ELSE `Edit` ) ) ).
 
   ENDMETHOD.

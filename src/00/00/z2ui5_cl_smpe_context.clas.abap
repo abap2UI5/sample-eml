@@ -13,10 +13,10 @@ CLASS z2ui5_cl_smpe_context DEFINITION PUBLIC FINAL CREATE PRIVATE.
 
   PUBLIC SECTION.
 
-    "! The overall status as the business object stores it - see the
-    "! determination setInitialValues and the actions acceptTravel and
-    "! rejectTravel in the behavior pools.
     CONSTANTS:
+      "! The overall status as the business object stores it - see the
+      "! determination setInitialValues and the actions acceptTravel and
+      "! rejectTravel in the behavior pools.
       BEGIN OF cs_status,
         open     TYPE string VALUE `O` ##NO_TEXT,
         accepted TYPE string VALUE `A` ##NO_TEXT,

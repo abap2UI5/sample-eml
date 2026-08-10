@@ -79,9 +79,9 @@ CLASS z2ui5_cl_smpe_app_06 IMPLEMENTATION.
           customer_id = |{ s_result-customerid ALPHA = OUT }|
           description = |{ s_result-description }|
           status      = z2ui5_cl_smpe_context=>status_get_text( s_result-overallstatus )
-          draft_text  = COND #( WHEN line_exists( t_drafts[ traveluuid = s_result-traveluuid ] )
+          draft_text  = COND #( WHEN line_exists( t_drafts[ KEY entity traveluuid = s_result-traveluuid ] )
                                 THEN `Draft` ELSE `-` )
-          draft_state = COND #( WHEN line_exists( t_drafts[ traveluuid = s_result-traveluuid ] )
+          draft_state = COND #( WHEN line_exists( t_drafts[ KEY entity traveluuid = s_result-traveluuid ] )
                                 THEN `Warning` ELSE `None` ) ) ).
 
   ENDMETHOD.
