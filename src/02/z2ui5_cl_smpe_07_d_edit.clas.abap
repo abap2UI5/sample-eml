@@ -53,8 +53,8 @@ CLASS z2ui5_cl_smpe_07_d_edit IMPLEMENTATION.
       " that exists at this point, so this is the only possible addressing.
       MODIFY ENTITIES OF z2ui5_r_smpe_trd
         ENTITY travel
-          EXECUTE Edit FROM VALUE #( ( %tky = VALUE #( traveluuid = uuid
-                                                       %is_draft  = if_abap_behv=>mk-off ) ) )
+          EXECUTE Edit FROM VALUE #( ( %key-traveluuid = uuid
+                                       %is_draft       = if_abap_behv=>mk-off ) )
         FAILED s_failed
         REPORTED s_reported.
 
@@ -68,8 +68,8 @@ CLASS z2ui5_cl_smpe_07_d_edit IMPLEMENTATION.
       " hence %is_draft = mk-on.
       MODIFY ENTITIES OF z2ui5_r_smpe_trd
         ENTITY travel
-          EXECUTE Resume FROM VALUE #( ( %tky = VALUE #( traveluuid = uuid
-                                                         %is_draft  = if_abap_behv=>mk-on ) ) )
+          EXECUTE Resume FROM VALUE #( ( %key-traveluuid = uuid
+                                         %is_draft       = if_abap_behv=>mk-on ) )
         FAILED s_failed
         REPORTED s_reported.
 

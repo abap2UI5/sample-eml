@@ -94,8 +94,8 @@ CLASS z2ui5_cl_smpe_data_trd IMPLEMENTATION.
     MODIFY ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
         EXECUTE Activate FROM VALUE #( FOR s_new IN s_mapped-travel
-                                       ( %tky = VALUE #( traveluuid = s_new-traveluuid
-                                                         %is_draft  = if_abap_behv=>mk-on ) ) )
+                                       ( %key-traveluuid = s_new-traveluuid
+                                         %is_draft       = if_abap_behv=>mk-on ) )
       FAILED DATA(s_failed_act)
       REPORTED DATA(s_reported_act).
 
@@ -136,8 +136,8 @@ CLASS z2ui5_cl_smpe_data_trd IMPLEMENTATION.
     MODIFY ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
         EXECUTE Discard FROM VALUE #( FOR s_draft IN t_keys
-                                      ( %tky = VALUE #( traveluuid = s_draft-traveluuid
-                                                        %is_draft  = if_abap_behv=>mk-on ) ) )
+                                      ( %key-traveluuid = s_draft-traveluuid
+                                        %is_draft       = if_abap_behv=>mk-on ) )
       FAILED DATA(s_failed_discard).
 
     COMMIT ENTITIES.
