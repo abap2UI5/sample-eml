@@ -32,6 +32,7 @@ CLASS z2ui5_cl_smpe_app_01 DEFINITION PUBLIC.
   PROTECTED SECTION.
     DATA client TYPE REF TO z2ui5_if_client.
 
+    METHODS key_prefill.
     METHODS data_read.
     METHODS view_display.
   PRIVATE SECTION.
@@ -44,10 +45,28 @@ CLASS z2ui5_cl_smpe_app_01 IMPLEMENTATION.
 
     me->client = client.
     IF client->check_on_init( ).
+      key_prefill( ).
       view_display( ).
     ELSEIF client->check_on_event( `READ` ).
       data_read( ).
     ENDIF.
+
+  ENDMETHOD.
+
+
+  METHOD key_prefill.
+
+    " Prefilled with a key that really exists, so Read answers on the first
+    " press instead of with "Travel does not exist". Read off the table
+    " rather than hard coded: the demo data only starts at 1 on an empty
+    " table, and after a few creates and deletes the lowest key is a
+    " different one.
+    SELECT SINGLE FROM z2ui5_r_smpe_trv
+      FIELDS MIN( TravelId )
+      INTO @DATA(first_id).
+
+    travel_id = COND #( WHEN first_id IS NOT INITIAL
+                        THEN |{ first_id ALPHA = OUT }| ).
 
   ENDMETHOD.
 
@@ -101,7 +120,7 @@ CLASS z2ui5_cl_smpe_app_01 IMPLEMENTATION.
                 )->label( `Travel ID`
                 )->input(
                     value       = client->_bind( travel_id )
-                    placeholder = `Enter a travel id, e.g. 1`
+                    placeholder = `No travel in the table - press Regenerate Demo Data in the overview`
                 )->button(
                     text  = `Read`
                     press = client->_event( `READ` )
