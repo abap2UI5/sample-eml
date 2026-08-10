@@ -4,7 +4,7 @@
   },
   "dependencies": [
     {
-      "url": "https://github.com/abapedia/steampunk-2305-api-intersect-702",
+      "url": "https://github.com/abapedia/steampunk-2305-api",
       "folder": "/deps",
       "files": "/src/**/*.*"
     },
@@ -26,6 +26,31 @@
   "rules": {
     "exporting": true,
     "omit_parameter_name": true,
+    "line_length": {
+      "length": 255
+    },
+    // Every object carries the EML sample token SMPE behind its type token,
+    // the scheme the samples repository uses with its SMP token:
+    //   Z2UI5_CL_SMPE_<object>   classes, including the behavior pools
+    //   Z2UI5_T_SMPE_<object>    persistent tables
+    //   Z2UI5_D_SMPE_<object>    draft tables
+    // Class names are capped at 25 characters by the leading lookahead. ABAP
+    // allows 30, but build_rename (see abap2UI5) replaces the namespace
+    // z2ui5 (5 chars) with up to 9, which costs 4 - so 26 is the hard
+    // ceiling and 25 keeps one character in reserve.
+    // Tables are capped at 16: that is the hard DDIC limit for a transparent
+    // table, not a convention. A 17 character table name does not activate.
+    // The CDS root view entities and their behavior definitions follow the
+    // same scheme with the type token R, but abaplint has no object_naming
+    // key for DDLS or BDEF, so those two are convention only.
+    "object_naming": {
+      "patternKind": "required",
+      "severity": "Error",
+      "clas": "^(?=.{1,25}$)Z2UI5_C(L|X)_SMPE_",
+      "tabl": "^(?=.{1,16}$)Z2UI5_(T|D)_SMPE_"
+    },
+    // enforces the per object type name length limits of the ABAP repository
+    "allowed_object_naming": true,
     "begin_end_names": true,
     "check_ddic": true,
     "check_include": true,

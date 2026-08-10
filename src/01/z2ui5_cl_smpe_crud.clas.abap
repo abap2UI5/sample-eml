@@ -1,4 +1,4 @@
-CLASS z2ui5_cl_sample_eml_crud DEFINITION PUBLIC.
+CLASS z2ui5_cl_smpe_crud DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -33,6 +33,7 @@ CLASS z2ui5_cl_sample_eml_crud DEFINITION PUBLIC.
 
     METHODS on_init.
     METHODS on_event.
+    METHODS on_event_generate.
     METHODS on_event_create.
     METHODS on_event_save.
     METHODS on_event_accept.
@@ -46,14 +47,11 @@ CLASS z2ui5_cl_sample_eml_crud DEFINITION PUBLIC.
       RETURNING
         VALUE(result) TYPE abap_bool.
 
-    METHODS messages_display
-      IMPORTING
-        t_reported TYPE ANY TABLE.
   PRIVATE SECTION.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_sample_eml_crud IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_crud IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
@@ -81,6 +79,8 @@ CLASS z2ui5_cl_sample_eml_crud IMPLEMENTATION.
       WHEN `REFRESH`.
         data_read( ).
         client->view_model_update( ).
+      WHEN `GENERATE`.
+        on_event_generate( ).
       WHEN `CREATE`.
         s_create = VALUE #( currency = `EUR` ).
         popup_create_display( ).
@@ -101,20 +101,30 @@ CLASS z2ui5_cl_sample_eml_crud IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD on_event_generate.
+
+    " the demo data lives with the business object it belongs to, so every
+    " app and the ADT console application create exactly the same set
+    client->message_toast_display( z2ui5_cl_smpe_data_trv=>data_reset( ) ).
+    data_read( ).
+    client->view_model_update( ).
+
+  ENDMETHOD.
+
+
   METHOD on_event_create.
 
-    MODIFY ENTITIES OF /dmo/i_travel_m
+    MODIFY ENTITIES OF z2ui5_r_smpe_trv
       ENTITY travel
-        CREATE FIELDS ( agency_id customer_id begin_date end_date booking_fee currency_code description overall_status )
-        WITH VALUE #( ( %cid           = `CREATE_TRAVEL_1`
-                        agency_id      = s_create-agency_id
-                        customer_id    = s_create-customer_id
-                        begin_date     = s_create-begin_date
-                        end_date       = s_create-end_date
-                        booking_fee    = s_create-booking_fee
-                        currency_code  = s_create-currency
-                        description    = s_create-description
-                        overall_status = `O` ) )
+        CREATE FIELDS ( agencyid customerid begindate enddate bookingfee currencycode description )
+        WITH VALUE #( ( %cid         = `CREATE_TRAVEL_1`
+                        agencyid     = s_create-agency_id
+                        customerid   = s_create-customer_id
+                        begindate    = s_create-begin_date
+                        enddate      = s_create-end_date
+                        bookingfee   = s_create-booking_fee
+                        currencycode = s_create-currency
+                        description  = s_create-description ) )
       MAPPED DATA(s_mapped)
       FAILED DATA(s_failed)
       REPORTED DATA(s_reported).
@@ -122,7 +132,7 @@ CLASS z2ui5_cl_sample_eml_crud IMPLEMENTATION.
     IF s_failed-travel IS NOT INITIAL.
 
       ROLLBACK ENTITIES.
-      messages_display( s_reported-travel ).
+      z2ui5_cl_smpe_context=>msg_display( client = client val = s_reported-travel ).
       RETURN.
 
     ENDIF.
@@ -132,7 +142,7 @@ CLASS z2ui5_cl_sample_eml_crud IMPLEMENTATION.
       client->popup_destroy( ).
       data_read( ).
       client->view_model_update( ).
-      client->message_toast_display( |Travel { s_mapped-travel[ 1 ]-travel_id ALPHA = OUT } created| ).
+      client->message_toast_display( |Travel { s_mapped-travel[ 1 ]-travelid ALPHA = OUT } created| ).
 
     ENDIF.
 
@@ -144,10 +154,10 @@ CLASS z2ui5_cl_sample_eml_crud IMPLEMENTATION.
     DATA(travel_id) = client->get_event_arg( 1 ).
     DATA(s_travel) = t_travels[ travel_id = travel_id ].
 
-    MODIFY ENTITIES OF /dmo/i_travel_m
+    MODIFY ENTITIES OF z2ui5_r_smpe_trv
       ENTITY travel
         UPDATE FIELDS ( description )
-        WITH VALUE #( ( travel_id   = travel_id
+        WITH VALUE #( ( travelid    = travel_id
                         description = s_travel-description ) )
       FAILED DATA(s_failed)
       REPORTED DATA(s_reported).
@@ -155,7 +165,7 @@ CLASS z2ui5_cl_sample_eml_crud IMPLEMENTATION.
     IF s_failed-travel IS NOT INITIAL.
 
       ROLLBACK ENTITIES.
-      messages_display( s_reported-travel ).
+      z2ui5_cl_smpe_context=>msg_display( client = client val = s_reported-travel ).
       RETURN.
 
     ENDIF.
@@ -175,16 +185,16 @@ CLASS z2ui5_cl_sample_eml_crud IMPLEMENTATION.
 
     DATA(travel_id) = client->get_event_arg( 1 ).
 
-    MODIFY ENTITIES OF /dmo/i_travel_m
+    MODIFY ENTITIES OF z2ui5_r_smpe_trv
       ENTITY travel
-        EXECUTE acceptTravel FROM VALUE #( ( travel_id = travel_id ) )
+        EXECUTE acceptTravel FROM VALUE #( ( travelid = travel_id ) )
       FAILED DATA(s_failed)
       REPORTED DATA(s_reported).
 
     IF s_failed-travel IS NOT INITIAL.
 
       ROLLBACK ENTITIES.
-      messages_display( s_reported-travel ).
+      z2ui5_cl_smpe_context=>msg_display( client = client val = s_reported-travel ).
       RETURN.
 
     ENDIF.
@@ -204,16 +214,16 @@ CLASS z2ui5_cl_sample_eml_crud IMPLEMENTATION.
 
     DATA(travel_id) = client->get_event_arg( 1 ).
 
-    MODIFY ENTITIES OF /dmo/i_travel_m
+    MODIFY ENTITIES OF z2ui5_r_smpe_trv
       ENTITY travel
-        EXECUTE rejectTravel FROM VALUE #( ( travel_id = travel_id ) )
+        EXECUTE rejectTravel FROM VALUE #( ( travelid = travel_id ) )
       FAILED DATA(s_failed)
       REPORTED DATA(s_reported).
 
     IF s_failed-travel IS NOT INITIAL.
 
       ROLLBACK ENTITIES.
-      messages_display( s_reported-travel ).
+      z2ui5_cl_smpe_context=>msg_display( client = client val = s_reported-travel ).
       RETURN.
 
     ENDIF.
@@ -233,16 +243,16 @@ CLASS z2ui5_cl_sample_eml_crud IMPLEMENTATION.
 
     DATA(travel_id) = client->get_event_arg( 1 ).
 
-    MODIFY ENTITIES OF /dmo/i_travel_m
+    MODIFY ENTITIES OF z2ui5_r_smpe_trv
       ENTITY travel
-        DELETE FROM VALUE #( ( travel_id = travel_id ) )
+        DELETE FROM VALUE #( ( travelid = travel_id ) )
       FAILED DATA(s_failed)
       REPORTED DATA(s_reported).
 
     IF s_failed-travel IS NOT INITIAL.
 
       ROLLBACK ENTITIES.
-      messages_display( s_reported-travel ).
+      z2ui5_cl_smpe_context=>msg_display( client = client val = s_reported-travel ).
       RETURN.
 
     ENDIF.
@@ -260,33 +270,27 @@ CLASS z2ui5_cl_sample_eml_crud IMPLEMENTATION.
 
   METHOD data_read.
 
-    SELECT FROM /dmo/i_travel_m
-      FIELDS travel_id,
-             customer_id,
-             begin_date,
-             end_date,
-             total_price,
-             currency_code,
-             overall_status,
-             description
-      ORDER BY travel_id DESCENDING
+    SELECT FROM z2ui5_r_smpe_trv
+      FIELDS TravelId,
+             CustomerId,
+             BeginDate,
+             EndDate,
+             TotalPrice,
+             CurrencyCode,
+             OverallStatus,
+             Description
+      ORDER BY TravelId DESCENDING
       INTO TABLE @DATA(t_result)
       UP TO 20 ROWS.
 
     t_travels = VALUE #( FOR s_result IN t_result
-        ( travel_id      = |{ s_result-travel_id ALPHA = OUT }|
-          customer_id    = |{ s_result-customer_id ALPHA = OUT }|
-          begin_date     = |{ s_result-begin_date DATE = ISO }|
-          end_date       = |{ s_result-end_date DATE = ISO }|
-          total_price    = |{ s_result-total_price } { s_result-currency_code }|
-          overall_status = SWITCH #( s_result-overall_status
-                                     WHEN `O` THEN `Open`
-                                     WHEN `A` THEN `Accepted`
-                                     WHEN `X` THEN `Rejected` )
-          status_state   = SWITCH #( s_result-overall_status
-                                     WHEN `O` THEN `Information`
-                                     WHEN `A` THEN `Success`
-                                     WHEN `X` THEN `Error` )
+        ( travel_id      = |{ s_result-travelid ALPHA = OUT }|
+          customer_id    = |{ s_result-customerid ALPHA = OUT }|
+          begin_date     = |{ s_result-begindate DATE = ISO }|
+          end_date       = |{ s_result-enddate DATE = ISO }|
+          total_price    = |{ s_result-totalprice } { s_result-currencycode }|
+          overall_status = z2ui5_cl_smpe_context=>status_get_text( s_result-overallstatus )
+          status_state   = z2ui5_cl_smpe_context=>status_get_state( s_result-overallstatus )
           description    = |{ s_result-description }| ) ).
 
   ENDMETHOD.
@@ -294,7 +298,7 @@ CLASS z2ui5_cl_sample_eml_crud IMPLEMENTATION.
 
   METHOD data_save.
 
-    COMMIT ENTITIES RESPONSE OF /dmo/i_travel_m
+    COMMIT ENTITIES RESPONSE OF z2ui5_r_smpe_trv
       FAILED DATA(s_failed)
       REPORTED DATA(s_reported).
 
@@ -302,34 +306,8 @@ CLASS z2ui5_cl_sample_eml_crud IMPLEMENTATION.
       result = abap_true.
 
     ELSE.
-      messages_display( s_reported-travel ).
+      z2ui5_cl_smpe_context=>msg_display( client = client val = s_reported-travel ).
     ENDIF.
-
-  ENDMETHOD.
-
-
-  METHOD messages_display.
-
-    DATA message TYPE REF TO if_message.
-    DATA text TYPE string.
-
-    LOOP AT t_reported ASSIGNING FIELD-SYMBOL(<s_reported>).
-
-      ASSIGN COMPONENT `%msg` OF STRUCTURE <s_reported> TO FIELD-SYMBOL(<message>).
-      IF sy-subrc = 0 AND <message> IS BOUND.
-        message ?= <message>.
-        text = |{ text }{ message->get_text( ) } |.
-      ENDIF.
-
-    ENDLOOP.
-
-    IF text IS INITIAL.
-      text = `The operation failed, no further details available`.
-    ENDIF.
-
-    client->message_box_display(
-        text = text
-        type = `error` ).
 
   ENDMETHOD.
 
@@ -343,16 +321,19 @@ CLASS z2ui5_cl_sample_eml_crud IMPLEMENTATION.
             navbuttonpress = client->_event_nav_app_leave( )
             shownavbutton  = client->check_app_prev_stack( ) ).
 
-    DATA(table) = page->table( client->_bind_edit( t_travels ) ).
+    DATA(table) = page->table( client->_bind( t_travels ) ).
     table->header_toolbar(
         )->toolbar(
-            )->title( `Travels (/DMO/I_TRAVEL_M)`
+            )->title( `Travels (Z2UI5_R_SMPE_TRV)`
             )->toolbar_spacer(
             )->button(
                 text  = `Create`
                 icon  = `sap-icon://add`
                 press = client->_event( `CREATE` )
                 type  = `Emphasized`
+            )->button(
+                text  = `Generate Demo Data`
+                press = client->_event( `GENERATE` )
             )->button(
                 icon  = `sap-icon://refresh`
                 press = client->_event( `REFRESH` ) ).
@@ -412,28 +393,28 @@ CLASS z2ui5_cl_sample_eml_crud IMPLEMENTATION.
         )->content( `form`
         )->label( `Agency ID`
         )->input(
-            value       = client->_bind_edit( s_create-agency_id )
+            value       = client->_bind( s_create-agency_id )
             placeholder = `e.g. 70001`
         )->label( `Customer ID`
         )->input(
-            value       = client->_bind_edit( s_create-customer_id )
+            value       = client->_bind( s_create-customer_id )
             placeholder = `e.g. 1`
         )->label( `Begin Date`
         )->date_picker(
-            value       = client->_bind_edit( s_create-begin_date )
+            value       = client->_bind( s_create-begin_date )
             valueformat = `yyyyMMdd`
         )->label( `End Date`
         )->date_picker(
-            value       = client->_bind_edit( s_create-end_date )
+            value       = client->_bind( s_create-end_date )
             valueformat = `yyyyMMdd`
         )->label( `Booking Fee`
         )->input(
-            value       = client->_bind_edit( s_create-booking_fee )
+            value       = client->_bind( s_create-booking_fee )
             placeholder = `e.g. 10.50`
         )->label( `Currency`
-        )->input( client->_bind_edit( s_create-currency )
+        )->input( client->_bind( s_create-currency )
         )->label( `Description`
-        )->input( client->_bind_edit( s_create-description ) ).
+        )->input( client->_bind( s_create-description ) ).
 
     dialog->begin_button( )->button(
         text  = `Create`

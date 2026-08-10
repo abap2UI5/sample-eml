@@ -1,4 +1,4 @@
-CLASS z2ui5_cl_sample_eml_draft DEFINITION PUBLIC.
+CLASS z2ui5_cl_smpe_draft DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -37,6 +37,7 @@ CLASS z2ui5_cl_sample_eml_draft DEFINITION PUBLIC.
 
     METHODS on_init.
     METHODS on_event.
+    METHODS on_event_generate.
     METHODS on_event_edit.
     METHODS on_event_save_draft.
     METHODS on_event_activate.
@@ -53,14 +54,11 @@ CLASS z2ui5_cl_sample_eml_draft DEFINITION PUBLIC.
       RETURNING
         VALUE(result) TYPE abap_bool.
 
-    METHODS messages_display
-      IMPORTING
-        t_reported TYPE ANY TABLE.
   PRIVATE SECTION.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_sample_eml_draft IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
@@ -88,6 +86,8 @@ CLASS z2ui5_cl_sample_eml_draft IMPLEMENTATION.
       WHEN `REFRESH`.
         data_read( ).
         client->view_model_update( ).
+      WHEN `GENERATE`.
+        on_event_generate( ).
       WHEN `EDIT`.
         on_event_edit( ).
       WHEN `SAVE_DRAFT`.
@@ -103,10 +103,19 @@ CLASS z2ui5_cl_sample_eml_draft IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD on_event_generate.
+
+    client->message_toast_display( z2ui5_cl_smpe_data_trd=>data_reset( ) ).
+    data_read( ).
+    client->view_model_update( ).
+
+  ENDMETHOD.
+
+
   METHOD on_event_edit.
 
-    DATA s_failed   TYPE RESPONSE FOR FAILED EARLY /dmo/r_travel_d.
-    DATA s_reported TYPE RESPONSE FOR REPORTED EARLY /dmo/r_travel_d.
+    DATA s_failed   TYPE RESPONSE FOR FAILED EARLY z2ui5_r_smpe_trd.
+    DATA s_reported TYPE RESPONSE FOR REPORTED EARLY z2ui5_r_smpe_trd.
 
     DATA(uuid) = client->get_event_arg( 1 ).
 
@@ -114,7 +123,7 @@ CLASS z2ui5_cl_sample_eml_draft IMPLEMENTATION.
 
       " no draft yet: the draft action Edit copies the active instance
       " into a new draft instance
-      MODIFY ENTITIES OF /dmo/r_travel_d
+      MODIFY ENTITIES OF z2ui5_r_smpe_trd
         ENTITY travel
           EXECUTE Edit FROM VALUE #( ( %tky = VALUE #( traveluuid = uuid
                                                        %is_draft  = if_abap_behv=>mk-off ) ) )
@@ -125,7 +134,7 @@ CLASS z2ui5_cl_sample_eml_draft IMPLEMENTATION.
 
       " a draft already exists: the draft action Resume reactivates it,
       " so the user continues exactly where the last session ended
-      MODIFY ENTITIES OF /dmo/r_travel_d
+      MODIFY ENTITIES OF z2ui5_r_smpe_trd
         ENTITY travel
           EXECUTE Resume FROM VALUE #( ( %tky = VALUE #( traveluuid = uuid
                                                          %is_draft  = if_abap_behv=>mk-on ) ) )
@@ -137,7 +146,7 @@ CLASS z2ui5_cl_sample_eml_draft IMPLEMENTATION.
     IF s_failed-travel IS NOT INITIAL.
 
       ROLLBACK ENTITIES.
-      messages_display( s_reported-travel ).
+      z2ui5_cl_smpe_context=>msg_display( client = client val = s_reported-travel ).
       RETURN.
 
     ENDIF.
@@ -156,7 +165,7 @@ CLASS z2ui5_cl_sample_eml_draft IMPLEMENTATION.
 
   METHOD on_event_save_draft.
 
-    MODIFY ENTITIES OF /dmo/r_travel_d
+    MODIFY ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
         UPDATE FIELDS ( agencyid customerid begindate enddate bookingfee currencycode description )
         WITH VALUE #( ( %tky         = VALUE #( traveluuid = s_draft-travel_uuid
@@ -174,7 +183,7 @@ CLASS z2ui5_cl_sample_eml_draft IMPLEMENTATION.
     IF s_failed-travel IS NOT INITIAL.
 
       ROLLBACK ENTITIES.
-      messages_display( s_reported-travel ).
+      z2ui5_cl_smpe_context=>msg_display( client = client val = s_reported-travel ).
       RETURN.
 
     ENDIF.
@@ -194,7 +203,7 @@ CLASS z2ui5_cl_sample_eml_draft IMPLEMENTATION.
 
     " the validations of the business object run during activation -
     " an invalid draft stays a draft and the messages are displayed
-    MODIFY ENTITIES OF /dmo/r_travel_d
+    MODIFY ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
         EXECUTE Activate FROM VALUE #( ( %tky = VALUE #( traveluuid = s_draft-travel_uuid
                                                          %is_draft  = if_abap_behv=>mk-on ) ) )
@@ -204,7 +213,7 @@ CLASS z2ui5_cl_sample_eml_draft IMPLEMENTATION.
     IF s_failed-travel IS NOT INITIAL.
 
       ROLLBACK ENTITIES.
-      messages_display( s_reported-travel ).
+      z2ui5_cl_smpe_context=>msg_display( client = client val = s_reported-travel ).
       RETURN.
 
     ENDIF.
@@ -223,7 +232,7 @@ CLASS z2ui5_cl_sample_eml_draft IMPLEMENTATION.
 
   METHOD on_event_discard.
 
-    MODIFY ENTITIES OF /dmo/r_travel_d
+    MODIFY ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
         EXECUTE Discard FROM VALUE #( ( %tky = VALUE #( traveluuid = s_draft-travel_uuid
                                                         %is_draft  = if_abap_behv=>mk-on ) ) )
@@ -233,7 +242,7 @@ CLASS z2ui5_cl_sample_eml_draft IMPLEMENTATION.
     IF s_failed-travel IS NOT INITIAL.
 
       ROLLBACK ENTITIES.
-      messages_display( s_reported-travel ).
+      z2ui5_cl_smpe_context=>msg_display( client = client val = s_reported-travel ).
       RETURN.
 
     ENDIF.
@@ -252,7 +261,7 @@ CLASS z2ui5_cl_sample_eml_draft IMPLEMENTATION.
 
   METHOD draft_read.
 
-    READ ENTITIES OF /dmo/r_travel_d
+    READ ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
         ALL FIELDS WITH VALUE #( ( %tky = VALUE #( traveluuid = uuid
                                                    %is_draft  = if_abap_behv=>mk-on ) ) )
@@ -275,7 +284,7 @@ CLASS z2ui5_cl_sample_eml_draft IMPLEMENTATION.
 
   METHOD data_read.
 
-    SELECT FROM /dmo/r_travel_d
+    SELECT FROM z2ui5_r_smpe_trd
       FIELDS traveluuid,
              travelid,
              customerid,
@@ -291,7 +300,7 @@ CLASS z2ui5_cl_sample_eml_draft IMPLEMENTATION.
 
     " a draft instance shares the key of its active instance - reading
     " the keys with %is_draft = on reveals which travels have a draft
-    READ ENTITIES OF /dmo/r_travel_d
+    READ ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
         FIELDS ( travelid ) WITH VALUE #( FOR s_row IN t_result
                                           ( %tky = VALUE #( traveluuid = s_row-traveluuid
@@ -306,14 +315,8 @@ CLASS z2ui5_cl_sample_eml_draft IMPLEMENTATION.
           begin_date     = |{ s_result-begindate DATE = ISO }|
           end_date       = |{ s_result-enddate DATE = ISO }|
           total_price    = |{ s_result-totalprice } { s_result-currencycode }|
-          overall_status = SWITCH #( s_result-overallstatus
-                                     WHEN `O` THEN `Open`
-                                     WHEN `A` THEN `Accepted`
-                                     WHEN `X` THEN `Rejected` )
-          status_state   = SWITCH #( s_result-overallstatus
-                                     WHEN `O` THEN `Information`
-                                     WHEN `A` THEN `Success`
-                                     WHEN `X` THEN `Error` )
+          overall_status = z2ui5_cl_smpe_context=>status_get_text( s_result-overallstatus )
+          status_state   = z2ui5_cl_smpe_context=>status_get_state( s_result-overallstatus )
           has_draft      = xsdbool( line_exists( t_drafts[ traveluuid = s_result-traveluuid ] ) )
           draft_text     = COND #( WHEN line_exists( t_drafts[ traveluuid = s_result-traveluuid ] )
                                    THEN `Draft` ) ) ).
@@ -323,7 +326,7 @@ CLASS z2ui5_cl_sample_eml_draft IMPLEMENTATION.
 
   METHOD data_save.
 
-    COMMIT ENTITIES RESPONSE OF /dmo/r_travel_d
+    COMMIT ENTITIES RESPONSE OF z2ui5_r_smpe_trd
       FAILED DATA(s_failed)
       REPORTED DATA(s_reported).
 
@@ -331,34 +334,8 @@ CLASS z2ui5_cl_sample_eml_draft IMPLEMENTATION.
       result = abap_true.
 
     ELSE.
-      messages_display( s_reported-travel ).
+      z2ui5_cl_smpe_context=>msg_display( client = client val = s_reported-travel ).
     ENDIF.
-
-  ENDMETHOD.
-
-
-  METHOD messages_display.
-
-    DATA message TYPE REF TO if_message.
-    DATA text TYPE string.
-
-    LOOP AT t_reported ASSIGNING FIELD-SYMBOL(<s_reported>).
-
-      ASSIGN COMPONENT `%msg` OF STRUCTURE <s_reported> TO FIELD-SYMBOL(<message>).
-      IF sy-subrc = 0 AND <message> IS BOUND.
-        message ?= <message>.
-        text = |{ text }{ message->get_text( ) } |.
-      ENDIF.
-
-    ENDLOOP.
-
-    IF text IS INITIAL.
-      text = `The operation failed, no further details available`.
-    ENDIF.
-
-    client->message_box_display(
-        text = text
-        type = `error` ).
 
   ENDMETHOD.
 
@@ -375,8 +352,12 @@ CLASS z2ui5_cl_sample_eml_draft IMPLEMENTATION.
     DATA(table) = page->table( client->_bind( t_travels ) ).
     table->header_toolbar(
         )->toolbar(
-            )->title( `Travels (/DMO/R_TRAVEL_D)`
+            )->title( `Travels (Z2UI5_R_SMPE_TRD)`
             )->toolbar_spacer(
+            )->button(
+                text  = `Generate Demo Data`
+                icon  = `sap-icon://add`
+                press = client->_event( `GENERATE` )
             )->button(
                 icon  = `sap-icon://refresh`
                 press = client->_event( `REFRESH` ) ).
@@ -424,23 +405,23 @@ CLASS z2ui5_cl_sample_eml_draft IMPLEMENTATION.
     dialog->simple_form( editable = abap_true
         )->content( `form`
         )->label( `Agency ID`
-        )->input( client->_bind_edit( s_draft-agency_id )
+        )->input( client->_bind( s_draft-agency_id )
         )->label( `Customer ID`
-        )->input( client->_bind_edit( s_draft-customer_id )
+        )->input( client->_bind( s_draft-customer_id )
         )->label( `Begin Date`
         )->date_picker(
-            value       = client->_bind_edit( s_draft-begin_date )
+            value       = client->_bind( s_draft-begin_date )
             valueformat = `yyyyMMdd`
         )->label( `End Date`
         )->date_picker(
-            value       = client->_bind_edit( s_draft-end_date )
+            value       = client->_bind( s_draft-end_date )
             valueformat = `yyyyMMdd`
         )->label( `Booking Fee`
-        )->input( client->_bind_edit( s_draft-booking_fee )
+        )->input( client->_bind( s_draft-booking_fee )
         )->label( `Currency`
-        )->input( client->_bind_edit( s_draft-currency )
+        )->input( client->_bind( s_draft-currency )
         )->label( `Description`
-        )->input( client->_bind_edit( s_draft-description ) ).
+        )->input( client->_bind( s_draft-description ) ).
 
     dialog->buttons(
         )->button(
