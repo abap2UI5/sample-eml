@@ -8,6 +8,12 @@
 "!       FAILED s_failed
 "!       REPORTED s_reported.
 "!
+"! The table shows the description of the active instance and of the draft
+"! side by side. That is what makes the two actions visible: Edit fills the
+"! draft column, Resume leaves it exactly as it is - it only takes the lock
+"! back. Without the second column a press on Resume looks like nothing
+"! happened at all.
+"!
 "! Worth knowing: a draft action takes the key and nothing else. Which of the
 "! two instances it addresses is part of the action - Edit always starts from
 "! the active one, Resume from the draft - so there is no %is_draft here. And
@@ -20,11 +26,15 @@ CLASS z2ui5_cl_smpe_app_07 DEFINITION PUBLIC.
 
     TYPES:
       BEGIN OF ty_s_travel,
-        travel_uuid TYPE string,
-        travel_id   TYPE string,
-        description TYPE string,
-        draft_text  TYPE string,
-        has_draft   TYPE abap_bool,
+        travel_uuid       TYPE string,
+        travel_id         TYPE string,
+        "! of the ACTIVE instance
+        description       TYPE string,
+        "! of the draft, empty while there is none - the column that makes
+        "! Edit and Resume visible at all
+        draft_description TYPE string,
+        draft_text        TYPE string,
+        has_draft         TYPE abap_bool,
       END OF ty_s_travel.
     DATA t_travels TYPE STANDARD TABLE OF ty_s_travel WITH EMPTY KEY.
 
@@ -72,7 +82,8 @@ CLASS z2ui5_cl_smpe_app_07 IMPLEMENTATION.
         FAILED s_failed
         REPORTED s_reported.
 
-      DATA(text) = |Draft created from the active travel|.
+      DATA(text) = |Draft created - it starts as a copy, so both description | &&
+                   |columns show the same text now|.
 
     ELSE.
 
@@ -86,7 +97,11 @@ CLASS z2ui5_cl_smpe_app_07 IMPLEMENTATION.
         FAILED s_failed
         REPORTED s_reported.
 
-      text = |Existing draft resumed|.
+      " Resume takes the lock back, it does not touch the data - so the
+      " table looks exactly as before and the message has to say so, or the
+      " press looks like nothing happened
+      text = |Draft resumed - the lock is yours again. Resume changes no | &&
+             |data, that is what sample 08 does|.
 
     ENDIF.
 
@@ -126,22 +141,25 @@ CLASS z2ui5_cl_smpe_app_07 IMPLEMENTATION.
       INTO TABLE @DATA(t_result)
       UP TO 20 ROWS.
 
-    " see z2ui5_cl_smpe_app_06 for what this read does
+    " see z2ui5_cl_smpe_app_06 for what this read does - the description is
+    " read along so the table can show the draft next to the active instance
     READ ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
-        FIELDS ( travelid ) WITH VALUE #( FOR s_row IN t_result
-                                          ( %tky = VALUE #( traveluuid = s_row-traveluuid
-                                                            %is_draft  = if_abap_behv=>mk-on ) ) )
+        FIELDS ( travelid description ) WITH VALUE #( FOR s_row IN t_result
+                                                      ( %tky = VALUE #( traveluuid = s_row-traveluuid
+                                                                        %is_draft  = if_abap_behv=>mk-on ) ) )
       RESULT DATA(t_drafts)
       FAILED DATA(s_failed).
 
     t_travels = VALUE #( FOR s_result IN t_result
-        ( travel_uuid = |{ s_result-traveluuid }|
-          travel_id   = |{ s_result-travelid ALPHA = OUT }|
-          description = |{ s_result-description }|
-          has_draft   = xsdbool( line_exists( t_drafts[ KEY entity traveluuid = s_result-traveluuid ] ) )
-          draft_text  = COND #( WHEN line_exists( t_drafts[ KEY entity traveluuid = s_result-traveluuid ] )
-                                THEN `Resume` ELSE `Edit` ) ) ).
+        ( travel_uuid       = |{ s_result-traveluuid }|
+          travel_id         = |{ s_result-travelid ALPHA = OUT }|
+          description       = |{ s_result-description }|
+          has_draft         = xsdbool( line_exists( t_drafts[ KEY entity traveluuid = s_result-traveluuid ] ) )
+          draft_description = COND #( WHEN line_exists( t_drafts[ KEY entity traveluuid = s_result-traveluuid ] )
+                                      THEN |{ t_drafts[ KEY entity traveluuid = s_result-traveluuid ]-description }| )
+          draft_text        = COND #( WHEN line_exists( t_drafts[ KEY entity traveluuid = s_result-traveluuid ] )
+                                      THEN `Resume` ELSE `Edit` ) ) ).
 
   ENDMETHOD.
 
@@ -161,13 +179,15 @@ CLASS z2ui5_cl_smpe_app_07 IMPLEMENTATION.
 
     table->columns(
         )->column( )->text( `ID` )->get_parent(
-        )->column( )->text( `Description` )->get_parent(
+        )->column( )->text( `Description - active` )->get_parent(
+        )->column( )->text( `Description - draft` )->get_parent(
         )->column( )->text( `` ).
 
     table->items( )->column_list_item(
         )->cells(
             )->text( `{TRAVEL_ID}`
             )->text( `{DESCRIPTION}`
+            )->text( `{DRAFT_DESCRIPTION}`
             )->button(
                 text  = `{DRAFT_TEXT}`
                 press = client->_event( val   = `OPEN`
