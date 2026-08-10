@@ -6,7 +6,7 @@
 [![abap-cloud](https://github.com/abap2UI5/sample-eml/actions/workflows/abap-cloud.yaml/badge.svg)](https://github.com/abap2UI5/sample-eml/actions/workflows/abap-cloud.yaml)
 [![check-abap2UI5](https://github.com/abap2UI5/sample-eml/actions/workflows/check-abap2UI5.yaml/badge.svg)](https://github.com/abap2UI5/sample-eml/actions/workflows/check-abap2UI5.yaml)
 
-# abap2UI5 — EML Snippets
+# abap2UI5 — samples-rap
 
 Consuming a RAP business object with EML from an [abap2UI5](https://github.com/abap2UI5/abap2UI5) app: no OData service, no annotations, the view is built in plain ABAP.
 
