@@ -6,8 +6,7 @@
   "scripts": {
     "lint": "abaplint ./abaplint.jsonc",
     "lint:cloud": "abaplint .github/abaplint/abap_cloud.jsonc",
-    "check:abap2ui5": "abap2ui5lint",
-    "rename": "abaplint .github/abaplint/rename_test.jsonc --rename"
+    "check:abap2ui5": "abap2ui5lint"
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_BDEF" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <MAIN>
+    <NAME>Z2UI5_R_SMPE_TRD</NAME>
+    <ORIGINAL_OBJECT_TYPE>BDEF</ORIGINAL_OBJECT_TYPE>
+    <IMPLEMENTATION_TYPE>M</IMPLEMENTATION_TYPE>
+    <DESCRIPTION>abap2UI5 EML sample - travel (draft)</DESCRIPTION>
+   </MAIN>
+  </asx:values>
+ </asx:abap>
+</abapGit>

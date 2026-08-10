@@ -33,6 +33,7 @@ CLASS z2ui5_cl_smpe_crud DEFINITION PUBLIC.
 
     METHODS on_init.
     METHODS on_event.
+    METHODS on_event_generate.
     METHODS on_event_create.
     METHODS on_event_save.
     METHODS on_event_accept.
@@ -81,6 +82,8 @@ CLASS z2ui5_cl_smpe_crud IMPLEMENTATION.
       WHEN `REFRESH`.
         data_read( ).
         client->view_model_update( ).
+      WHEN `GENERATE`.
+        on_event_generate( ).
       WHEN `CREATE`.
         s_create = VALUE #( currency = `EUR` ).
         popup_create_display( ).
@@ -101,20 +104,73 @@ CLASS z2ui5_cl_smpe_crud IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD on_event_generate.
+
+    " There is no external demo data generator any more - the business object
+    " of this repository is filled through its own behavior, with the same
+    " EML CREATE the popup above uses. Early numbering assigns the keys.
+    MODIFY ENTITIES OF z2ui5_r_smpe_trv
+      ENTITY travel
+        CREATE FIELDS ( agencyid customerid begindate enddate bookingfee currencycode description )
+        WITH VALUE #( ( %cid         = `DEMO_1`
+                        agencyid     = '070001'
+                        customerid   = '000001'
+                        begindate    = sy-datum
+                        enddate      = sy-datum + 14
+                        bookingfee   = '20.00'
+                        currencycode = 'EUR'
+                        description  = 'Demo travel - sightseeing' )
+                      ( %cid         = `DEMO_2`
+                        agencyid     = '070002'
+                        customerid   = '000002'
+                        begindate    = sy-datum + 30
+                        enddate      = sy-datum + 37
+                        bookingfee   = '35.50'
+                        currencycode = 'EUR'
+                        description  = 'Demo travel - business trip' )
+                      ( %cid         = `DEMO_3`
+                        agencyid     = '070003'
+                        customerid   = '000003'
+                        begindate    = sy-datum + 60
+                        enddate      = sy-datum + 74
+                        bookingfee   = '12.75'
+                        currencycode = 'EUR'
+                        description  = 'Demo travel - city break' ) )
+      FAILED DATA(s_failed)
+      REPORTED DATA(s_reported).
+
+    IF s_failed-travel IS NOT INITIAL.
+
+      ROLLBACK ENTITIES.
+      messages_display( s_reported-travel ).
+      RETURN.
+
+    ENDIF.
+
+    IF data_save( ) = abap_true.
+
+      data_read( ).
+      client->view_model_update( ).
+      client->message_toast_display( `Demo travels created` ).
+
+    ENDIF.
+
+  ENDMETHOD.
+
+
   METHOD on_event_create.
 
-    MODIFY ENTITIES OF /dmo/i_travel_m
+    MODIFY ENTITIES OF z2ui5_r_smpe_trv
       ENTITY travel
-        CREATE FIELDS ( agency_id customer_id begin_date end_date booking_fee currency_code description overall_status )
-        WITH VALUE #( ( %cid           = `CREATE_TRAVEL_1`
-                        agency_id      = s_create-agency_id
-                        customer_id    = s_create-customer_id
-                        begin_date     = s_create-begin_date
-                        end_date       = s_create-end_date
-                        booking_fee    = s_create-booking_fee
-                        currency_code  = s_create-currency
-                        description    = s_create-description
-                        overall_status = `O` ) )
+        CREATE FIELDS ( agencyid customerid begindate enddate bookingfee currencycode description )
+        WITH VALUE #( ( %cid         = `CREATE_TRAVEL_1`
+                        agencyid     = s_create-agency_id
+                        customerid   = s_create-customer_id
+                        begindate    = s_create-begin_date
+                        enddate      = s_create-end_date
+                        bookingfee   = s_create-booking_fee
+                        currencycode = s_create-currency
+                        description  = s_create-description ) )
       MAPPED DATA(s_mapped)
       FAILED DATA(s_failed)
       REPORTED DATA(s_reported).
@@ -132,7 +188,7 @@ CLASS z2ui5_cl_smpe_crud IMPLEMENTATION.
       client->popup_destroy( ).
       data_read( ).
       client->view_model_update( ).
-      client->message_toast_display( |Travel { s_mapped-travel[ 1 ]-travel_id ALPHA = OUT } created| ).
+      client->message_toast_display( |Travel { s_mapped-travel[ 1 ]-travelid ALPHA = OUT } created| ).
 
     ENDIF.
 
@@ -144,10 +200,10 @@ CLASS z2ui5_cl_smpe_crud IMPLEMENTATION.
     DATA(travel_id) = client->get_event_arg( 1 ).
     DATA(s_travel) = t_travels[ travel_id = travel_id ].
 
-    MODIFY ENTITIES OF /dmo/i_travel_m
+    MODIFY ENTITIES OF z2ui5_r_smpe_trv
       ENTITY travel
         UPDATE FIELDS ( description )
-        WITH VALUE #( ( travel_id   = travel_id
+        WITH VALUE #( ( travelid    = travel_id
                         description = s_travel-description ) )
       FAILED DATA(s_failed)
       REPORTED DATA(s_reported).
@@ -175,9 +231,9 @@ CLASS z2ui5_cl_smpe_crud IMPLEMENTATION.
 
     DATA(travel_id) = client->get_event_arg( 1 ).
 
-    MODIFY ENTITIES OF /dmo/i_travel_m
+    MODIFY ENTITIES OF z2ui5_r_smpe_trv
       ENTITY travel
-        EXECUTE acceptTravel FROM VALUE #( ( travel_id = travel_id ) )
+        EXECUTE acceptTravel FROM VALUE #( ( travelid = travel_id ) )
       FAILED DATA(s_failed)
       REPORTED DATA(s_reported).
 
@@ -204,9 +260,9 @@ CLASS z2ui5_cl_smpe_crud IMPLEMENTATION.
 
     DATA(travel_id) = client->get_event_arg( 1 ).
 
-    MODIFY ENTITIES OF /dmo/i_travel_m
+    MODIFY ENTITIES OF z2ui5_r_smpe_trv
       ENTITY travel
-        EXECUTE rejectTravel FROM VALUE #( ( travel_id = travel_id ) )
+        EXECUTE rejectTravel FROM VALUE #( ( travelid = travel_id ) )
       FAILED DATA(s_failed)
       REPORTED DATA(s_reported).
 
@@ -233,9 +289,9 @@ CLASS z2ui5_cl_smpe_crud IMPLEMENTATION.
 
     DATA(travel_id) = client->get_event_arg( 1 ).
 
-    MODIFY ENTITIES OF /dmo/i_travel_m
+    MODIFY ENTITIES OF z2ui5_r_smpe_trv
       ENTITY travel
-        DELETE FROM VALUE #( ( travel_id = travel_id ) )
+        DELETE FROM VALUE #( ( travelid = travel_id ) )
       FAILED DATA(s_failed)
       REPORTED DATA(s_reported).
 
@@ -260,30 +316,30 @@ CLASS z2ui5_cl_smpe_crud IMPLEMENTATION.
 
   METHOD data_read.
 
-    SELECT FROM /dmo/i_travel_m
-      FIELDS travel_id,
-             customer_id,
-             begin_date,
-             end_date,
-             total_price,
-             currency_code,
-             overall_status,
-             description
-      ORDER BY travel_id DESCENDING
+    SELECT FROM z2ui5_r_smpe_trv
+      FIELDS TravelId,
+             CustomerId,
+             BeginDate,
+             EndDate,
+             TotalPrice,
+             CurrencyCode,
+             OverallStatus,
+             Description
+      ORDER BY TravelId DESCENDING
       INTO TABLE @DATA(t_result)
       UP TO 20 ROWS.
 
     t_travels = VALUE #( FOR s_result IN t_result
-        ( travel_id      = |{ s_result-travel_id ALPHA = OUT }|
-          customer_id    = |{ s_result-customer_id ALPHA = OUT }|
-          begin_date     = |{ s_result-begin_date DATE = ISO }|
-          end_date       = |{ s_result-end_date DATE = ISO }|
-          total_price    = |{ s_result-total_price } { s_result-currency_code }|
-          overall_status = SWITCH #( s_result-overall_status
+        ( travel_id      = |{ s_result-travelid ALPHA = OUT }|
+          customer_id    = |{ s_result-customerid ALPHA = OUT }|
+          begin_date     = |{ s_result-begindate DATE = ISO }|
+          end_date       = |{ s_result-enddate DATE = ISO }|
+          total_price    = |{ s_result-totalprice } { s_result-currencycode }|
+          overall_status = SWITCH #( s_result-overallstatus
                                      WHEN `O` THEN `Open`
                                      WHEN `A` THEN `Accepted`
                                      WHEN `X` THEN `Rejected` )
-          status_state   = SWITCH #( s_result-overall_status
+          status_state   = SWITCH #( s_result-overallstatus
                                      WHEN `O` THEN `Information`
                                      WHEN `A` THEN `Success`
                                      WHEN `X` THEN `Error` )
@@ -294,7 +350,7 @@ CLASS z2ui5_cl_smpe_crud IMPLEMENTATION.
 
   METHOD data_save.
 
-    COMMIT ENTITIES RESPONSE OF /dmo/i_travel_m
+    COMMIT ENTITIES RESPONSE OF z2ui5_r_smpe_trv
       FAILED DATA(s_failed)
       REPORTED DATA(s_reported).
 
@@ -346,13 +402,16 @@ CLASS z2ui5_cl_smpe_crud IMPLEMENTATION.
     DATA(table) = page->table( client->_bind_edit( t_travels ) ).
     table->header_toolbar(
         )->toolbar(
-            )->title( `Travels (/DMO/I_TRAVEL_M)`
+            )->title( `Travels (Z2UI5_R_SMPE_TRV)`
             )->toolbar_spacer(
             )->button(
                 text  = `Create`
                 icon  = `sap-icon://add`
                 press = client->_event( `CREATE` )
                 type  = `Emphasized`
+            )->button(
+                text  = `Generate Demo Data`
+                press = client->_event( `GENERATE` )
             )->button(
                 icon  = `sap-icon://refresh`
                 press = client->_event( `REFRESH` ) ).

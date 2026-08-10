@@ -42,9 +42,9 @@ CLASS z2ui5_cl_smpe_read IMPLEMENTATION.
 
   METHOD data_read.
 
-    READ ENTITIES OF /dmo/i_travel_m
+    READ ENTITIES OF z2ui5_r_smpe_trv
       ENTITY travel
-        ALL FIELDS WITH VALUE #( ( travel_id = travel_id ) )
+        ALL FIELDS WITH VALUE #( ( travelid = travel_id ) )
       RESULT DATA(t_result)
       FAILED DATA(s_failed).
 
@@ -59,12 +59,12 @@ CLASS z2ui5_cl_smpe_read IMPLEMENTATION.
 
       DATA(s_result) = t_result[ 1 ].
       s_travel = VALUE #(
-        agency_id      = |{ s_result-agency_id ALPHA = OUT }|
-        customer_id    = |{ s_result-customer_id ALPHA = OUT }|
-        begin_date     = |{ s_result-begin_date DATE = ISO }|
-        end_date       = |{ s_result-end_date DATE = ISO }|
-        total_price    = |{ s_result-total_price } { s_result-currency_code }|
-        overall_status = SWITCH #( s_result-overall_status
+        agency_id      = |{ s_result-agencyid ALPHA = OUT }|
+        customer_id    = |{ s_result-customerid ALPHA = OUT }|
+        begin_date     = |{ s_result-begindate DATE = ISO }|
+        end_date       = |{ s_result-enddate DATE = ISO }|
+        total_price    = |{ s_result-totalprice } { s_result-currencycode }|
+        overall_status = SWITCH #( s_result-overallstatus
                                    WHEN `O` THEN `Open`
                                    WHEN `A` THEN `Accepted`
                                    WHEN `X` THEN `Rejected` )
@@ -86,7 +86,7 @@ CLASS z2ui5_cl_smpe_read IMPLEMENTATION.
             navbuttonpress = client->_event_nav_app_leave( )
             shownavbutton  = client->check_app_prev_stack( )
             )->simple_form(
-                title    = `READ ENTITIES OF /DMO/I_TRAVEL_M`
+                title    = `READ ENTITIES OF Z2UI5_R_SMPE_TRV`
                 editable = abap_true
                 )->content( `form`
                 )->label( `Travel ID`

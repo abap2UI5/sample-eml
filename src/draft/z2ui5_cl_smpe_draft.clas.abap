@@ -37,6 +37,7 @@ CLASS z2ui5_cl_smpe_draft DEFINITION PUBLIC.
 
     METHODS on_init.
     METHODS on_event.
+    METHODS on_event_generate.
     METHODS on_event_edit.
     METHODS on_event_save_draft.
     METHODS on_event_activate.
@@ -88,6 +89,8 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
       WHEN `REFRESH`.
         data_read( ).
         client->view_model_update( ).
+      WHEN `GENERATE`.
+        on_event_generate( ).
       WHEN `EDIT`.
         on_event_edit( ).
       WHEN `SAVE_DRAFT`.
@@ -103,10 +106,80 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD on_event_generate.
+
+    " The business object is draft enabled, so a new instance is born as a
+    " draft and only the draft action Activate turns it into an active one.
+    " That is the complete lifecycle a Fiori Elements app runs through, here
+    " executed in two EML round trips.
+    MODIFY ENTITIES OF z2ui5_r_smpe_trd
+      ENTITY travel
+        CREATE FIELDS ( agencyid customerid begindate enddate bookingfee currencycode description )
+        WITH VALUE #( %is_draft = if_abap_behv=>mk-on
+                      ( %cid         = `DEMO_1`
+                        agencyid     = '070001'
+                        customerid   = '000001'
+                        begindate    = sy-datum
+                        enddate      = sy-datum + 14
+                        bookingfee   = '20.00'
+                        currencycode = 'EUR'
+                        description  = 'Demo travel - sightseeing' )
+                      ( %cid         = `DEMO_2`
+                        agencyid     = '070002'
+                        customerid   = '000002'
+                        begindate    = sy-datum + 30
+                        enddate      = sy-datum + 37
+                        bookingfee   = '35.50'
+                        currencycode = 'EUR'
+                        description  = 'Demo travel - business trip' ) )
+      MAPPED DATA(s_mapped)
+      FAILED DATA(s_failed)
+      REPORTED DATA(s_reported).
+
+    IF s_failed-travel IS NOT INITIAL.
+
+      ROLLBACK ENTITIES.
+      messages_display( s_reported-travel ).
+      RETURN.
+
+    ENDIF.
+
+    IF data_save( ) = abap_false.
+      RETURN.
+    ENDIF.
+
+    " the drafts are persisted now - activating them runs the validations
+    MODIFY ENTITIES OF z2ui5_r_smpe_trd
+      ENTITY travel
+        EXECUTE Activate FROM VALUE #( FOR s_new IN s_mapped-travel
+                                       ( %tky = VALUE #( traveluuid = s_new-traveluuid
+                                                         %is_draft  = if_abap_behv=>mk-on ) ) )
+      FAILED DATA(s_failed_act)
+      REPORTED DATA(s_reported_act).
+
+    IF s_failed_act-travel IS NOT INITIAL.
+
+      ROLLBACK ENTITIES.
+      messages_display( s_reported_act-travel ).
+      RETURN.
+
+    ENDIF.
+
+    IF data_save( ) = abap_true.
+
+      data_read( ).
+      client->view_model_update( ).
+      client->message_toast_display( `Demo travels created as drafts and activated` ).
+
+    ENDIF.
+
+  ENDMETHOD.
+
+
   METHOD on_event_edit.
 
-    DATA s_failed   TYPE RESPONSE FOR FAILED EARLY /dmo/r_travel_d.
-    DATA s_reported TYPE RESPONSE FOR REPORTED EARLY /dmo/r_travel_d.
+    DATA s_failed   TYPE RESPONSE FOR FAILED EARLY z2ui5_r_smpe_trd.
+    DATA s_reported TYPE RESPONSE FOR REPORTED EARLY z2ui5_r_smpe_trd.
 
     DATA(uuid) = client->get_event_arg( 1 ).
 
@@ -114,7 +187,7 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
 
       " no draft yet: the draft action Edit copies the active instance
       " into a new draft instance
-      MODIFY ENTITIES OF /dmo/r_travel_d
+      MODIFY ENTITIES OF z2ui5_r_smpe_trd
         ENTITY travel
           EXECUTE Edit FROM VALUE #( ( %tky = VALUE #( traveluuid = uuid
                                                        %is_draft  = if_abap_behv=>mk-off ) ) )
@@ -125,7 +198,7 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
 
       " a draft already exists: the draft action Resume reactivates it,
       " so the user continues exactly where the last session ended
-      MODIFY ENTITIES OF /dmo/r_travel_d
+      MODIFY ENTITIES OF z2ui5_r_smpe_trd
         ENTITY travel
           EXECUTE Resume FROM VALUE #( ( %tky = VALUE #( traveluuid = uuid
                                                          %is_draft  = if_abap_behv=>mk-on ) ) )
@@ -156,7 +229,7 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
 
   METHOD on_event_save_draft.
 
-    MODIFY ENTITIES OF /dmo/r_travel_d
+    MODIFY ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
         UPDATE FIELDS ( agencyid customerid begindate enddate bookingfee currencycode description )
         WITH VALUE #( ( %tky         = VALUE #( traveluuid = s_draft-travel_uuid
@@ -194,7 +267,7 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
 
     " the validations of the business object run during activation -
     " an invalid draft stays a draft and the messages are displayed
-    MODIFY ENTITIES OF /dmo/r_travel_d
+    MODIFY ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
         EXECUTE Activate FROM VALUE #( ( %tky = VALUE #( traveluuid = s_draft-travel_uuid
                                                          %is_draft  = if_abap_behv=>mk-on ) ) )
@@ -223,7 +296,7 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
 
   METHOD on_event_discard.
 
-    MODIFY ENTITIES OF /dmo/r_travel_d
+    MODIFY ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
         EXECUTE Discard FROM VALUE #( ( %tky = VALUE #( traveluuid = s_draft-travel_uuid
                                                         %is_draft  = if_abap_behv=>mk-on ) ) )
@@ -252,7 +325,7 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
 
   METHOD draft_read.
 
-    READ ENTITIES OF /dmo/r_travel_d
+    READ ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
         ALL FIELDS WITH VALUE #( ( %tky = VALUE #( traveluuid = uuid
                                                    %is_draft  = if_abap_behv=>mk-on ) ) )
@@ -275,7 +348,7 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
 
   METHOD data_read.
 
-    SELECT FROM /dmo/r_travel_d
+    SELECT FROM z2ui5_r_smpe_trd
       FIELDS traveluuid,
              travelid,
              customerid,
@@ -291,7 +364,7 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
 
     " a draft instance shares the key of its active instance - reading
     " the keys with %is_draft = on reveals which travels have a draft
-    READ ENTITIES OF /dmo/r_travel_d
+    READ ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
         FIELDS ( travelid ) WITH VALUE #( FOR s_row IN t_result
                                           ( %tky = VALUE #( traveluuid = s_row-traveluuid
@@ -323,7 +396,7 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
 
   METHOD data_save.
 
-    COMMIT ENTITIES RESPONSE OF /dmo/r_travel_d
+    COMMIT ENTITIES RESPONSE OF z2ui5_r_smpe_trd
       FAILED DATA(s_failed)
       REPORTED DATA(s_reported).
 
@@ -375,8 +448,12 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
     DATA(table) = page->table( client->_bind( t_travels ) ).
     table->header_toolbar(
         )->toolbar(
-            )->title( `Travels (/DMO/R_TRAVEL_D)`
+            )->title( `Travels (Z2UI5_R_SMPE_TRD)`
             )->toolbar_spacer(
+            )->button(
+                text  = `Generate Demo Data`
+                icon  = `sap-icon://add`
+                press = client->_event( `GENERATE` )
             )->button(
                 icon  = `sap-icon://refresh`
                 press = client->_event( `REFRESH` ) ).
