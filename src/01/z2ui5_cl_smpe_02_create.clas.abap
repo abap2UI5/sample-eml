@@ -33,9 +33,17 @@ CLASS z2ui5_cl_smpe_02_create IMPLEMENTATION.
 
     me->client = client.
     IF client->check_on_init( ).
-      s_travel = VALUE #( currency   = `EUR`
-                          begin_date = |{ sy-datum }|
-                          end_date   = |{ sy-datum + 14 }| ).
+      " prefilled with a set that passes both validations of the business
+      " object - CustomerId is filled and EndDate is not before BeginDate -
+      " so pressing Create right away produces a travel. Change a value and
+      " the same button shows what the validations answer instead.
+      s_travel = VALUE #( agency_id   = `070001`
+                          customer_id = `000001`
+                          begin_date  = |{ sy-datum }|
+                          end_date    = |{ sy-datum + 14 }|
+                          booking_fee = `20.00`
+                          currency    = `EUR`
+                          description = `New travel created from sample 02` ).
       view_display( ).
     ELSEIF client->check_on_event( `CREATE` ).
       data_create( ).

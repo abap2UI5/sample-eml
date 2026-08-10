@@ -82,7 +82,15 @@ CLASS z2ui5_cl_smpe_05_crud IMPLEMENTATION.
       WHEN `GENERATE`.
         on_event_generate( ).
       WHEN `CREATE`.
-        s_create = VALUE #( currency = `EUR` ).
+        " the popup opens on a set that passes both validations, so Create
+        " goes through on the first press - see z2ui5_cl_smpe_02_create
+        s_create = VALUE #( agency_id   = `070001`
+                            customer_id = `000001`
+                            begin_date  = |{ sy-datum }|
+                            end_date    = |{ sy-datum + 14 }|
+                            booking_fee = `20.00`
+                            currency    = `EUR`
+                            description = `New travel created from sample 05` ).
         popup_create_display( ).
       WHEN `POPUP_CREATE_CONFIRM`.
         on_event_create( ).

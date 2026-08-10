@@ -14,7 +14,7 @@ You already know EML. This repository shows where it goes in an app — one runn
 
 ## Start here
 
-Run [`00 overview`](src/z2ui5_cl_smpe_00_overview.clas.abap) — `?app_start=z2ui5_cl_smpe_00_overview`. It lists every sample below and starts it on a click; the sample returns to the overview with its back button.
+Run [`00 overview`](src/z2ui5_cl_smpe_00_overview.clas.abap) — `?app_start=z2ui5_cl_smpe_00_overview`. It lists every sample below and opens it in a new browser tab on a click, so the overview stays open and several samples can run side by side. *Regenerate Demo Data* in its header fills both business objects.
 
 ## Find the snippet
 
@@ -110,7 +110,7 @@ EXECUTE Discard  FROM ... %is_draft = mk-on    " draft  -> gone, active untouche
 
 1. Install [abap2UI5](https://github.com/abap2UI5/abap2UI5).
 2. Pull this repository with [abapGit](https://abapgit.org). ABAP Platform >= 1909 or BTP ABAP Environment — EML needs it, so unlike the other sample repositories this one is not downported to 7.02.
-3. Fill the tables: run `Z2UI5_CL_SMPE_DATA_TRV` and `Z2UI5_CL_SMPE_DATA_TRD` with F9 in ADT, or press *Generate Demo Data* in a sample. Both offer `data_generate( )`, `data_delete( )` and `data_reset( )`.
+3. Fill the tables: run `Z2UI5_CL_SMPE_DATA_TRV` and `Z2UI5_CL_SMPE_DATA_TRD` with F9 in ADT, or press *Regenerate Demo Data* in the overview (*Generate Demo Data* in a single sample does the same for its own business object). Both offer `data_generate( )`, `data_delete( )` and `data_reset( )`.
 4. Start `?app_start=z2ui5_cl_smpe_00_overview` and pick a sample from there.
 
 Demo data is created through the business object, not with an `INSERT` — otherwise the determinations would not run and the rows would be data the BO could never produce.

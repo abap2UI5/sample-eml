@@ -2,9 +2,12 @@
 "! The entry point of this repository: every sample in one list, one press
 "! away. Start it with ?app_start=z2ui5_cl_smpe_00_overview.
 "!
-"! Nothing has to be wired on the other side: every sample renders its page
-"! with navbuttonpress = client-&gt;_event_nav_app_leave( ), so a sample started
-"! from here comes back with its own back button.
+"! A row opens its sample in a NEW BROWSER TAB, so the overview stays where
+"! it is and several samples can run side by side. That is a pure frontend
+"! action: the row carries the finished ?app_start= URL of its class and the
+"! press is wired with _event_client( ), which opens the tab inside the click
+"! handler without a roundtrip - a window.open( ) from a server response
+"! would be swallowed by the popup blocker.
 CLASS z2ui5_cl_smpe_00_overview DEFINITION PUBLIC.
 
   PUBLIC SECTION.
@@ -16,6 +19,8 @@ CLASS z2ui5_cl_smpe_00_overview DEFINITION PUBLIC.
         title     TYPE string,
         statement TYPE string,
         classname TYPE string,
+        "! the app URL of CLASSNAME - the frontend opens it in a new tab
+        url       TYPE string,
       END OF ty_s_sample.
     TYPES ty_t_sample TYPE STANDARD TABLE OF ty_s_sample WITH EMPTY KEY.
 
@@ -28,7 +33,7 @@ CLASS z2ui5_cl_smpe_00_overview DEFINITION PUBLIC.
 
     CONSTANTS:
       BEGIN OF cs_event,
-        start TYPE string VALUE `START` ##NO_TEXT,
+        regenerate TYPE string VALUE `REGENERATE` ##NO_TEXT,
       END OF cs_event.
 
     METHODS on_event.
@@ -77,18 +82,16 @@ CLASS z2ui5_cl_smpe_00_overview IMPLEMENTATION.
 
   METHOD on_event.
 
-    DATA li_app TYPE REF TO z2ui5_if_app.
-
     CASE client->get( )-event.
 
-      WHEN cs_event-start.
+      WHEN cs_event-regenerate.
 
-        " the pressed row carries the class name the list was built from, so
-        " the sample is created dynamically - model_init stays the only place
-        " where a sample app is named
-        DATA(classname) = client->get_event_arg( ).
-        CREATE OBJECT li_app TYPE (classname).
-        client->nav_app_call( li_app ).
+        " both business objects at once - the samples above run against the
+        " one without draft, the samples below against the draft enabled one,
+        " and an empty table is the most common reason a sample looks broken.
+        " data_reset( ) deletes first, so the travel ids stay 1, 2, 3.
+        client->message_toast_display( |{ z2ui5_cl_smpe_data_trv=>data_reset( ) } | &&
+                                       |{ z2ui5_cl_smpe_data_trd=>data_reset( ) }| ).
 
     ENDCASE.
 
@@ -109,11 +112,19 @@ CLASS z2ui5_cl_smpe_00_overview IMPLEMENTATION.
             )->a( n = `title` v = `abap2UI5 - EML - 00 Overview`
             )->a( n = `class` v = `sapUiContentPadding` ).
 
+    " the button sits in the page header, so it stays reachable no matter
+    " which of the two lists the user has scrolled to
+    page->open( `headerContent`
+        )->leaf( `Button`
+            )->a( n = `text`  v = `Regenerate Demo Data`
+            )->a( n = `icon`  v = `sap-icon://refresh`
+            )->a( n = `press` v = client->_event( cs_event-regenerate ) ).
+
     page->leaf( `MessageStrip`
         )->a( n = `text`     v = `Every EML sample of this repository, in the order of the README. ` &&
-                                 `Press a row to start it. Empty lists? Fill the tables first - ` &&
-                                 `run Z2UI5_CL_SMPE_DATA_TRV / Z2UI5_CL_SMPE_DATA_TRD with F9, ` &&
-                                 `or press Generate Demo Data in sample 05, 06 or 10.`
+                                 `Press a row to open it in a new tab. Empty lists? Press ` &&
+                                 `Regenerate Demo Data above - it fills both business objects ` &&
+                                 `with the same set Z2UI5_CL_SMPE_DATA_TRV / _TRD create with F9.`
         )->a( n = `showIcon` v = `true`
         )->a( n = `class`    v = `sapUiSmallMarginBottom` ).
 
@@ -162,8 +173,12 @@ CLASS z2ui5_cl_smpe_00_overview IMPLEMENTATION.
     table->open( `items`
         )->open( `ColumnListItem`
             )->a( n = `type`  v = `Navigation`
-            )->a( n = `press` v = client->_event( val   = cs_event-start
-                                                  t_arg = VALUE #( ( `${CLASSNAME}` ) ) )
+            " ${URL} is resolved by UI5 against the pressed row, so one wire
+            " serves every sample - and _event_client keeps it a frontend
+            " action, which is what lets the browser accept the new tab
+            )->a( n = `press` v = client->_event_client(
+                                      val   = client->cs_event-open_new_tab
+                                      t_arg = VALUE #( ( `${URL}` ) ) )
             )->open( `cells`
                 )->leaf( `Text`
                     )->a( n = `text` v = `{NO}`
@@ -179,13 +194,24 @@ CLASS z2ui5_cl_smpe_00_overview IMPLEMENTATION.
 
   METHOD sample.
 
+    " read off the instance instead of typed as a literal: the compiler checks
+    " the NEW below, so renaming a sample class breaks the build instead of
+    " this list
+    DATA(classname) = z2ui5_cl_util=>rtti_get_classname_by_ref( app ).
+
+    " the address the browser has to open for that class - same ICF node and
+    " same url parameters as the running overview, only app_start exchanged
+    DATA(s_config) = client->get( )-s_config.
+
     result = VALUE #( no        = no
                       title     = title
                       statement = statement
-                      " read off the instance instead of typed as a literal:
-                      " the compiler checks the NEW below, so renaming a sample
-                      " class breaks the build instead of this list
-                      classname = z2ui5_cl_util=>rtti_get_classname_by_ref( app ) ).
+                      classname = classname
+                      url       = z2ui5_cl_util=>app_get_url( classname = classname
+                                                              origin    = s_config-origin
+                                                              pathname  = s_config-pathname
+                                                              search    = s_config-search
+                                                              hash      = s_config-hash ) ).
 
   ENDMETHOD.
 
