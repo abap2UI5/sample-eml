@@ -84,10 +84,14 @@ CLASS z2ui5_cl_smpe_app_05 IMPLEMENTATION.
       WHEN `CREATE`.
         " the popup opens on a set that passes both validations, so Create
         " goes through on the first press - see z2ui5_cl_smpe_app_02
+        " see z2ui5_cl_smpe_app_02: without CONV d( ) the template renders the
+        " day number of sy-datum + 14, not a date
+        DATA(end_date) = CONV d( sy-datum + 14 ).
+
         s_create = VALUE #( agency_id   = `070001`
                             customer_id = `000001`
                             begin_date  = |{ sy-datum }|
-                            end_date    = |{ sy-datum + 14 }|
+                            end_date    = |{ end_date }|
                             booking_fee = `20.00`
                             currency    = `EUR`
                             description = `New travel created from sample 05` ).

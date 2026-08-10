@@ -37,10 +37,15 @@ CLASS z2ui5_cl_smpe_app_02 IMPLEMENTATION.
       " object - CustomerId is filled and EndDate is not before BeginDate -
       " so pressing Create right away produces a travel. Change a value and
       " the same button shows what the validations answer instead.
+      " CONV d( ) is what turns the sum back into a date: sy-datum + 14 is
+      " calculated as a day number, and a string template renders that number
+      " instead of a date - the field showed 739853
+      DATA(end_date) = CONV d( sy-datum + 14 ).
+
       s_travel = VALUE #( agency_id   = `070001`
                           customer_id = `000001`
                           begin_date  = |{ sy-datum }|
-                          end_date    = |{ sy-datum + 14 }|
+                          end_date    = |{ end_date }|
                           booking_fee = `20.00`
                           currency    = `EUR`
                           description = `New travel created from sample 02` ).
