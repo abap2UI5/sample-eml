@@ -28,12 +28,17 @@ The abap2UI5 apps sit at the top of `src` — they are what you run and what you
 
 ```
 src/                       the abap2UI5 apps
-├── z2ui5_cl_smpe_read     reads a travel from the BO of 01
-├── z2ui5_cl_smpe_crud     manages the travels of the BO of 01
-├── z2ui5_cl_smpe_draft    drives the draft lifecycle of the BO of 02
+├── z2ui5_cl_smpe_read     one EML statement each: READ ENTITIES
+├── z2ui5_cl_smpe_create                           MODIFY ... CREATE
+├── z2ui5_cl_smpe_update                           MODIFY ... UPDATE
+├── z2ui5_cl_smpe_delete                           MODIFY ... DELETE
+├── z2ui5_cl_smpe_crud     all four plus the BO actions, in one app
+├── z2ui5_cl_smpe_draft    the draft lifecycle
 ├── 01/                    RAP business object, no draft
 └── 02/                    RAP business object, draft enabled
 ```
+
+The first four apps do exactly one thing, so you can read any of them end to end in a minute. `crud` is the same operations combined into a working app, `draft` is the only one talking to the draft-enabled business object of `02`.
 
 Each subpackage holds a complete RAP stack. Nothing is shared between them, so one can be deleted without breaking the other:
 
@@ -83,9 +88,57 @@ READ ENTITIES OF z2ui5_r_smpe_trv
   FAILED DATA(s_failed).
 ```
 
-The `FAILED` response is checked to show an error message when the instance does not exist. The table starts out empty — create a travel in the *Manage Travels* app first, both apps work on the same business object.
+The `FAILED` response is checked to show an error message when the instance does not exist. The table starts out empty — run the *Create Travel* app first, all apps of `src/01` work on the same business object.
 
-### 2. `z2ui5_cl_smpe_crud` — Manage Travels
+### 2. `z2ui5_cl_smpe_create` — Create a Travel
+
+A form and one EML statement. The `%cid` is a temporary id chosen by the caller — the business object does not know the key yet, so it reports the assigned one back under that `%cid` in `MAPPED`:
+
+```abap
+MODIFY ENTITIES OF z2ui5_r_smpe_trv
+  ENTITY travel
+    CREATE FIELDS ( agencyid customerid begindate enddate bookingfee currencycode description )
+    WITH VALUE #( ( %cid       = `CREATE_1`
+                    agencyid   = s_travel-agency_id
+                    customerid = s_travel-customer_id ) )
+  MAPPED DATA(s_mapped)
+  FAILED DATA(s_failed)
+  REPORTED DATA(s_reported).
+```
+
+Nothing is persisted before the `COMMIT ENTITIES` — and the validations `validateCustomer` and `validateDates` only run there, so leaving the customer empty fails at the commit, not at the `MODIFY`. Thanks to *early numbering* the new key is then read from `s_mapped-travel[ %cid = 'CREATE_1' ]-travelid` and shown.
+
+### 3. `z2ui5_cl_smpe_update` — Update a Travel
+
+A table of travels with an editable description and one `Update` button per row:
+
+```abap
+MODIFY ENTITIES OF z2ui5_r_smpe_trv
+  ENTITY travel
+    UPDATE FIELDS ( description )
+    WITH VALUE #( ( travelid    = travel_id
+                    description = s_travel-description ) )
+  FAILED DATA(s_failed)
+  REPORTED DATA(s_reported).
+```
+
+`UPDATE FIELDS` names exactly the fields that change — everything else on the instance stays untouched, which is why nothing has to be read before the change. The list itself comes from a plain `SELECT` on the CDS view; reading needs no EML.
+
+### 4. `z2ui5_cl_smpe_delete` — Delete a Travel
+
+The same table with a `Delete` button per row. `DELETE` needs nothing but the key:
+
+```abap
+MODIFY ENTITIES OF z2ui5_r_smpe_trv
+  ENTITY travel
+    DELETE FROM VALUE #( ( travelid = travel_id ) )
+  FAILED DATA(s_failed)
+  REPORTED DATA(s_reported).
+```
+
+It can still fail — when the business object refuses the deletion or the instance is locked — which is why `FAILED` is checked here just like everywhere else.
+
+### 5. `z2ui5_cl_smpe_crud` — Manage Travels
 
 A complete transactional app on top of `Z2UI5_R_SMPE_TRV`. The travel list is read from the CDS view; every change goes through the RAP BO with EML, so all validations, determinations and feature controls of the behavior definition are executed:
 
@@ -119,7 +172,7 @@ IF data_save( ) = abap_true. " COMMIT ENTITIES RESPONSE OF ...
 ENDIF.
 ```
 
-### 3. `z2ui5_cl_smpe_draft` — Draft Handling
+### 6. `z2ui5_cl_smpe_draft` — Draft Handling
 
 The full draft roundtrip on the draft-enabled BO `Z2UI5_R_SMPE_TRD` — the same lifecycle a Fiori Elements app runs through, executed manually with EML:
 

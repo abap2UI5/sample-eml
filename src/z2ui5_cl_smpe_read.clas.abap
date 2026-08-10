@@ -91,7 +91,7 @@ CLASS z2ui5_cl_smpe_read IMPLEMENTATION.
                 )->content( `form`
                 )->label( `Travel ID`
                 )->input(
-                    value       = client->_bind_edit( travel_id )
+                    value       = client->_bind( travel_id )
                     placeholder = `Enter a travel id, e.g. 1`
                 )->button(
                     text  = `Read`

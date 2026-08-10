@@ -501,23 +501,23 @@ CLASS z2ui5_cl_smpe_draft IMPLEMENTATION.
     dialog->simple_form( editable = abap_true
         )->content( `form`
         )->label( `Agency ID`
-        )->input( client->_bind_edit( s_draft-agency_id )
+        )->input( client->_bind( s_draft-agency_id )
         )->label( `Customer ID`
-        )->input( client->_bind_edit( s_draft-customer_id )
+        )->input( client->_bind( s_draft-customer_id )
         )->label( `Begin Date`
         )->date_picker(
-            value       = client->_bind_edit( s_draft-begin_date )
+            value       = client->_bind( s_draft-begin_date )
             valueformat = `yyyyMMdd`
         )->label( `End Date`
         )->date_picker(
-            value       = client->_bind_edit( s_draft-end_date )
+            value       = client->_bind( s_draft-end_date )
             valueformat = `yyyyMMdd`
         )->label( `Booking Fee`
-        )->input( client->_bind_edit( s_draft-booking_fee )
+        )->input( client->_bind( s_draft-booking_fee )
         )->label( `Currency`
-        )->input( client->_bind_edit( s_draft-currency )
+        )->input( client->_bind( s_draft-currency )
         )->label( `Description`
-        )->input( client->_bind_edit( s_draft-description ) ).
+        )->input( client->_bind( s_draft-description ) ).
 
     dialog->buttons(
         )->button(

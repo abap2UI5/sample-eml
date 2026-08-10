@@ -399,7 +399,7 @@ CLASS z2ui5_cl_smpe_crud IMPLEMENTATION.
             navbuttonpress = client->_event_nav_app_leave( )
             shownavbutton  = client->check_app_prev_stack( ) ).
 
-    DATA(table) = page->table( client->_bind_edit( t_travels ) ).
+    DATA(table) = page->table( client->_bind( t_travels ) ).
     table->header_toolbar(
         )->toolbar(
             )->title( `Travels (Z2UI5_R_SMPE_TRV)`
@@ -471,28 +471,28 @@ CLASS z2ui5_cl_smpe_crud IMPLEMENTATION.
         )->content( `form`
         )->label( `Agency ID`
         )->input(
-            value       = client->_bind_edit( s_create-agency_id )
+            value       = client->_bind( s_create-agency_id )
             placeholder = `e.g. 70001`
         )->label( `Customer ID`
         )->input(
-            value       = client->_bind_edit( s_create-customer_id )
+            value       = client->_bind( s_create-customer_id )
             placeholder = `e.g. 1`
         )->label( `Begin Date`
         )->date_picker(
-            value       = client->_bind_edit( s_create-begin_date )
+            value       = client->_bind( s_create-begin_date )
             valueformat = `yyyyMMdd`
         )->label( `End Date`
         )->date_picker(
-            value       = client->_bind_edit( s_create-end_date )
+            value       = client->_bind( s_create-end_date )
             valueformat = `yyyyMMdd`
         )->label( `Booking Fee`
         )->input(
-            value       = client->_bind_edit( s_create-booking_fee )
+            value       = client->_bind( s_create-booking_fee )
             placeholder = `e.g. 10.50`
         )->label( `Currency`
-        )->input( client->_bind_edit( s_create-currency )
+        )->input( client->_bind( s_create-currency )
         )->label( `Description`
-        )->input( client->_bind_edit( s_create-description ) ).
+        )->input( client->_bind( s_create-description ) ).
 
     dialog->begin_button( )->button(
         text  = `Create`
