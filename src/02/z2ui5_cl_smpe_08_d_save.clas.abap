@@ -1,4 +1,4 @@
-CLASS z2ui5_cl_smpe_d_save DEFINITION PUBLIC.
+CLASS z2ui5_cl_smpe_08_d_save DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -22,7 +22,7 @@ CLASS z2ui5_cl_smpe_d_save DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smpe_d_save IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_08_d_save IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
@@ -114,7 +114,7 @@ CLASS z2ui5_cl_smpe_d_save IMPLEMENTATION.
     DATA(view) = z2ui5_cl_xml_view=>factory( ).
     DATA(page) = view->shell(
         )->page(
-            title          = `abap2UI5 - EML - Change and Save a Draft`
+            title          = `abap2UI5 - EML - 08 Change and Save a Draft`
             navbuttonpress = client->_event_nav_app_leave( )
             shownavbutton  = client->check_app_prev_stack( ) ).
 

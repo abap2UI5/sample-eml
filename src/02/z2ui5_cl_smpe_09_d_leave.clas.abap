@@ -1,4 +1,4 @@
-CLASS z2ui5_cl_smpe_d_activate DEFINITION PUBLIC.
+CLASS z2ui5_cl_smpe_09_d_leave DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -27,7 +27,7 @@ CLASS z2ui5_cl_smpe_d_activate DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smpe_d_activate IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_09_d_leave IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
@@ -160,7 +160,7 @@ CLASS z2ui5_cl_smpe_d_activate IMPLEMENTATION.
     DATA(view) = z2ui5_cl_xml_view=>factory( ).
     DATA(page) = view->shell(
         )->page(
-            title          = `abap2UI5 - EML - Leave Draft Mode`
+            title          = `abap2UI5 - EML - 09 Leave Draft Mode`
             navbuttonpress = client->_event_nav_app_leave( )
             shownavbutton  = client->check_app_prev_stack( ) ).
 

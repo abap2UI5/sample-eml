@@ -1,4 +1,4 @@
-CLASS z2ui5_cl_smpe_create DEFINITION PUBLIC.
+CLASS z2ui5_cl_smpe_02_create DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -27,7 +27,7 @@ CLASS z2ui5_cl_smpe_create DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smpe_create IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_02_create IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
@@ -99,7 +99,7 @@ CLASS z2ui5_cl_smpe_create IMPLEMENTATION.
     DATA(view) = z2ui5_cl_xml_view=>factory( ).
     view->shell(
         )->page(
-            title          = `abap2UI5 - EML - Create Travel`
+            title          = `abap2UI5 - EML - 02 Create Travel`
             navbuttonpress = client->_event_nav_app_leave( )
             shownavbutton  = client->check_app_prev_stack( )
             )->simple_form(

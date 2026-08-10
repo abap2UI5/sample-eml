@@ -1,7 +1,7 @@
 // Draft enabled managed business object. ````with draft```` plus ````draft table```` is
 // all it takes - the runtime then offers the four draft actions Edit, Activate,
 // Discard and Resume plus the determine action Prepare, which the abap2UI5 app
-// z2ui5_cl_smpe_draft calls with EML exactly like a Fiori Elements app would.
+// z2ui5_cl_smpe_10_draft calls with EML exactly like a Fiori Elements app would.
 managed implementation in class z2ui5_cl_smpe_bp_trd unique;
 strict ( 2 );
 with draft;

@@ -1,0 +1,241 @@
+"! <p class="shorttext synchronized">abap2UI5 EML sample 00 - overview</p>
+"! The entry point of this repository: every sample in one list, one press
+"! away. Start it with ?app_start=z2ui5_cl_smpe_00_overview.
+"!
+"! Nothing has to be wired on the other side: every sample renders its page
+"! with navbuttonpress = client-&gt;_event_nav_app_leave( ), so a sample started
+"! from here comes back with its own back button.
+CLASS z2ui5_cl_smpe_00_overview DEFINITION PUBLIC.
+
+  PUBLIC SECTION.
+    INTERFACES z2ui5_if_app.
+
+    TYPES:
+      BEGIN OF ty_s_sample,
+        no        TYPE string,
+        title     TYPE string,
+        statement TYPE string,
+        classname TYPE string,
+      END OF ty_s_sample.
+    TYPES ty_t_sample TYPE STANDARD TABLE OF ty_s_sample WITH EMPTY KEY.
+
+    "! samples 01-10, split by the business object they run against
+    DATA t_travel TYPE ty_t_sample.
+    DATA t_draft  TYPE ty_t_sample.
+
+  PROTECTED SECTION.
+    DATA client TYPE REF TO z2ui5_if_client.
+
+    CONSTANTS:
+      BEGIN OF cs_event,
+        start TYPE string VALUE `START` ##NO_TEXT,
+      END OF cs_event.
+
+    METHODS on_event.
+    METHODS view_display.
+    METHODS model_init.
+
+    "! one table per business object - same markup, different binding
+    METHODS render_table
+      IMPORTING
+        page  TYPE REF TO z2ui5_cl_ai_xml
+        title TYPE string
+        items TYPE string.
+
+    "! one row of the list
+    METHODS sample
+      IMPORTING
+        no            TYPE string
+        title         TYPE string
+        statement     TYPE string
+        app           TYPE REF TO z2ui5_if_app
+      RETURNING
+        VALUE(result) TYPE ty_s_sample.
+
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+CLASS z2ui5_cl_smpe_00_overview IMPLEMENTATION.
+
+  METHOD z2ui5_if_app~main.
+
+    me->client = client.
+    IF client->check_on_init( ).
+      model_init( ).
+      view_display( ).
+    ELSEIF client->check_on_event( ).
+      on_event( ).
+    ELSEIF client->check_on_navigated( ).
+      " a sample the user left with the back button lands here - without
+      " this branch the overview would come back blank
+      view_display( ).
+    ENDIF.
+
+  ENDMETHOD.
+
+
+  METHOD on_event.
+
+    DATA li_app TYPE REF TO z2ui5_if_app.
+
+    CASE client->get( )-event.
+
+      WHEN cs_event-start.
+
+        " the pressed row carries the class name the list was built from, so
+        " the sample is created dynamically - model_init stays the only place
+        " where a sample app is named
+        DATA(classname) = client->get_event_arg( ).
+        CREATE OBJECT li_app TYPE (classname).
+        client->nav_app_call( li_app ).
+
+    ENDCASE.
+
+  ENDMETHOD.
+
+
+  METHOD view_display.
+
+    DATA(view) = z2ui5_cl_ai_xml=>factory( ).
+
+    DATA(page) = view->open( n = `View` ns = `mvc`
+        )->a( n = `xmlns`        v = `sap.m`
+        )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+        )->a( n = `displayBlock` v = `true`
+        )->a( n = `height`       v = `100%`
+        )->open( `Shell`
+        )->open( `Page`
+            )->a( n = `title` v = `abap2UI5 - EML - 00 Overview`
+            )->a( n = `class` v = `sapUiContentPadding` ).
+
+    page->leaf( `MessageStrip`
+        )->a( n = `text`     v = `Every EML sample of this repository, in the order of the README. ` &&
+                                 `Press a row to start it. Empty lists? Fill the tables first - ` &&
+                                 `run Z2UI5_CL_SMPE_DATA_TRV / Z2UI5_CL_SMPE_DATA_TRD with F9, ` &&
+                                 `or press Generate Demo Data in sample 05, 06 or 10.`
+        )->a( n = `showIcon` v = `true`
+        )->a( n = `class`    v = `sapUiSmallMarginBottom` ).
+
+    render_table( page  = page
+                  title = `Z2UI5_R_SMPE_TRV - business object without draft`
+                  items = client->_bind( t_travel ) ).
+
+    render_table( page  = page
+                  title = `Z2UI5_R_SMPE_TRD - draft enabled business object`
+                  items = client->_bind( t_draft ) ).
+
+    client->view_display( view->stringify( ) ).
+
+  ENDMETHOD.
+
+
+  METHOD render_table.
+
+    DATA(table) = page->open( `Table`
+        )->a( n = `items` v = items
+        )->a( n = `class` v = `sapUiSmallMarginBottom` ).
+
+    table->open( `headerToolbar`
+        )->open( `Toolbar`
+            )->leaf( `Title`
+                )->a( n = `text` v = title ).
+
+    table->open( `columns`
+        )->open( `Column`
+            )->a( n = `width` v = `3rem`
+            )->leaf( `Text`
+                )->a( n = `text` v = `#`
+        )->shut(
+        )->open( `Column`
+            )->leaf( `Text`
+                )->a( n = `text` v = `Sample`
+        )->shut(
+        )->open( `Column`
+            )->leaf( `Text`
+                )->a( n = `text` v = `EML`
+        )->shut(
+        )->open( `Column`
+            )->leaf( `Text`
+                )->a( n = `text` v = `Class` ).
+
+    table->open( `items`
+        )->open( `ColumnListItem`
+            )->a( n = `type`  v = `Navigation`
+            )->a( n = `press` v = client->_event( val   = cs_event-start
+                                                  t_arg = VALUE #( ( `${CLASSNAME}` ) ) )
+            )->open( `cells`
+                )->leaf( `Text`
+                    )->a( n = `text` v = `{NO}`
+                )->leaf( `Text`
+                    )->a( n = `text` v = `{TITLE}`
+                )->leaf( `Text`
+                    )->a( n = `text` v = `{STATEMENT}`
+                )->leaf( `Text`
+                    )->a( n = `text` v = `{CLASSNAME}` ).
+
+  ENDMETHOD.
+
+
+  METHOD sample.
+
+    result = VALUE #( no        = no
+                      title     = title
+                      statement = statement
+                      " read off the instance instead of typed as a literal:
+                      " the compiler checks the NEW below, so renaming a sample
+                      " class breaks the build instead of this list
+                      classname = z2ui5_cl_util=>rtti_get_classname_by_ref( app ) ).
+
+  ENDMETHOD.
+
+
+  METHOD model_init.
+
+    t_travel = VALUE #(
+      ( sample( no        = `01`
+                title     = `Read a travel`
+                statement = `READ ENTITIES`
+                app       = NEW z2ui5_cl_smpe_01_read( ) ) )
+      ( sample( no        = `02`
+                title     = `Create a travel`
+                statement = `MODIFY ... CREATE, key from MAPPED`
+                app       = NEW z2ui5_cl_smpe_02_create( ) ) )
+      ( sample( no        = `03`
+                title     = `Update a travel`
+                statement = `MODIFY ... UPDATE FIELDS`
+                app       = NEW z2ui5_cl_smpe_03_update( ) ) )
+      ( sample( no        = `04`
+                title     = `Delete a travel`
+                statement = `MODIFY ... DELETE FROM`
+                app       = NEW z2ui5_cl_smpe_04_delete( ) ) )
+      ( sample( no        = `05`
+                title     = `Manage travels - the whole app`
+                statement = `MODIFY ... EXECUTE, COMMIT ENTITIES RESPONSE OF`
+                app       = NEW z2ui5_cl_smpe_05_crud( ) ) ) ).
+
+    t_draft = VALUE #(
+      ( sample( no        = `06`
+                title     = `Which travels have a draft?`
+                statement = `READ ... %is_draft = mk-on`
+                app       = NEW z2ui5_cl_smpe_06_d_list( ) ) )
+      ( sample( no        = `07`
+                title     = `Enter draft mode`
+                statement = `EXECUTE Edit / Resume`
+                app       = NEW z2ui5_cl_smpe_07_d_edit( ) ) )
+      ( sample( no        = `08`
+                title     = `Change and save a draft`
+                statement = `UPDATE ... %is_draft = mk-on`
+                app       = NEW z2ui5_cl_smpe_08_d_save( ) ) )
+      ( sample( no        = `09`
+                title     = `Leave draft mode`
+                statement = `EXECUTE Activate / Discard`
+                app       = NEW z2ui5_cl_smpe_09_d_leave( ) ) )
+      ( sample( no        = `10`
+                title     = `Travels with draft handling - the whole app`
+                statement = `everything above`
+                app       = NEW z2ui5_cl_smpe_10_draft( ) ) ) ).
+
+  ENDMETHOD.
+
+ENDCLASS.

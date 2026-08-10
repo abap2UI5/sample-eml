@@ -1,4 +1,4 @@
-CLASS z2ui5_cl_smpe_d_edit DEFINITION PUBLIC.
+CLASS z2ui5_cl_smpe_07_d_edit DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -24,7 +24,7 @@ CLASS z2ui5_cl_smpe_d_edit DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smpe_d_edit IMPLEMENTATION.
+CLASS z2ui5_cl_smpe_07_d_edit IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
@@ -113,7 +113,7 @@ CLASS z2ui5_cl_smpe_d_edit IMPLEMENTATION.
       INTO TABLE @DATA(t_result)
       UP TO 20 ROWS.
 
-    " see z2ui5_cl_smpe_d_list for what this read does
+    " see z2ui5_cl_smpe_06_d_list for what this read does
     READ ENTITIES OF z2ui5_r_smpe_trd
       ENTITY travel
         FIELDS ( travelid ) WITH VALUE #( FOR s_row IN t_result
@@ -138,7 +138,7 @@ CLASS z2ui5_cl_smpe_d_edit IMPLEMENTATION.
     DATA(view) = z2ui5_cl_xml_view=>factory( ).
     DATA(table) = view->shell(
         )->page(
-            title          = `abap2UI5 - EML - Enter Draft Mode`
+            title          = `abap2UI5 - EML - 07 Enter Draft Mode`
             navbuttonpress = client->_event_nav_app_leave( )
             shownavbutton  = client->check_app_prev_stack( )
             )->table( client->_bind( t_travels ) ).
