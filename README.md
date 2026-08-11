@@ -8,26 +8,35 @@
 
 # abap2UI5 — samples-ext
 
-The samples that need **more than a standalone abap2UI5 installation**.
+**abap2UI5 in company with other technologies.**
 
-Everything in [abap2UI5/samples](https://github.com/abap2UI5/samples) runs on a
-plain stack: install abap2UI5, pull the repository, start an app. The demos
-collected here do not — each one needs something the system has to provide
-first: a RAP business object, an activated OData service, an ICF node, a stateful
-session, a MIME object. That is the only thing they have in common, and it is why
-they live in their own repository instead of cluttering the basic samples with
-prerequisites.
+abap2UI5 is more than a standalone framework for building apps. At its core it is
+deliberately agnostic: it makes no assumption about where your data comes from,
+which model backs your UI, or which stack you have already invested in. That
+neutrality is what makes it flexible — whenever it is useful, abap2UI5 plugs into
+what your system already offers.
 
-Every area is self-contained. Pick the one you came for; you do not have to set
-up the others.
+This repository shows exactly that. RAP, OData, Smart Controls, stateful sessions
+and ABAP locks, WebSockets via AMC/APC, the MIME repository — abap2UI5 works
+alongside each of them, and each one keeps doing what it is good at. Nothing here
+replaces an existing technology; everything here complements one. Whether you use
+any of it is entirely up to you — *everything is possible, nothing is required*.
+
+The samples live in their own repository simply because they reach beyond a plain
+abap2UI5 installation: they use something the system provides, so the basic
+samples in [abap2UI5/samples](https://github.com/abap2UI5/samples) stay
+install-and-run.
+
+Every area is self-contained. Pick the one you came for and try it out — the
+others can wait until you need them.
 
 ## What is in here
 
-| Package | Topic | Needs |
+| Package | Topic | Plays together with |
 |---|---|---|
-| [`src/01`](src/01) | **RAP** — consume a business object with EML | ABAP Platform >= 1909, the two BOs ship with this repo |
+| [`src/01`](src/01) | **RAP** — consume a business object with EML | ABAP Platform >= 1909; the two BOs ship with this repo |
 | [`src/02`](src/02) | **RAP with Draft** — the same, draft enabled | as above |
-| [`src/03`](src/03) | **Smart Controls** — `sap.ui.comp` against OData V2 | SAPUI5 (not OpenUI5) + an activated Gateway service |
+| [`src/03`](src/03) | **Smart Controls** — `sap.ui.comp` against OData V2 | SAPUI5 + an activated Gateway service |
 | [`src/04`](src/04) | **OData** — bind a table to an OData V2 model | an activated OData V2 service |
 | [`src/05`](src/05) | **Stateful Sessions / Locks** — sticky session, `ENQUEUE` | ABAP Standard (on-premise), the table `Z2UI5_T_SMPE_01` |
 | [`src/06`](src/06) | **AMC/APC** — a news feed over WebSocket | on-premise APC/AMC, the ICF node `Z2UI5_APC_SMP_2` |
@@ -36,15 +45,15 @@ up the others.
 ## Setup
 
 1. Install [abap2UI5](https://github.com/abap2UI5/abap2UI5).
-2. Pull this repository with [abapGit](https://abapgit.org). Unlike the other
-   sample repositories this one is **not downported to 7.02** — EML needs
-   ABAP Platform >= 1909 or a BTP ABAP Environment.
-3. Do whatever the area you want asks for (see its section below).
+2. Pull this repository with [abapGit](https://abapgit.org). This one runs on
+   ABAP Platform >= 1909 or a BTP ABAP Environment — that is what EML asks for,
+   which is why it is the one sample repository without a 7.02 downport.
+3. Set up whatever the area you picked builds on (see its section below).
 4. Start an app with `?app_start=<class name>`.
 
-The RAP samples have an overview app that lists and launches them:
-`?app_start=z2ui5_cl_smpe_app_00`. The other areas have none — start those samples
-by class name. Every sample is called `Z2UI5_CL_SMPE_APP_<no>`, and the tables
+The RAP samples come with an overview app that lists and launches them:
+`?app_start=z2ui5_cl_smpe_app_00`. Every sample of the other areas starts just as
+easily by class name — they are all called `Z2UI5_CL_SMPE_APP_<no>`, and the tables
 below give you the number, so sample `487` is
 `?app_start=z2ui5_cl_smpe_app_487`.
 
@@ -54,14 +63,17 @@ below give you the number, so sample `487` is
 
 `src/01` (without draft) and `src/02` (draft enabled).
 
-No OData service, no annotations, the view is built in plain ABAP. One runnable
-sample per statement, plus the two business objects to run them against, so
-nothing else has to be installed.
+RAP and abap2UI5 fit together naturally: the business object keeps the business
+logic, abap2UI5 builds the UI on top of it — in plain ABAP, with no OData service
+and no annotations in between. If you already have RAP BOs, you can put a screen
+in front of them today. There is one runnable sample per EML statement, and the
+two business objects to run them against ship with the repository, so you can
+start right away.
 
-**Two ways in:**
+**Two ways in — pick yours:**
 
 - **You know EML and want the snippet** → [Find the snippet](#find-the-snippet). Every class carries its statement in the comment at the very top, so you see it the moment you open the file.
-- **RAP is new to you** → read [The business object](#the-business-object) first. It is one page, and without it half the messages the samples show will not mean anything.
+- **RAP is new to you** → start with [The business object](#the-business-object). It is one page, and it makes every message the samples show readable.
 
 ## Start here
 
@@ -86,7 +98,8 @@ Both business objects manage the same thing: a **travel**. They are ordinary man
 | `Description` | free text |
 | `CreatedBy/At`, `LastChangedBy/At` | **readonly** — filled by the runtime |
 
-What runs, and **when**, is the part that surprises most newcomers:
+What runs, and **when**, is the part worth knowing up front — once it clicks, the
+rest of the samples read themselves:
 
 - **Early numbering** hands out `TravelId` while the CREATE is still in the transactional buffer. That is why the new key comes back in `MAPPED` under the `%cid` you sent, and why you never pass a key on CREATE.
 - A **determination** (`setInitialValues`) fills `OverallStatus`, `TotalPrice` and the currency right after a create. Those fields are readonly for you precisely because the BO owns them.
@@ -118,7 +131,7 @@ Ten samples, each one statement, plus two complete apps. The numbers are the rea
 
 Samples 01–04 run against the business object without draft, 06–09 against the draft enabled one. Start at 06 for the draft half — it carries the one trick the other three reuse.
 
-**The two complete apps** are a different kind of sample. They repeat what the single statements show, but in one screen with popups, message handling and a refresh — roughly three times the size. Read them after the snippets, not instead of them:
+**The two complete apps** show the next step: everything the single statements teach, now in one screen with popups, message handling and a refresh — roughly three times the size, and close to what a real app looks like. Best read once the snippets have made sense:
 
 | | | |
 |---|---|---|
@@ -204,17 +217,19 @@ EXECUTE Discard  FROM VALUE #( ( %key-traveluuid = uuid ) )   " draft  -> gone, 
 
 # Smart Controls
 
-`src/03`. The `sap.ui.comp` library builds its UI from **OData V2 metadata**, not from
-ABAP data — a `SmartTable` asks the service what the columns are, a `SmartField`
-asks what the field is. So these apps carry almost no data of their own; they
-switch the default model to a service and let the metadata do the rest.
+`src/03`. This is abap2UI5 at its most agnostic: the `sap.ui.comp` library builds
+its UI from **OData V2 metadata** — a `SmartTable` asks the service what the
+columns are, a `SmartField` asks what the field is. abap2UI5 simply points the
+default model at that service and lets the metadata do the rest, so the apps carry
+almost no data of their own. If you already run Gateway services, you get variant
+management, value help and smart filtering for free.
 
-Two consequences you cannot get around:
+Two things this builds on:
 
-- **SAPUI5, not OpenUI5.** `sap.ui.comp` is not part of the OpenUI5 distribution.
+- **SAPUI5**, since `sap.ui.comp` is part of the SAPUI5 distribution.
 - **An activated OData V2 service.** Most of the samples point at the Gateway demo
   service `GWSAMPLE_BASIC`, which ships with every on-premise system and only has
-  to be activated once in `/IWFND/MAINT_SERVICE`. Where a sample needs a different
+  to be activated once in `/IWFND/MAINT_SERVICE`. Where a sample uses a different
   service, it says so at the `switch_default_model_path` — adjust it to your system.
 
 | Sample | Shows | Service |
@@ -235,36 +250,38 @@ returned conditions 1:1 onto an ABAP range table — `SIGN`/`OPTION`/`LOW`/`HIGH
 filters with `... WHERE product_type IN r_product_type`. Both the derived
 SELECT-OPTIONS and the matching rows are on screen, so the mapping is visible.
 
-`479` cannot fall back to `GWSAMPLE_BASIC`: a SmartChart needs an **analytical**
-OData V2 service — properties marked `sap:aggregation-role` dimension/measure plus
-the `UI.Chart` annotation the layout comes from. No such service is part of a
-standard system, so the path in the class is a placeholder and the chart stays
-empty until you point it at a real one.
+`479` goes one step further: a SmartChart draws from an **analytical** OData V2
+service — properties marked `sap:aggregation-role` dimension/measure plus the
+`UI.Chart` annotation the layout comes from. Since a standard system ships no such
+service, the path in the class is a placeholder — point it at an analytical
+service of your own and the chart comes to life.
 
 ---
 
 # OData
 
-`src/04`. No smart controls — a plain `sap.m.Table` bound to an OData V2 model.
+`src/04`. Smart controls are optional — a plain `sap.m.Table` bound to an OData V2
+model works just as well, and abap2UI5 lets you mix both styles in one app.
 
 [`315`](src/04/z2ui5_cl_smpe_app_315.clas.abap) attaches **two** models in one view
 via `cs_event-set_odata_model`, each under its own name, and binds one table to
 each: `{TRAVEL>/Currency}` and `{FLIGHT>/Airport}`. The column headers come from the
 metadata (`{TRAVEL>/#Currency/Currency/@sap:label}`), the cells from the entity.
 
-It expects `/sap/opu/odata/DMO/API_TRAVEL_U_V2/` and
+It points at `/sap/opu/odata/DMO/API_TRAVEL_U_V2/` and
 `/sap/opu/odata/DMO/ui_flight_r_v2/` — the services of the SAP flight reference
-scenario. Swap the paths for services of your own system if those are not
-activated.
+scenario. Any two OData V2 services of your own system do just as well; swap the
+paths and the sample keeps working.
 
 ---
 
 # Stateful Sessions / Locks
 
 `src/05`. By default abap2UI5 is stateless: every roundtrip is a fresh request and
-the app state travels in the payload. `client->set_session_stateful( )` turns that
-off — the session sticks to one work process, which is what you need the moment you
-want an **ABAP lock** to survive between two clicks.
+the app state travels in the payload. When a scenario calls for more,
+`client->set_session_stateful( )` switches it over — the session sticks to one work
+process, and classic ABAP techniques such as an **ABAP lock** survive between two
+clicks. Stateless by default, stateful where it pays off, decided per app.
 
 | Sample | Shows |
 |---|---|
@@ -272,11 +289,12 @@ want an **ABAP lock** to survive between two clicks.
 | [`485`](src/05/z2ui5_cl_smpe_app_485.clas.abap) | set an `ENQUEUE` lock, read it back with `ENQUEUE_READ`, end and restart the session |
 | [`490`](src/05/z2ui5_cl_smpe_app_490.clas.abap) | one lock per screen — every *Next Lock View* navigates into a new app instance that takes the next `VARKEY`, going back releases it |
 
-**On-premise only.** The locks go through the function modules `ENQUEUE_E_TABLE` and
-`ENQUEUE_READ`, which are not released for ABAP Cloud — `485`'s own page title says
-so. The lock table `Z2UI5_T_SMPE_01` comes with the repository (`src/05/01`); after
-the import it only has to be activated, it is never filled with data. If you want to
-watch the entries appear, keep `SM12` open next to the browser.
+**Built for on-premise.** The locks go through the function modules
+`ENQUEUE_E_TABLE` and `ENQUEUE_READ`, which are available in ABAP Standard —
+`485`'s own page title points this out. The lock table `Z2UI5_T_SMPE_01` comes with
+the repository (`src/05/01`); after the import it only has to be activated, it is
+never filled with data. Keep `SM12` open next to the browser and you can watch the
+entries appear live.
 
 ---
 
@@ -295,9 +313,9 @@ through `error`; publishing goes the other way, from ABAP into the AMC channel.
 | `Z2UI5_APC_SMP_2` | the push channel and its ICF node |
 
 **Setup:** activate the ICF service `/sap/bc/apc/sap/z2ui5_apc_smp_2` in `SICF`. The
-app checks this itself and shows a warning strip if the node is inactive, so you
-notice before you wonder why nothing arrives. On-premise only — APC/AMC is not part
-of ABAP Cloud.
+app checks this itself and shows a friendly warning strip while the node is still
+inactive, so you always know where you stand. APC/AMC is an on-premise technology —
+open a second browser tab and watch the message arrive in both at once.
 
 ---
 
@@ -365,14 +383,26 @@ the older `SMP` token (`Z2UI5_AMC_SMP_2`, `Z2UI5_APC_SMP_2`, `z2ui5_smp_error.mp
 | `abap-cloud` | `abaplint .github/abaplint/abap_cloud.jsonc` — the ABAP Cloud language version |
 | `check-abap2UI5` | [`abap2ui5lint`](https://github.com/abap2UI5/linter) — the app class and the view it produces, together |
 
-There is no `abap-702` counterpart and no derived branch: EML needs ABAP Platform
->= 1909, so unlike the other sample repositories this one is not downported.
+There is no `abap-702` counterpart and no derived branch: EML runs from ABAP
+Platform 1909 onwards, so unlike the other sample repositories this one needs no
+downport.
 
-Two caveats about the badges:
+Two things to know when you read the badges:
 
 - abaplint parses EML but does not resolve behavior definitions, so entity, alias and
-  action names inside EML statements are **not** checked, and neither are the
-  `.asbdef` files.
-- `abap-cloud` lints the whole tree, including the areas that are on-premise only by
-  design (`src/05` `ENQUEUE`, `src/06` APC/AMC). It reports those as errors — a red
-  cloud badge does not mean the RAP samples are broken.
+  action names inside EML statements are not checked, and neither are the
+  `.asbdef` files — the samples themselves are the reference here.
+- `abap-cloud` lints the whole tree, including the areas that are on-premise by
+  design (`src/05` `ENQUEUE`, `src/06` APC/AMC). It reports those as errors, which
+  is expected: a red cloud badge says those two areas are on-premise, not that the
+  RAP samples are broken.
+
+## Where to go from here
+
+Take whichever area matches the technology you already run — a RAP business
+object, a Gateway service, an APC channel — and put an abap2UI5 app in front of
+it. None of these areas depends on another, and none of them is a prerequisite for
+using abap2UI5 at all: they are options you can reach for when they help.
+
+Something else you would like to see combined with abap2UI5? Open an issue or a
+pull request — the collection grows with the scenarios people bring to it.
