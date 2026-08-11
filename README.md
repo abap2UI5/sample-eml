@@ -38,7 +38,7 @@ and try it out — the others can wait until you need them.
 | [`src/01`](src/01) | **[OData](src/01/README.md)** — bind a table to an OData V2 model | an activated OData V2 service |
 | [`src/02`](src/02) | **[Smart Controls](src/02/README.md)** — `sap.ui.comp` driven by OData metadata | SAPUI5 + an activated Gateway service |
 | [`src/03`](src/03) | **[RAP](src/03/README.md)** — consume a business object with EML | ABAP Platform >= 1909; the BO ships with this repo |
-| [`src/04`](src/04) | **[RAP with Draft](src/04/README.md)** — the same, draft enabled | as above |
+| [`src/04`](src/04) | **[RAP with Draft](src/04/README.md)** — use draft handling | as above |
 | [`src/05`](src/05) | **[Business Events](src/05/README.md)** — react to RAP events, log them, show them | as above |
 | [`src/06`](src/06) | **[Stateful Sessions / Locks](src/06/README.md)** — sticky session, `ENQUEUE` | ABAP Standard (on-premise), the table `Z2UI5_T_SMPE_01` |
 | [`src/07`](src/07) | **[AMC/APC](src/07/README.md)** — a news feed over WebSocket | on-premise APC/AMC, the ICF node `Z2UI5_APC_SMP_2` |
@@ -63,27 +63,6 @@ the tables in the package READMEs give you the number, so sample `487` is
 `?app_start=z2ui5_cl_smpe_app_487`. The RAP packages additionally come with an
 overview app that lists and launches their samples:
 `?app_start=z2ui5_cl_smpe_app_00`.
-
-## Structure
-
-```
-src/                 z2ui5_cl_smpe_app_00 - the overview app of the RAP samples
-src/00/00            context shared by the RAP samples
-src/01               OData                    sample 315
-src/02               Smart Controls           samples 313, 314, 319, 475-479
-src/03               RAP, no draft            samples 01-05
-src/03/01            the business object      Z2UI5_R_SMPE_TRV, Z2UI5_T_SMPE_TRV
-src/04               RAP with draft           samples 06-10
-src/04/01            the business object      Z2UI5_R_SMPE_TRD, Z2UI5_T_SMPE_TRD, Z2UI5_D_SMPE_TRD
-src/05               Business Events          samples 11, 12
-src/05/01            the ticket BO            Z2UI5_R_SMPE_TCK, its event handler and the log
-src/06               Stateful Sessions/Locks  samples 485, 486, 490
-src/06/01            the lock table           Z2UI5_T_SMPE_01
-src/07               AMC/APC                  sample 489
-src/07/01            channel, push channel, ICF node
-src/08               MIME Play Audio          sample 487
-src/08/01            the two MIME objects
-```
 
 ## Namespace
 
