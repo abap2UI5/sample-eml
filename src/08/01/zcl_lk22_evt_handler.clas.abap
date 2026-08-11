@@ -1,0 +1,7 @@
+CLASS zcl_lk22_evt_handler DEFINITION
+  PUBLIC
+  FOR EVENTS OF zi_lk22_ticket.
+ENDCLASS.
+
+CLASS zcl_lk22_evt_handler IMPLEMENTATION.
+ENDCLASS.

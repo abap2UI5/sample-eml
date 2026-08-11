@@ -1,0 +1,5 @@
+@EndUserText.label: 'RAP Events Demo Service'
+define service ZUI_LK22_TICKET {
+  expose ZC_LK22_TICKET as Ticket;
+  expose ZI_LK22_EVTLOG as EventLog;
+}
