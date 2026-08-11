@@ -5,7 +5,6 @@
   "description": "Consume a RAP Business Object with the EML inside abap2UI5.",
   "scripts": {
     "lint": "abaplint ./abaplint.jsonc",
-    "lint:cloud": "abaplint .github/abaplint/abap_cloud.jsonc",
     "check:abap2ui5": "abap2ui5lint"
   },
   "repository": {

@@ -1,9 +1,9 @@
+[![abap version](https://img.shields.io/badge/abap%20version-standard%20%28%E2%89%A5%201909%29-blue)](#setup)
 [![namespace](https://img.shields.io/badge/namespace-z2ui5__cl__smpe-blue)](abaplint.jsonc)
 [![dependency](https://img.shields.io/badge/dependency-abap2UI5-blue)](https://github.com/abap2UI5/abap2UI5)
 <br>
 <br>
 [![abap-standard](https://github.com/abap2UI5/samples-ext/actions/workflows/abap-standard.yaml/badge.svg)](https://github.com/abap2UI5/samples-ext/actions/workflows/abap-standard.yaml)
-[![abap-cloud](https://github.com/abap2UI5/samples-ext/actions/workflows/abap-cloud.yaml/badge.svg)](https://github.com/abap2UI5/samples-ext/actions/workflows/abap-cloud.yaml)
 [![check-abap2UI5](https://github.com/abap2UI5/samples-ext/actions/workflows/check-abap2UI5.yaml/badge.svg)](https://github.com/abap2UI5/samples-ext/actions/workflows/check-abap2UI5.yaml)
 
 # abap2UI5 — samples-ext
@@ -75,7 +75,8 @@ src/03               RAP, no draft            samples 01-05
 src/03/01            the business object      Z2UI5_R_SMPE_TRV, Z2UI5_T_SMPE_TRV
 src/04               RAP with draft           samples 06-10
 src/04/01            the business object      Z2UI5_R_SMPE_TRD, Z2UI5_T_SMPE_TRD, Z2UI5_D_SMPE_TRD
-src/05               Business Events          the ticket BO, its event handler and two apps
+src/05               Business Events          samples 11, 12
+src/05/01            the ticket BO            Z2UI5_R_SMPE_TCK, its event handler and the log
 src/06               Stateful Sessions/Locks  samples 485, 486, 490
 src/06/01            the lock table           Z2UI5_T_SMPE_01
 src/07               AMC/APC                  sample 489
@@ -90,42 +91,43 @@ Every object carries the token **`SMPE`** behind its type token — the scheme t
 samples repository uses with its `SMP` token:
 
 ```
-Z2UI5_CL_SMPE_<object>    classes, including the behavior pools
+Z2UI5_CL_SMPE_<object>    classes, including the behavior pools and event handlers
 Z2UI5_T_SMPE_<object>     persistent tables
 Z2UI5_D_SMPE_<object>     draft tables
-Z2UI5_R_SMPE_<object>     CDS root view entities and their behavior definitions
+Z2UI5_E_SMPE_<object>     data elements
+Z2UI5_R_SMPE_<object>     CDS entities and their behavior definitions
+Z2UI5_SD_SMPE_<object>    service definitions
+Z2UI5_SB_SMPE_<object>    service bindings
 ```
+
+Runnable samples are `Z2UI5_CL_SMPE_APP_<no>`, so the class name is what you pass to
+`?app_start=`.
 
 Class names are capped at **25** characters, tables at **16**. Both limits and the
 patterns themselves are enforced by the `object_naming` rule in
 [`abaplint.jsonc`](abaplint.jsonc); the comment there explains where the numbers come
-from. `DDLS` and `BDEF` have no `object_naming` key in abaplint, so for those two the
-scheme is convention only.
+from. The other object types have no `object_naming` key in abaplint, so for those
+the scheme is convention only.
 
-Two groups sit outside the scheme:
-
-- The objects abaplint cannot name-check at all — the AMC channel, the APC push
-  channel with its ICF node, and the two MIME objects. They carry the older `SMP`
-  token (`Z2UI5_AMC_SMP_2`, `Z2UI5_APC_SMP_2`, `z2ui5_smp_error.mp3`,
-  `z2ui5_smp_success.mp3`).
-- The **Business Events** package (`src/05`) arrived as a contribution with its own
-  `LK22` token and has not been renamed to the scheme yet — abaplint reports each
-  of its objects under `object_naming`. The sample itself is complete and runnable;
-  the rename is an open point, not a defect.
+One group sits outside the scheme: the objects abaplint cannot name-check at all —
+the AMC channel, the APC push channel with its ICF node, and the two MIME objects.
+They carry the older `SMP` token (`Z2UI5_AMC_SMP_2`, `Z2UI5_APC_SMP_2`,
+`z2ui5_smp_error.mp3`, `z2ui5_smp_success.mp3`).
 
 ## Checks
 
 | Workflow | What it does |
 |---|---|
 | `abap-standard` | `abaplint ./abaplint.jsonc` — syntax `v757`, the on-premise release |
-| `abap-cloud` | `abaplint .github/abaplint/abap_cloud.jsonc` — the ABAP Cloud language version |
 | `check-abap2UI5` | [`abap2ui5lint`](https://github.com/abap2UI5/linter) — the app class and the view it produces, together |
 
 There is no `abap-702` counterpart and no derived branch: EML runs from ABAP
 Platform 1909 onwards, so unlike the other sample repositories this one needs no
-downport.
+downport. There is no `abap-cloud` counterpart either — several packages here are
+on-premise by design (`src/06` `ENQUEUE`, `src/07` APC/AMC), so a cloud syntax check
+over the whole tree would report expected errors rather than useful ones.
 
-Three things to know when you read the badges:
+Two things to know when you read the badges:
 
 - abaplint parses EML but does not resolve behavior definitions, so entity, alias and
   action names inside EML statements are not checked, and neither are the
@@ -133,10 +135,6 @@ Three things to know when you read the badges:
 - `RAISE ENTITY EVENT` and `FOR ENTITY EVENT` (`src/05`) are beyond the abaplint
   parser as well, so that package reports parser errors on syntax that activates
   fine in an ABAP system.
-- `abap-cloud` lints the whole tree, including the areas that are on-premise by
-  design (`src/06` `ENQUEUE`, `src/07` APC/AMC). It reports those as errors, which
-  is expected: a red cloud badge says those two areas are on-premise, not that the
-  RAP samples are broken.
 
 ## Where to go from here
 

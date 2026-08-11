@@ -1,0 +1,7 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "Z2UI5_T_SMPE_LOG"
+    ]
+  }
+}

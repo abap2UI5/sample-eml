@@ -1,7 +1,7 @@
 name: check-abap2UI5
 
-# The abap2UI5-specific lint, as opposed to abap-standard/abap-cloud, which
-# lint ABAP itself. It checks a whole app class against five rule groups:
+# The abap2UI5-specific lint, as opposed to abap-standard, which lints ABAP
+# itself. It checks a whole app class against five rule groups:
 # the controls and members it writes, the structure of the document, the
 # UI5 version and deprecation floor, the data and usability of the result,
 # and the abap2ui5 semantics - the defects that live in the relationship
