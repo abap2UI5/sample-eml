@@ -1,6 +1,23 @@
 {
   "global": {
-    "files": "/src/**/*.*"
+    "files": "/src/**/*.*",
+    // z2ui5_cl_smpe_evt_tck is a RAP business event handler. Its two
+    // constructs - CLASS ... DEFINITION PUBLIC FOR EVENTS OF <entity> in the
+    // global class and METHODS ... FOR ENTITY EVENT <evt> FOR <entity>~<evt>
+    // in the handler pool - have no grammar in abaplint, so the class pool
+    // does not parse. Every finding on the two ABAP files is a consequence
+    // of that parse failure, not of the ABAP: the structure error, the
+    // parser errors on the two METHODS statements, and the check_syntax
+    // follow-ups on the handler methods and their event tables. The
+    // structure error comes from the parser itself rather than from a rule,
+    // so a per rule "exclude" cannot reach it and the whole file has to be
+    // silenced. Scoped to the ABAP: the class .clas.xml is not listed, so
+    // object_naming and xml_consistency still cover the object. Drop this
+    // once abaplint parses the RAP event syntax.
+    "noIssues": [
+      "z2ui5_cl_smpe_evt_tck\\.clas\\.abap$",
+      "z2ui5_cl_smpe_evt_tck\\.clas\\.locals_imp\\.abap$"
+    ]
   },
   "dependencies": [
     {
@@ -54,13 +71,24 @@
     "begin_end_names": true,
     "check_ddic": true,
     "check_include": true,
-    "check_syntax": true,
+    // see the note at "superclass_final" below
+    "check_syntax": {
+      "exclude": ["z2ui5_cl_smpe_app_489(_ws)?\\.clas\\."]
+    },
     "global_class": true,
     "definitions_top": false,
     "implement_methods": true,
     "method_implemented_twice": true,
     "parser_error": true,
-    "superclass_final": true,
+    // z2ui5_cl_smpe_app_489_ws inherits from cl_apc_wsp_ext_stateless_base.
+    // ABAP Push Channels are on-premise only and therefore absent from
+    // steampunk-2305-api, the single API dependency of this repository, so
+    // the superclass cannot be resolved. The class pool then fails to
+    // activate for abaplint, which is why app_489 - the app driving the
+    // channel - reports its references to it as unknown as well.
+    "superclass_final": {
+      "exclude": ["z2ui5_cl_smpe_app_489_ws\\.clas\\."]
+    },
     "unknown_types": true,
     "xml_consistency": true
   }

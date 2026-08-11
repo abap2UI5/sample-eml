@@ -57,7 +57,7 @@ CLASS z2ui5_cl_smpe_app_486 IMPLEMENTATION.
       shownavbutton  = client->check_app_prev_stack( ) ).
 
     DATA(vbox) = page->vbox( ).
-    vbox->info_label( text = client->_bind( session_text ) ).
+    vbox->info_label( client->_bind( session_text ) ).
 
     DATA(hbox) = vbox->hbox( alignitems = `Center` ).
     hbox->label( text  = `press button to increment counter in backend session`
