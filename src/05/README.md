@@ -27,8 +27,8 @@ table fills itself as you create tickets.
 
 | Sample | Role |
 |---|---|
-| [`11`](01/z2ui5_cl_smpe_app_11.clas.abap) | create tickets through the BO — every create and update raises an event |
-| [`12`](01/z2ui5_cl_smpe_app_12.clas.abap) | the event log the handler writes, newest first |
+| [`11`](z2ui5_cl_smpe_app_11.clas.abap) | create tickets through the BO — every create and update raises an event |
+| [`12`](z2ui5_cl_smpe_app_12.clas.abap) | the event log the handler writes, newest first |
 
 Start them with `?app_start=z2ui5_cl_smpe_app_11` and
 `?app_start=z2ui5_cl_smpe_app_12`. Open both in two browser tabs, create a ticket in
@@ -105,7 +105,7 @@ the business object changing a line.
 | [`Z2UI5_CL_SMPE_EVT_TCK`](01/z2ui5_cl_smpe_evt_tck.clas.locals_imp.abap) | the event handler, writes the log |
 | `Z2UI5_T_SMPE_LOG` + [`Z2UI5_R_SMPE_LOG`](01/z2ui5_r_smpe_log.ddls.asddls) | the log table and its CDS view |
 | [`Z2UI5_R_SMPE_TCK_C`](01/z2ui5_r_smpe_tck_c.ddls.asddls), `Z2UI5_SD_SMPE_TCK`, `Z2UI5_SB_SMPE_TCK` | projection, service definition and an OData V4 binding |
-| [`Z2UI5_CL_SMPE_APP_11`](01/z2ui5_cl_smpe_app_11.clas.abap), [`Z2UI5_CL_SMPE_APP_12`](01/z2ui5_cl_smpe_app_12.clas.abap) | the two abap2UI5 apps |
+| [`Z2UI5_CL_SMPE_APP_11`](z2ui5_cl_smpe_app_11.clas.abap), [`Z2UI5_CL_SMPE_APP_12`](z2ui5_cl_smpe_app_12.clas.abap) | the two abap2UI5 apps |
 
 The projection, service definition and service binding are there on purpose: the
 same business object can be published as an OData V4 service and consumed by a
