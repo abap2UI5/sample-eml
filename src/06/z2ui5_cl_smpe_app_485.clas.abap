@@ -56,7 +56,7 @@ CLASS z2ui5_cl_smpe_app_485 IMPLEMENTATION.
 
     DATA(hbox) = vbox->hbox( alignitems = `Center` ).
 
-    hbox->info_label( text = client->_bind( session_text ) ).
+    hbox->info_label( client->_bind( session_text ) ).
 
     hbox->button(
       text  = `End session`
@@ -148,7 +148,7 @@ CLASS z2ui5_cl_smpe_app_485 IMPLEMENTATION.
 
         TRY.
             on_event( client ).
-          CATCH z2ui5_cx_smp_error INTO DATA(x_error).
+          CATCH z2ui5_cx_util_error INTO DATA(x_error).
             error-text = x_error->get_text( ).
             error-flag = abap_true.
             client->view_model_update( ).

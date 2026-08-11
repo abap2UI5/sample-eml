@@ -238,7 +238,7 @@ CLASS z2ui5_cl_smpe_app_489 IMPLEMENTATION.
         enabled = client->_bind( ws_active )
         post    = client->_event( `POST` ) ).
 
-    form->label( text = `Author`
+    form->label( `Author`
        )->input( value       = client->_bind( author_input )
                  placeholder = `Anonymous` ).
 
