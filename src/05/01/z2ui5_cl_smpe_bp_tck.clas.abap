@@ -1,0 +1,7 @@
+CLASS z2ui5_cl_smpe_bp_tck DEFINITION
+  PUBLIC ABSTRACT FINAL
+  FOR BEHAVIOR OF z2ui5_r_smpe_tck.
+ENDCLASS.
+
+CLASS z2ui5_cl_smpe_bp_tck IMPLEMENTATION.
+ENDCLASS.
