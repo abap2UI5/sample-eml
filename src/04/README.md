@@ -12,9 +12,14 @@ whole lifecycle fits in a handful of statements.
 
 ## What you need
 
-The same as [`03`](../03/README.md): ABAP Platform >= 1909 or a BTP ABAP
-Environment. The draft enabled business object and its two tables come with this
-package ([`src/04/01`](01)).
+**Release:** Cloud + Standard ≥ 7.54 (1909), the same as
+[`03`](../03/README.md) — draft handling adds nothing on top of EML.
+
+**Branch:** [`rap-draft`](https://github.com/abap2UI5/samples-ext/tree/rap-draft)
+— this package alone, without the other eight on your system.
+
+ABAP Platform >= 1909 or a BTP ABAP Environment. The draft enabled business object
+and its two tables come with this package ([`src/04/01`](01)).
 
 Fill the table with `Z2UI5_CL_SMPE_DATA_TRD` (F9 in ADT) or press *Regenerate Demo
 Data* in the overview app `?app_start=z2ui5_cl_smpe_app_00`.

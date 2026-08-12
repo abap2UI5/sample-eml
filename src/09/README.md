@@ -14,6 +14,13 @@ the four samples here show what the launchpad adds when it is the one you are in
 
 ## What you need
 
+**Release:** Cloud + Standard ≥ 7.40 SP08. The apps talk to the shell through the
+framework, so what decides here is whether you have a launchpad, not which ABAP
+release serves it.
+
+**Branch:** [`launchpad`](https://github.com/abap2UI5/samples-ext/tree/launchpad)
+— this package alone, without the other eight on your system.
+
 A **Fiori Launchpad** with a tile pointing at abap2UI5 — an on-premise FLP
 (`/ui2/flp`), the launchpad sandbox (`test/flpSandbox`), or a launchpad site on BTP.
 The target mapping's URL is the abap2UI5 ICF node plus the app to start:
@@ -37,7 +44,10 @@ message box when it was started standalone — where it then has no shell to tal
 | [`484`](z2ui5_cl_smpe_app_484.clas.abap) | cross-app navigation, **receiver** — reads them back out of its startup parameters |
 
 Start any of them with `?app_start=z2ui5_cl_smpe_app_<no>` — from a tile, that is
-what the target mapping's URL carries.
+what the target mapping's URL carries. The overview app
+`?app_start=z2ui5_cl_smpe_app_00` lists them too, but its Open button starts them
+standalone, and standalone is exactly the case where they have no shell to talk to
+and say so in a message box.
 
 ## The one pair worth configuring
 
