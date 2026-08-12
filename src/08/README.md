@@ -16,6 +16,9 @@ repository stays where it is; the app only points at it.
 on-premise: in ABAP Cloud there is neither the repository nor the node to reach it
 through.
 
+**Branch:** [`mime`](https://github.com/abap2UI5/samples-ext/tree/mime)
+— this package alone, without the other eight on your system.
+
 **Setup:** activate the ICF service `/SAP/PUBLIC/BC/ABAP/mime_demo` in `SICF`. The
 app checks the node and warns if it is inactive.
 

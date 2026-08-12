@@ -17,6 +17,9 @@ already provides and stays the UI in front of it.
 ABAP Cloud counterpart; the 7.50 comes from the ABAP the two classes are written
 in, the channels themselves arrived earlier.
 
+**Branch:** [`amc-apc`](https://github.com/abap2UI5/samples-ext/tree/amc-apc)
+— this package alone, without the other eight on your system.
+
 **Setup:** activate the ICF service `/sap/bc/apc/sap/z2ui5_apc_smp_2` in `SICF`. The
 app checks this itself and shows a friendly warning strip while the node is still
 inactive, so you always know where you stand.

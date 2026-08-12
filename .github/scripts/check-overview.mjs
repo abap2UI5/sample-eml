@@ -7,21 +7,29 @@
 // documentation). The price is that the compiler no longer notices a renamed
 // or a newly added sample - this check is what notices instead.
 //
-// Two directions:
+// Three directions:
 //   1. every sample class in the tree is listed in the overview  (always)
 //   2. every class the overview names exists in the tree         (full tree only)
+//   3. every package of .github/packages.json is in the README
+//      table with the release it declares                        (full tree only)
 //
-// (2) is skipped when a package directory is missing: a checkout with a
-// single package is a supported case, and there the overview lists classes
-// that are legitimately absent - at runtime they simply show up as "not on
-// this system".
+// (3) is the second index this repository keeps by hand: packages.json drives
+// the generated per-package branches and the release each one is checked at,
+// the README table tells the reader the same thing in prose. They drift apart
+// silently, so they are compared here.
+//
+// (2) and (3) are skipped when a package directory is missing: a checkout with
+// a single package is a supported case - it is what the generated branches
+// are - and there the overview lists classes that are legitimately absent. At
+// runtime they simply show up as "not on this system".
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, basename } from 'node:path';
 
 const SRC = 'src';
 const OVERVIEW = join(SRC, 'z2ui5_cl_smpe_app_00.clas.abap');
-const PACKAGES = ['01', '02', '03', '04', '05', '06', '07', '08', '09'];
+const packages = JSON.parse(readFileSync(join('.github', 'packages.json'), 'utf8'));
+const PACKAGES = packages.map((entry) => entry.dir);
 
 const walk = (dir) =>
   readdirSync(dir).flatMap((entry) => {
@@ -64,6 +72,24 @@ for (const name of samples) {
 for (const name of new Set(listed)) {
   if (complete && !known.has(name)) {
     errors.push(`${OVERVIEW} names ${name}, but no such class exists - renamed or mistyped?`);
+  }
+}
+
+if (complete) {
+  const rows = readFileSync('README.md', 'utf8')
+    .split('\n')
+    .filter((line) => line.startsWith('| [`src/'));
+
+  for (const entry of packages) {
+    const row = rows.find((line) => line.startsWith(`| [\`src/${entry.dir}\`]`));
+    if (!row) {
+      errors.push(`README.md has no table row for src/${entry.dir}`);
+    } else if (!row.includes(entry.runsOn)) {
+      errors.push(
+        `README.md row for src/${entry.dir} does not carry the release ` +
+          `.github/packages.json declares ("${entry.runsOn}")`,
+      );
+    }
   }
 }
 

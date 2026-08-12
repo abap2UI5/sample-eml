@@ -14,6 +14,9 @@ view and the service path, nothing more.
 **Release:** Cloud + Standard ≥ 7.40 SP08. The sample is a view and two service
 paths, so nothing here reaches past the ABAP the package is written in.
 
+**Branch:** [`odata`](https://github.com/abap2UI5/samples-ext/tree/odata)
+— this package alone, without the other eight on your system.
+
 An activated OData V2 service. The sample points at the services of the SAP flight
 reference scenario:
 

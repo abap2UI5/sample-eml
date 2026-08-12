@@ -18,6 +18,9 @@ the four samples here show what the launchpad adds when it is the one you are in
 framework, so what decides here is whether you have a launchpad, not which ABAP
 release serves it.
 
+**Branch:** [`launchpad`](https://github.com/abap2UI5/samples-ext/tree/launchpad)
+— this package alone, without the other eight on your system.
+
 A **Fiori Launchpad** with a tile pointing at abap2UI5 — an on-premise FLP
 (`/ui2/flp`), the launchpad sandbox (`test/flpSandbox`), or a launchpad site on BTP.
 The target mapping's URL is the abap2UI5 ICF node plus the app to start:

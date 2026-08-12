@@ -6,6 +6,7 @@
 [![abap-standard](https://github.com/abap2UI5/samples-ext/actions/workflows/abap-standard.yaml/badge.svg)](https://github.com/abap2UI5/samples-ext/actions/workflows/abap-standard.yaml)
 [![check-abap2UI5](https://github.com/abap2UI5/samples-ext/actions/workflows/check-abap2UI5.yaml/badge.svg)](https://github.com/abap2UI5/samples-ext/actions/workflows/check-abap2UI5.yaml)
 [![check-overview](https://github.com/abap2UI5/samples-ext/actions/workflows/check-overview.yaml/badge.svg)](https://github.com/abap2UI5/samples-ext/actions/workflows/check-overview.yaml)
+[![create-package-branches](https://github.com/abap2UI5/samples-ext/actions/workflows/create-package-branches.yaml/badge.svg)](https://github.com/abap2UI5/samples-ext/actions/workflows/create-package-branches.yaml)
 
 # abap2UI5 — samples-ext
 
@@ -80,9 +81,11 @@ of them.
 ## Setup
 
 1. Install [abap2UI5](https://github.com/abap2UI5/abap2UI5).
-2. Pull this repository with [abapGit](https://abapgit.org). It runs on ABAP
-   Platform >= 1909 or a BTP ABAP Environment — that is what EML asks for, which
-   is why it is the one sample repository without a 7.02 downport.
+2. Pull this repository with [abapGit](https://abapgit.org) — `main` for all nine
+   packages, or the branch of the single package you came for (see
+   [One package at a time](#one-package-at-a-time)). `main` as a whole runs on
+   ABAP Platform >= 1909 or a BTP ABAP Environment — that is what EML asks for,
+   which is why it is the one sample repository without a 7.02 downport.
 3. Set up whatever the package you picked builds on — its README says so in one
    short section.
 4. Start an app with `?app_start=<class name>`.
@@ -105,6 +108,38 @@ a package your release cannot activate — or one you never installed — is lis
 with its Open button disabled and a Status saying so, rather than taking the whole
 overview down. Start it first, and the list tells you which of the nine packages
 this system can run.
+
+## One package at a time
+
+abapGit imports a **whole repository** — there is no way to pull half of one. On
+`main` that means a system that came for `01` also gets the three on-premise
+packages and the three that need 1909, and reports activation errors for
+technology it never asked for.
+
+So every package additionally lives on **its own branch**. Pick it in the abapGit
+branch dropdown and you import that package, the overview app and nothing else:
+
+| Branch | Package | Runs on |
+|---|---|---|
+| [`odata`](../../tree/odata) | [`src/01`](src/01) — OData | Cloud + Standard ≥ 7.40 SP08 |
+| [`smart-controls`](../../tree/smart-controls) | [`src/02`](src/02) — Smart Controls | Cloud + Standard ≥ 7.40 SP08 |
+| [`rap`](../../tree/rap) | [`src/03`](src/03) — RAP | Cloud + Standard ≥ 7.54 (1909) |
+| [`rap-draft`](../../tree/rap-draft) | [`src/04`](src/04) — RAP with Draft | Cloud + Standard ≥ 7.54 (1909) |
+| [`business-events`](../../tree/business-events) | [`src/05`](src/05) — Business Events | Cloud + Standard ≥ 7.56 (2021) |
+| [`stateful-locks`](../../tree/stateful-locks) | [`src/06`](src/06) — Stateful Sessions / Locks | Standard only, ≥ 7.40 SP08 |
+| [`amc-apc`](../../tree/amc-apc) | [`src/07`](src/07) — AMC/APC | Standard only, ≥ 7.50 |
+| [`mime`](../../tree/mime) | [`src/08`](src/08) — MIME Play Audio | Standard only, ≥ 7.50 |
+| [`launchpad`](../../tree/launchpad) | [`src/09`](src/09) — Launchpad | Cloud + Standard ≥ 7.40 SP08 |
+
+The overview app ships on every branch and keeps listing **all 30 samples**, so it
+stays the catalogue of what the other branches hold — the ones that are not on
+your branch simply show up with a disabled Open button.
+
+These branches are **generated**: `create-package-branches` rebuilds and
+force-pushes every one of them on every push to `main`, and abaplint checks each
+one at the release that package declares before it is pushed. Work on `main` —
+issues and pull requests against a generated branch go nowhere, and a commit
+pushed to one is gone at the next build.
 
 ## Namespace
 
@@ -141,18 +176,27 @@ They carry the older `SMP` token (`Z2UI5_AMC_SMP_2`, `Z2UI5_APC_SMP_2`,
 |---|---|
 | `abap-standard` | `abaplint ./abaplint.jsonc` — syntax `v757`, the on-premise release |
 | `check-abap2UI5` | [`abap2ui5lint`](https://github.com/abap2UI5/linter) — the app class and the view it produces, together |
-| `check-overview` | every sample is listed in the overview app, and every class it names exists |
+| `check-overview` | the two hand-kept indexes: every sample is listed in the overview app, and the package table matches `.github/packages.json` |
+| `create-package-branches` | rebuilds the nine per-package branches, each verified with abaplint at its own release before it is pushed |
 
 `check-overview` exists because the overview app names its samples as strings and
 resolves them at runtime — that is what lets it survive a package the system cannot
 activate, and it is also what stops the compiler from noticing a renamed or a newly
-added sample. The check notices instead. It runs `node
-.github/scripts/check-overview.mjs`, needs no dependencies, and skips the
-does-this-class-exist half on a checkout that carries only part of the repository.
+added sample. The check notices instead, and it compares the *Runs on* column with
+the releases [`.github/packages.json`](.github/packages.json) declares, which is
+where the generated branches take theirs from. It runs `node
+.github/scripts/check-overview.mjs`, needs no dependencies, and skips both
+full-tree halves on a checkout that carries only part of the repository.
 
-There is no `abap-702` counterpart and no derived branch: EML runs from ABAP
-Platform 1909 onwards, so unlike the other sample repositories this one needs no
-downport. There is no `abap-cloud` counterpart either — several packages here are
+`create-package-branches` runs on pull requests too, everything except the push —
+so a change that would break one of the branches fails while it can still be
+fixed. Adding a package is one entry in `.github/packages.json`; neither the
+workflow nor the checks have to be touched.
+
+There is no `abap-702` counterpart: EML runs from ABAP Platform 1909 onwards, so
+unlike the other sample repositories this one needs no downport — the derived
+branches here split the tree by package, they do not downport it. There is no
+`abap-cloud` counterpart either — several packages here are
 on-premise by design (`src/06` `ENQUEUE`, `src/07` APC/AMC), so a cloud syntax check
 over the whole tree would report expected errors rather than useful ones.
 
