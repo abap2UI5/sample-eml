@@ -22,5 +22,7 @@ you and you get the success sound; type anything else and you get the error one.
 
 ## Where to go next
 
+- [`09` Launchpad](../09/README.md) — one more thing the system already serves: the
+  shell the app can run inside.
 - [`01` OData](../01/README.md) — back to the beginning: data from a service instead
   of bytes from the repository.
