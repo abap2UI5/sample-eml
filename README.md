@@ -5,6 +5,7 @@
 <br>
 [![abap-standard](https://github.com/abap2UI5/samples-ext/actions/workflows/abap-standard.yaml/badge.svg)](https://github.com/abap2UI5/samples-ext/actions/workflows/abap-standard.yaml)
 [![check-abap2UI5](https://github.com/abap2UI5/samples-ext/actions/workflows/check-abap2UI5.yaml/badge.svg)](https://github.com/abap2UI5/samples-ext/actions/workflows/check-abap2UI5.yaml)
+[![check-overview](https://github.com/abap2UI5/samples-ext/actions/workflows/check-overview.yaml/badge.svg)](https://github.com/abap2UI5/samples-ext/actions/workflows/check-overview.yaml)
 
 # abap2UI5 — samples-ext
 
@@ -33,21 +34,48 @@ and try it out — the others can wait until you need them.
 
 ## What is in here
 
-| Package | Topic | Plays together with |
-|---|---|---|
-| [`src/01`](src/01) | **[OData](src/01/README.md)** — bind a table to an OData V2 model | an activated OData V2 service |
-| [`src/02`](src/02) | **[Smart Controls](src/02/README.md)** — `sap.ui.comp` driven by OData metadata | SAPUI5 + an activated Gateway service |
-| [`src/03`](src/03) | **[RAP](src/03/README.md)** — consume a business object with EML | ABAP Platform >= 1909; the BO ships with this repo |
-| [`src/04`](src/04) | **[RAP with Draft](src/04/README.md)** — use draft handling | as above |
-| [`src/05`](src/05) | **[Business Events](src/05/README.md)** — react to RAP events, log them, show them | as above |
-| [`src/06`](src/06) | **[Stateful Sessions / Locks](src/06/README.md)** — sticky session, `ENQUEUE` | ABAP Standard (on-premise), the table `Z2UI5_T_SMPE_01` |
-| [`src/07`](src/07) | **[AMC/APC](src/07/README.md)** — a news feed over WebSocket | on-premise APC/AMC, the ICF node `Z2UI5_APC_SMP_2` |
-| [`src/08`](src/08) | **[MIME Play Audio](src/08/README.md)** — play a sound from the MIME repository | the ICF service `/SAP/PUBLIC/BC/ABAP/mime_demo` |
-| [`src/09`](src/09) | **[Launchpad](src/09/README.md)** — startup parameters, shell title, cross-app navigation | a Fiori Launchpad with a tile pointing at abap2UI5 |
+| Package | Topic | Plays together with | Runs on |
+|---|---|---|---|
+| [`src/01`](src/01) | **[OData](src/01/README.md)** — bind a table to an OData V2 model | an activated OData V2 service | Cloud + Standard ≥ 7.40 SP08 |
+| [`src/02`](src/02) | **[Smart Controls](src/02/README.md)** — `sap.ui.comp` driven by OData metadata | SAPUI5 + an activated Gateway service | Cloud + Standard ≥ 7.40 SP08 |
+| [`src/03`](src/03) | **[RAP](src/03/README.md)** — consume a business object with EML | ABAP Platform >= 1909; the BO ships with this repo | Cloud + Standard ≥ 7.54 (1909) |
+| [`src/04`](src/04) | **[RAP with Draft](src/04/README.md)** — use draft handling | as above | Cloud + Standard ≥ 7.54 (1909) |
+| [`src/05`](src/05) | **[Business Events](src/05/README.md)** — react to RAP events, log them, show them | as above | Cloud + Standard ≥ 7.56 (2021) |
+| [`src/06`](src/06) | **[Stateful Sessions / Locks](src/06/README.md)** — sticky session, `ENQUEUE` | ABAP Standard (on-premise), the table `Z2UI5_T_SMPE_01` | Standard only, ≥ 7.40 SP08 |
+| [`src/07`](src/07) | **[AMC/APC](src/07/README.md)** — a news feed over WebSocket | on-premise APC/AMC, the ICF node `Z2UI5_APC_SMP_2` | Standard only, ≥ 7.50 |
+| [`src/08`](src/08) | **[MIME Play Audio](src/08/README.md)** — play a sound from the MIME repository | the ICF service `/SAP/PUBLIC/BC/ABAP/mime_demo` | Standard only, ≥ 7.50 |
+| [`src/09`](src/09) | **[Launchpad](src/09/README.md)** — startup parameters, shell title, cross-app navigation | a Fiori Launchpad with a tile pointing at abap2UI5 | Cloud + Standard ≥ 7.40 SP08 |
 
 The numbering is a reading order, not a dependency chain: `01` starts where most
 systems already are — an activated OData service — and each package from there
 reaches a little deeper into the stack. Enter wherever your system is today.
+
+### Reading the *Runs on* column
+
+**Cloud** is the ABAP Cloud stack — a BTP ABAP Environment or an on-stack cloud
+development tenant. Three packages cannot go there, and it is the technology, not
+the sample, that keeps them out: `06` locks through the function modules
+`ENQUEUE_E_TABLE` / `ENQUEUE_READ` and holds a stateful ICF session, `07` needs
+on-premise APC/AMC, `08` reads the MIME repository over an ICF path. None of those
+is a released ABAP Cloud API.
+
+**Standard** is the on-premise release, given as the `SAP_BASIS` version with the
+ABAP Platform name where there is one — `7.54` is 1909, `7.56` is 2021. The number
+is the higher of two floors:
+
+- *the ABAP the package is written in.* Unlike the other sample repositories this
+  one is not downported to 7.02, so **7.40 SP08 is the floor everywhere**. These
+  syntax floors are measured, not estimated: one abaplint run per release over the
+  tree, and the number in the table is the lowest release the package parses clean
+  at.
+- *the technology the package plays with.* EML lifts `03` and `04` to 1909, RAP
+  business events lift `05` to 2021. If `RAISE ENTITY EVENT` does not activate on
+  your system, `05` is out of reach and nothing else in this repository is
+  affected.
+
+The repository **as a whole** therefore asks for 1909, because `03`–`05` do. A
+single package can ask for much less — which matters if you are only here for one
+of them.
 
 ## Setup
 
@@ -61,9 +89,22 @@ reaches a little deeper into the stack. Enter wherever your system is today.
 
 Every sample of the abap2UI5 sample scheme is called `Z2UI5_CL_SMPE_APP_<no>`, and
 the tables in the package READMEs give you the number, so sample `487` is
-`?app_start=z2ui5_cl_smpe_app_487`. The RAP packages additionally come with an
-overview app that lists and launches their samples:
-`?app_start=z2ui5_cl_smpe_app_00`.
+`?app_start=z2ui5_cl_smpe_app_487`.
+
+## The overview app
+
+You do not have to look a number up. `?app_start=z2ui5_cl_smpe_app_00` lists
+**every sample of this repository**, one collapsible section per package, and
+starts each one in a new browser tab — so the overview stays where it is and
+several samples can run side by side. Its header button fills the demo data of
+both RAP packages.
+
+It is also the honest answer to *what does my system actually support*: the
+overview looks every sample up at runtime instead of referencing it statically, so
+a package your release cannot activate — or one you never installed — is listed
+with its Open button disabled and a Status saying so, rather than taking the whole
+overview down. Start it first, and the list tells you which of the nine packages
+this system can run.
 
 ## Namespace
 
@@ -100,6 +141,14 @@ They carry the older `SMP` token (`Z2UI5_AMC_SMP_2`, `Z2UI5_APC_SMP_2`,
 |---|---|
 | `abap-standard` | `abaplint ./abaplint.jsonc` — syntax `v757`, the on-premise release |
 | `check-abap2UI5` | [`abap2ui5lint`](https://github.com/abap2UI5/linter) — the app class and the view it produces, together |
+| `check-overview` | every sample is listed in the overview app, and every class it names exists |
+
+`check-overview` exists because the overview app names its samples as strings and
+resolves them at runtime — that is what lets it survive a package the system cannot
+activate, and it is also what stops the compiler from noticing a renamed or a newly
+added sample. The check notices instead. It runs `node
+.github/scripts/check-overview.mjs`, needs no dependencies, and skips the
+does-this-class-exist half on a checkout that carries only part of the repository.
 
 There is no `abap-702` counterpart and no derived branch: EML runs from ABAP
 Platform 1909 onwards, so unlike the other sample repositories this one needs no

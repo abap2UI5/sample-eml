@@ -11,6 +11,10 @@ help and smart filtering for free.
 
 ## What you need
 
+**Release:** Cloud + Standard ≥ 7.40 SP08. The metadata does the work, so the ABAP
+side of these eight samples asks for nothing beyond the release the package is
+written in — what they need is the service, not the platform.
+
 - **SAPUI5**, since `sap.ui.comp` is part of the SAPUI5 distribution.
 - **An activated OData V2 service.** Most samples point at the Gateway demo service
   `GWSAMPLE_BASIC`, which ships with every on-premise system and only has to be
@@ -30,7 +34,8 @@ help and smart filtering for free.
 | [`478`](z2ui5_cl_smpe_app_478.clas.abap) | page variant management | `GWSAMPLE_BASIC` |
 | [`479`](z2ui5_cl_smpe_app_479.clas.abap) | SmartChart with NavigationPopover | an analytical service — you supply it |
 
-Start any of them with `?app_start=z2ui5_cl_smpe_app_<no>`.
+Start any of them with `?app_start=z2ui5_cl_smpe_app_<no>`, or from the overview
+app `?app_start=z2ui5_cl_smpe_app_00`, which lists every sample of this repository.
 
 ## Two worth a closer look
 

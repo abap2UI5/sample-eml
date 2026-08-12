@@ -13,6 +13,10 @@ already provides and stays the UI in front of it.
 
 ## What you need
 
+**Release:** Standard only, ≥ 7.50. APC/AMC is on-premise technology and has no
+ABAP Cloud counterpart; the 7.50 comes from the ABAP the two classes are written
+in, the channels themselves arrived earlier.
+
 **Setup:** activate the ICF service `/sap/bc/apc/sap/z2ui5_apc_smp_2` in `SICF`. The
 app checks this itself and shows a friendly warning strip while the node is still
 inactive, so you always know where you stand.
@@ -29,7 +33,8 @@ message arrive in both at once.
 | `Z2UI5_AMC_SMP_2` | the messaging channel, `/news_feed` |
 | `Z2UI5_APC_SMP_2` | the push channel and its ICF node |
 
-Start it with `?app_start=z2ui5_cl_smpe_app_489`.
+Start it with `?app_start=z2ui5_cl_smpe_app_489`, or from the overview app
+`?app_start=z2ui5_cl_smpe_app_00`, which lists every sample of this repository.
 
 ## Where to go next
 

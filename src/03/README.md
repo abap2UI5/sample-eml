@@ -21,16 +21,19 @@ The draft enabled half lives next door in [`04` RAP with Draft](../04/README.md)
 
 ## What you need
 
-ABAP Platform >= 1909 or a BTP ABAP Environment — that is what EML asks for. The
-business object `Z2UI5_R_SMPE_TRV` and its table come with this package
-([`src/03/01`](01)), so nothing else has to be installed.
+**Release:** Cloud + Standard ≥ 7.54 (1909) — that is what EML asks for.
+
+ABAP Platform >= 1909 or a BTP ABAP Environment. The business object
+`Z2UI5_R_SMPE_TRV` and its table come with this package ([`src/03/01`](01)), so
+nothing else has to be installed.
 
 ## Start here
 
 Run [`00 overview`](../z2ui5_cl_smpe_app_00.clas.abap) —
-`?app_start=z2ui5_cl_smpe_app_00`. It lists every RAP sample of both packages and
-opens it in a new browser tab, so the overview stays open and several samples can
-run side by side. *Regenerate Demo Data* in its header fills both business objects.
+`?app_start=z2ui5_cl_smpe_app_00`. It lists every sample of this repository, the
+RAP ones included, and opens each in a new browser tab, so the overview stays open
+and several samples can run side by side. *Regenerate Demo Data* in its header
+fills both business objects.
 
 Fill the tables before the first run: execute `Z2UI5_CL_SMPE_DATA_TRV` (and
 `Z2UI5_CL_SMPE_DATA_TRD` for the draft package) with F9 in ADT, or press

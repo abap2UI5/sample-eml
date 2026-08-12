@@ -13,12 +13,19 @@ the second shows what arrived. RAP does the wiring in between.
 
 ## What you need
 
-ABAP Platform >= 1909 or a BTP ABAP Environment for the EML part — plus a release
-that already carries **RAP business events**. They are a younger RAP feature than
-EML itself: if `RAISE ENTITY EVENT` does not activate on your system, this package
-is simply out of reach for now, and nothing else in this repository is affected.
-That is also why the overview app `z2ui5_cl_smpe_app_00` does not launch these two
-samples — it would take the whole RAP overview down with them on an older release.
+**Release:** Cloud + Standard ≥ 7.56 (2021) — the highest floor in this
+repository, and the only package whose limit is not EML.
+
+ABAP Platform >= 1909 or a BTP ABAP Environment covers the EML part — but this
+package also needs a release that already carries **RAP business events**. They are
+a younger RAP feature than EML itself: if `RAISE ENTITY EVENT` does not activate on
+your system, this package is simply out of reach for now, and nothing else in this
+repository is affected.
+
+The overview app `z2ui5_cl_smpe_app_00` lists these two samples like any others and
+does not depend on them: it looks every sample up at runtime, so on a release
+without business events the two rows are shown with their Open button disabled
+instead of taking the overview down.
 
 No service activation, no ICF node. Import, activate, start the app — the ticket
 table fills itself as you create tickets.
@@ -31,8 +38,10 @@ table fills itself as you create tickets.
 | [`12`](z2ui5_cl_smpe_app_12.clas.abap) | the event log the handler writes, newest first |
 
 Start them with `?app_start=z2ui5_cl_smpe_app_11` and
-`?app_start=z2ui5_cl_smpe_app_12`. Open both in two browser tabs, create a ticket in
-the first, press refresh in the second — the log entry the handler wrote is there.
+`?app_start=z2ui5_cl_smpe_app_12`, or from the overview app
+`?app_start=z2ui5_cl_smpe_app_00`, whose Open button puts each in its own tab. Open
+both in two browser tabs, create a ticket in the first, press refresh in the
+second — the log entry the handler wrote is there.
 
 Events are raised in the save sequence and consumed **afterwards**, so the log
 entry appears once the transaction is through, not during the roundtrip that
