@@ -28,8 +28,13 @@ permissions:
   contents: read
 
 concurrency:
-  # newest main wins - a superseded run would publish older content
-  group: create-package-branches
+  # Keyed by ref, so that only runs on the SAME ref supersede each other: two
+  # pushes to main share refs/heads/main and the newest wins, which is what we
+  # want - a superseded run would publish older content. A pull request run
+  # gets its own group. Sharing one group across refs would let a pull request
+  # cancel a main run mid-publish and leave the nine branches half updated,
+  # some at the new main and some at the old, without anything going red.
+  group: create-package-branches-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
