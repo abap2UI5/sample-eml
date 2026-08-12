@@ -12,13 +12,22 @@ repository stays where it is; the app only points at it.
 
 ## What you need
 
+**Release:** Standard only, ≥ 7.50. The MIME repository behind an ICF path is
+on-premise: in ABAP Cloud there is neither the repository nor the node to reach it
+through.
+
+**Branch:** [`mime`](https://github.com/abap2UI5/samples-ext/tree/mime)
+— this package alone, without the other eight on your system.
+
 **Setup:** activate the ICF service `/SAP/PUBLIC/BC/ABAP/mime_demo` in `SICF`. The
 app checks the node and warns if it is inactive.
 
 ## The sample
 
-Start it with `?app_start=z2ui5_cl_smpe_app_487`. Type the magic key the app tells
-you and you get the success sound; type anything else and you get the error one.
+Start it with `?app_start=z2ui5_cl_smpe_app_487`, or from the overview app
+`?app_start=z2ui5_cl_smpe_app_00`, which lists every sample of this repository.
+Type the magic key the app tells you and you get the success sound; type anything
+else and you get the error one.
 
 ## Where to go next
 

@@ -13,6 +13,13 @@ in the framework; nothing has to be configured up front.
 
 ## What you need
 
+**Release:** Standard only, ≥ 7.40 SP08. Not ABAP Cloud: neither the two `ENQUEUE`
+function modules nor a stateful ICF session is a released cloud API — this package
+is on-premise by design, not by omission.
+
+**Branch:** [`stateful-locks`](https://github.com/abap2UI5/samples-ext/tree/stateful-locks)
+— this package alone, without the other eight on your system.
+
 ABAP Standard (on-premise). The locks go through the function modules
 `ENQUEUE_E_TABLE` and `ENQUEUE_READ`, which are available there — `485`'s own page
 title points this out.
@@ -30,8 +37,10 @@ appear live.
 | [`485`](z2ui5_cl_smpe_app_485.clas.abap) | set an `ENQUEUE` lock, read it back with `ENQUEUE_READ`, end and restart the session |
 | [`490`](z2ui5_cl_smpe_app_490.clas.abap) | one lock per screen — every *Next Lock View* navigates into a new app instance that takes the next `VARKEY`, going back releases it |
 
-Start any of them with `?app_start=z2ui5_cl_smpe_app_<no>`. Begin with `486`: it
-makes the mode switch visible in one number before any lock is involved.
+Start any of them with `?app_start=z2ui5_cl_smpe_app_<no>`, or from the overview
+app `?app_start=z2ui5_cl_smpe_app_00`, which lists every sample of this repository.
+Begin with `486`: it makes the mode switch visible in one number before any lock is
+involved.
 
 ## Where to go next
 

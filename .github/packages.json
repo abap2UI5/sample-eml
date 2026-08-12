@@ -1,0 +1,75 @@
+[
+  {
+    "dir": "01",
+    "branch": "odata",
+    "title": "OData",
+    "runsOn": "Cloud + Standard ≥ 7.40 SP08",
+    "syntax": "v740sp08",
+    "shared": []
+  },
+  {
+    "dir": "02",
+    "branch": "smart-controls",
+    "title": "Smart Controls",
+    "runsOn": "Cloud + Standard ≥ 7.40 SP08",
+    "syntax": "v740sp08",
+    "shared": []
+  },
+  {
+    "dir": "03",
+    "branch": "rap",
+    "title": "RAP",
+    "runsOn": "Cloud + Standard ≥ 7.54 (1909)",
+    "syntax": "v754",
+    "shared": ["00"]
+  },
+  {
+    "dir": "04",
+    "branch": "rap-draft",
+    "title": "RAP with Draft",
+    "runsOn": "Cloud + Standard ≥ 7.54 (1909)",
+    "syntax": "v754",
+    "shared": ["00"]
+  },
+  {
+    "dir": "05",
+    "branch": "business-events",
+    "title": "Business Events",
+    "runsOn": "Cloud + Standard ≥ 7.56 (2021)",
+    "syntax": "v754",
+    "note": "RAP business events are younger than EML: the ABAP parses at 7.54, the feature itself is there from 2021 on. If RAISE ENTITY EVENT does not activate on your system, this package is out of reach.",
+    "shared": []
+  },
+  {
+    "dir": "06",
+    "branch": "stateful-locks",
+    "title": "Stateful Sessions / Locks",
+    "runsOn": "Standard only, ≥ 7.40 SP08",
+    "syntax": "v740sp08",
+    "shared": []
+  },
+  {
+    "dir": "07",
+    "branch": "amc-apc",
+    "title": "AMC/APC",
+    "runsOn": "Standard only, ≥ 7.50",
+    "syntax": "v750",
+    "shared": []
+  },
+  {
+    "dir": "08",
+    "branch": "mime",
+    "title": "MIME Play Audio",
+    "runsOn": "Standard only, ≥ 7.50",
+    "syntax": "v750",
+    "shared": []
+  },
+  {
+    "dir": "09",
+    "branch": "launchpad",
+    "title": "Launchpad",
+    "runsOn": "Cloud + Standard ≥ 7.40 SP08",
+    "syntax": "v740sp08",
+    "shared": []
+  }
+]

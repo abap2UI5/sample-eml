@@ -11,6 +11,12 @@ view and the service path, nothing more.
 
 ## What you need
 
+**Release:** Cloud + Standard ≥ 7.40 SP08. The sample is a view and two service
+paths, so nothing here reaches past the ABAP the package is written in.
+
+**Branch:** [`odata`](https://github.com/abap2UI5/samples-ext/tree/odata)
+— this package alone, without the other eight on your system.
+
 An activated OData V2 service. The sample points at the services of the SAP flight
 reference scenario:
 
@@ -28,7 +34,8 @@ the sample keeps working.
 |---|---|
 | [`315`](z2ui5_cl_smpe_app_315.clas.abap) | two OData models in one view, one table bound to each |
 
-Start it with `?app_start=z2ui5_cl_smpe_app_315`.
+Start it with `?app_start=z2ui5_cl_smpe_app_315`, or from the overview app
+`?app_start=z2ui5_cl_smpe_app_00`, which lists every sample of this repository.
 
 `315` attaches **two** models in one view via `cs_event-set_odata_model`, each under
 its own name, and binds one table to each: `{TRAVEL>/Currency}` and
