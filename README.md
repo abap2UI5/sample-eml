@@ -18,8 +18,8 @@ what your system already offers.
 
 This repository shows exactly that. OData, Smart Controls, RAP with and without
 draft, RAP business events, stateful sessions and ABAP locks, WebSockets via
-AMC/APC, the MIME repository — abap2UI5 works alongside each of them, and each one
-keeps doing what it is good at. Nothing here replaces an existing technology;
+AMC/APC, the MIME repository, the Fiori Launchpad — abap2UI5 works alongside each of
+them, and each one keeps doing what it is good at. Nothing here replaces an existing technology;
 everything here complements one. Whether you use any of it is entirely up to you —
 *everything is possible, nothing is required*.
 
@@ -43,6 +43,7 @@ and try it out — the others can wait until you need them.
 | [`src/06`](src/06) | **[Stateful Sessions / Locks](src/06/README.md)** — sticky session, `ENQUEUE` | ABAP Standard (on-premise), the table `Z2UI5_T_SMPE_01` |
 | [`src/07`](src/07) | **[AMC/APC](src/07/README.md)** — a news feed over WebSocket | on-premise APC/AMC, the ICF node `Z2UI5_APC_SMP_2` |
 | [`src/08`](src/08) | **[MIME Play Audio](src/08/README.md)** — play a sound from the MIME repository | the ICF service `/SAP/PUBLIC/BC/ABAP/mime_demo` |
+| [`src/09`](src/09) | **[Launchpad](src/09/README.md)** — startup parameters, shell title, cross-app navigation | a Fiori Launchpad with a tile pointing at abap2UI5 |
 
 The numbering is a reading order, not a dependency chain: `01` starts where most
 systems already are — an activated OData service — and each package from there
