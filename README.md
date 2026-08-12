@@ -3,35 +3,35 @@
 [![dependency](https://img.shields.io/badge/dependency-abap2UI5-blue)](https://github.com/abap2UI5/abap2UI5)
 <br>
 <br>
-[![abap-standard](https://github.com/abap2UI5/samples-ext/actions/workflows/abap-standard.yaml/badge.svg)](https://github.com/abap2UI5/samples-ext/actions/workflows/abap-standard.yaml)
-[![check-abap2UI5](https://github.com/abap2UI5/samples-ext/actions/workflows/check-abap2UI5.yaml/badge.svg)](https://github.com/abap2UI5/samples-ext/actions/workflows/check-abap2UI5.yaml)
-[![check-overview](https://github.com/abap2UI5/samples-ext/actions/workflows/check-overview.yaml/badge.svg)](https://github.com/abap2UI5/samples-ext/actions/workflows/check-overview.yaml)
-[![create-package-branches](https://github.com/abap2UI5/samples-ext/actions/workflows/create-package-branches.yaml/badge.svg)](https://github.com/abap2UI5/samples-ext/actions/workflows/create-package-branches.yaml)
+[![abap-standard](https://github.com/abap2UI5/samples-stack/actions/workflows/abap-standard.yaml/badge.svg)](https://github.com/abap2UI5/samples-stack/actions/workflows/abap-standard.yaml)
+[![check-abap2UI5](https://github.com/abap2UI5/samples-stack/actions/workflows/check-abap2UI5.yaml/badge.svg)](https://github.com/abap2UI5/samples-stack/actions/workflows/check-abap2UI5.yaml)
 
-# abap2UI5 — samples-ext
+# abap2UI5 — samples-stack
 
-**abap2UI5 in company with other technologies.**
+**Learn how abap2UI5 plays with your stack — OData, RAP, Smart Controls,
+WebSockets, the Fiori Launchpad and more.**
 
-abap2UI5 is more than a standalone framework for building apps. At its core it is
-deliberately agnostic: it makes no assumption about where your data comes from,
-which model backs your UI, or which stack you have already invested in. That
-neutrality is what makes it flexible — whenever it is useful, abap2UI5 plugs into
-what your system already offers.
+abap2UI5 is more than a standalone framework for building apps. At its core it
+is deliberately agnostic: it makes no assumption about where your data comes
+from, which model backs your UI, or which stack you have already invested in.
+That neutrality is what makes it flexible — whenever it is useful, abap2UI5
+plugs into what your system already offers.
 
 This repository shows exactly that. OData, Smart Controls, RAP with and without
 draft, RAP business events, stateful sessions and ABAP locks, WebSockets via
-AMC/APC, the MIME repository, the Fiori Launchpad — abap2UI5 works alongside each of
-them, and each one keeps doing what it is good at. Nothing here replaces an existing technology;
-everything here complements one. Whether you use any of it is entirely up to you —
-*everything is possible, nothing is required*.
+AMC/APC, the MIME repository, the Fiori Launchpad — abap2UI5 works alongside
+each of them, and each one keeps doing what it is good at. Nothing here
+replaces an existing technology; everything here complements one. Whether you
+use any of it is entirely up to you — *everything is possible, nothing is
+required*.
 
-The samples live in their own repository simply because they reach beyond a plain
-abap2UI5 installation: they use something the system provides, so the basic
-samples in [abap2UI5/samples](https://github.com/abap2UI5/samples) stay
+The samples live in their own repository simply because they reach beyond a
+plain abap2UI5 installation: they use something the system provides, so the
+basic samples in [abap2UI5/samples](https://github.com/abap2UI5/samples) stay
 install-and-run.
 
-Every area is self-contained and brings its own README. Pick the one you came for
-and try it out — the others can wait until you need them.
+Every area is self-contained and brings its own README. Pick the one you came
+for and try it out — the others can wait until you need them.
 
 ## What is in here
 
@@ -47,9 +47,22 @@ and try it out — the others can wait until you need them.
 | [`src/08`](src/08) | **[MIME Play Audio](src/08/README.md)** — play a sound from the MIME repository | the ICF service `/SAP/PUBLIC/BC/ABAP/mime_demo` | Standard only, ≥ 7.50 |
 | [`src/09`](src/09) | **[Launchpad](src/09/README.md)** — startup parameters, shell title, cross-app navigation | a Fiori Launchpad with a tile pointing at abap2UI5 | Cloud + Standard ≥ 7.40 SP08 |
 
-The numbering is a reading order, not a dependency chain: `01` starts where most
-systems already are — an activated OData service — and each package from there
-reaches a little deeper into the stack. Enter wherever your system is today.
+The numbering is a reading order, not a dependency chain: `01` starts where
+most systems already are — an activated OData service — and each package from
+there reaches a little deeper into the stack. Enter wherever your system is
+today.
+
+## The learning path
+
+This repository is step 3 of 3 — the place to connect abap2UI5 with the
+technologies you already run. If you are new to abap2UI5, start one step
+earlier:
+
+|      | Repository | What you learn | Where to start |
+|------|------------|----------------|----------------|
+| 1️⃣ | [**samples**](https://github.com/abap2UI5/samples) | **the abap2UI5 basics** — bindings, events, popups, navigation, complete apps | run `Z2UI5_CL_SMP_APP_000` |
+| 2️⃣ | [**samples-controls**](https://github.com/abap2UI5/samples-controls) | **how to use every UI5 control** — the UI5 Demo Kit rebuilt with abap2UI5 | run `z2ui5_cl_dmo_app_overview` |
+| 3️⃣ | **samples-stack** — 📍 *you are here* | **how abap2UI5 plays with your stack** — OData, RAP, WebSockets, the Fiori Launchpad and more | pick your technology in the table above |
 
 ### Reading the *Runs on* column
 
