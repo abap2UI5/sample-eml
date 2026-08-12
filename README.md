@@ -3,8 +3,8 @@
 [![dependency](https://img.shields.io/badge/dependency-abap2UI5-blue)](https://github.com/abap2UI5/abap2UI5)
 <br>
 <br>
-[![abap-standard](https://github.com/abap2UI5/samples-ext/actions/workflows/abap-standard.yaml/badge.svg)](https://github.com/abap2UI5/samples-ext/actions/workflows/abap-standard.yaml)
-[![check-abap2UI5](https://github.com/abap2UI5/samples-ext/actions/workflows/check-abap2UI5.yaml/badge.svg)](https://github.com/abap2UI5/samples-ext/actions/workflows/check-abap2UI5.yaml)
+[![abap-standard](https://github.com/abap2UI5/samples-stack/actions/workflows/abap-standard.yaml/badge.svg)](https://github.com/abap2UI5/samples-stack/actions/workflows/abap-standard.yaml)
+[![check-abap2UI5](https://github.com/abap2UI5/samples-stack/actions/workflows/check-abap2UI5.yaml/badge.svg)](https://github.com/abap2UI5/samples-stack/actions/workflows/check-abap2UI5.yaml)
 
 # abap2UI5 — samples-stack
 
@@ -61,7 +61,7 @@ earlier:
 |      | Repository | What you learn | Where to start |
 |------|------------|----------------|----------------|
 | 1️⃣ | [**samples**](https://github.com/abap2UI5/samples) | **the abap2UI5 basics** — bindings, events, popups, navigation, complete apps | run `Z2UI5_CL_SMP_APP_000` |
-| 2️⃣ | [**samples-controls**](https://github.com/abap2UI5/ai-demokit) | **how to use every UI5 control** — the UI5 Demo Kit rebuilt with abap2UI5 | run `z2ui5_cl_dmo_app_overview` |
+| 2️⃣ | [**samples-controls**](https://github.com/abap2UI5/samples-controls) | **how to use every UI5 control** — the UI5 Demo Kit rebuilt with abap2UI5 | run `z2ui5_cl_dmo_app_overview` |
 | 3️⃣ | **samples-stack** — 📍 *you are here* | **how abap2UI5 plays with your stack** — OData, RAP, WebSockets, the Fiori Launchpad and more | pick your technology in the table above |
 
 ## Setup
