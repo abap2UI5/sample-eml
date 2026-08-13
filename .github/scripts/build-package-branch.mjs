@@ -17,7 +17,7 @@
 import { readFileSync, writeFileSync, readdirSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 
-const REPO = 'abap2UI5/samples-ext';
+const REPO = 'abap2UI5/samples-stack';
 const MAIN = `https://github.com/${REPO}/blob/main`;
 const SRC = 'src';
 
@@ -98,7 +98,7 @@ const wrap = (text) =>
 
 writeFileSync(
   'README.md',
-  `# abap2UI5 — samples-ext — ${pkg.title}
+  `# abap2UI5 — samples-stack — ${pkg.title}
 
 **One package, nothing else.** This branch is generated from
 [\`main\`](${MAIN}/README.md) and carries [\`src/${pkg.dir}\`](src/${pkg.dir}) only, so

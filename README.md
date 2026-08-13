@@ -129,20 +129,22 @@ abapGit imports a **whole repository** — there is no way to pull half of one. 
 packages and the three that need 1909, and reports activation errors for
 technology it never asked for.
 
-So every package additionally lives on **its own branch**. Pick it in the abapGit
-branch dropdown and you import that package, the overview app and nothing else:
+So every package additionally lives on **its own branch**. Each branch carries the
+number of the package it holds, so the abapGit branch dropdown lists them in the
+same reading order as the table above. Pick one and you import that package, the
+overview app and nothing else:
 
 | Branch | Package | Runs on |
 |---|---|---|
-| [`odata`](../../tree/odata) | [`src/01`](src/01) — OData | Cloud + Standard ≥ 7.40 SP08 |
-| [`smart-controls`](../../tree/smart-controls) | [`src/02`](src/02) — Smart Controls | Cloud + Standard ≥ 7.40 SP08 |
-| [`rap`](../../tree/rap) | [`src/03`](src/03) — RAP | Cloud + Standard ≥ 7.54 (1909) |
-| [`rap-draft`](../../tree/rap-draft) | [`src/04`](src/04) — RAP with Draft | Cloud + Standard ≥ 7.54 (1909) |
-| [`business-events`](../../tree/business-events) | [`src/05`](src/05) — Business Events | Cloud + Standard ≥ 7.56 (2021) |
-| [`stateful-locks`](../../tree/stateful-locks) | [`src/06`](src/06) — Stateful Sessions / Locks | Standard only, ≥ 7.40 SP08 |
-| [`amc-apc`](../../tree/amc-apc) | [`src/07`](src/07) — AMC/APC | Standard only, ≥ 7.50 |
-| [`mime`](../../tree/mime) | [`src/08`](src/08) — MIME Play Audio | Standard only, ≥ 7.50 |
-| [`launchpad`](../../tree/launchpad) | [`src/09`](src/09) — Launchpad | Cloud + Standard ≥ 7.40 SP08 |
+| [`01-odata`](../../tree/01-odata) | [`src/01`](src/01) — OData | Cloud + Standard ≥ 7.40 SP08 |
+| [`02-smart-controls`](../../tree/02-smart-controls) | [`src/02`](src/02) — Smart Controls | Cloud + Standard ≥ 7.40 SP08 |
+| [`03-rap`](../../tree/03-rap) | [`src/03`](src/03) — RAP | Cloud + Standard ≥ 7.54 (1909) |
+| [`04-rap-draft`](../../tree/04-rap-draft) | [`src/04`](src/04) — RAP with Draft | Cloud + Standard ≥ 7.54 (1909) |
+| [`05-business-events`](../../tree/05-business-events) | [`src/05`](src/05) — Business Events | Cloud + Standard ≥ 7.56 (2021) |
+| [`06-stateful-locks`](../../tree/06-stateful-locks) | [`src/06`](src/06) — Stateful Sessions / Locks | Standard only, ≥ 7.40 SP08 |
+| [`07-amc-apc`](../../tree/07-amc-apc) | [`src/07`](src/07) — AMC/APC | Standard only, ≥ 7.50 |
+| [`08-mime`](../../tree/08-mime) | [`src/08`](src/08) — MIME Play Audio | Standard only, ≥ 7.50 |
+| [`09-launchpad`](../../tree/09-launchpad) | [`src/09`](src/09) — Launchpad | Cloud + Standard ≥ 7.40 SP08 |
 
 The overview app ships on every branch and keeps listing **all 31 samples**, so it
 stays the catalogue of what the other branches hold — the ones that are not on

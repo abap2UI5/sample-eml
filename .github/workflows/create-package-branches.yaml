@@ -74,7 +74,7 @@ jobs:
     - run: node .github/scripts/check-overview.mjs
 
     - name: Commit and push
-      if: github.event_name != 'pull_request' && github.repository == 'abap2UI5/samples-ext'
+      if: github.event_name != 'pull_request' && github.repository == 'abap2UI5/samples-stack'
       run: |
         git config user.name 'github-actions[bot]'
         git config user.email 'github-actions[bot]@users.noreply.github.com'
