@@ -421,7 +421,11 @@ CLASS z2ui5_cl_smpe_app_00 IMPLEMENTATION.
       ( sample( no        = `479`
                 title     = `SmartChart with NavigationPopover`
                 detail    = `an analytical service - you supply the path`
-                classname = `Z2UI5_CL_SMPE_APP_479` ) ) ).
+                classname = `Z2UI5_CL_SMPE_APP_479` ) )
+      ( sample( no        = `493`
+                title     = `Classic FilterBar with variant management`
+                detail    = `no service needed - the data is ABAP`
+                classname = `Z2UI5_CL_SMPE_APP_493` ) ) ).
 
     t_rap = VALUE #(
       ( sample( no        = `01`

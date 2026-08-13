@@ -144,7 +144,7 @@ branch dropdown and you import that package, the overview app and nothing else:
 | [`mime`](../../tree/mime) | [`src/08`](src/08) — MIME Play Audio | Standard only, ≥ 7.50 |
 | [`launchpad`](../../tree/launchpad) | [`src/09`](src/09) — Launchpad | Cloud + Standard ≥ 7.40 SP08 |
 
-The overview app ships on every branch and keeps listing **all 30 samples**, so it
+The overview app ships on every branch and keeps listing **all 31 samples**, so it
 stays the catalogue of what the other branches hold — the ones that are not on
 your branch simply show up with a disabled Open button.
 
