@@ -25,7 +25,7 @@ a younger RAP feature than EML itself: if `RAISE ENTITY EVENT` does not activate
 your system, this package is simply out of reach for now, and nothing else in this
 repository is affected.
 
-The overview app `z2ui5_cl_smpe_app_00` lists these two samples like any others and
+The overview app `z2ui5_cl_smps_app_00` lists these two samples like any others and
 does not depend on them: it looks every sample up at runtime, so on a release
 without business events the two rows are shown with their Open button disabled
 instead of taking the overview down.
@@ -37,12 +37,12 @@ table fills itself as you create tickets.
 
 | Sample | Role |
 |---|---|
-| [`11`](z2ui5_cl_smpe_app_11.clas.abap) | create tickets through the BO — every create and update raises an event |
-| [`12`](z2ui5_cl_smpe_app_12.clas.abap) | the event log the handler writes, newest first |
+| [`11`](z2ui5_cl_smps_app_11.clas.abap) | create tickets through the BO — every create and update raises an event |
+| [`12`](z2ui5_cl_smps_app_12.clas.abap) | the event log the handler writes, newest first |
 
-Start them with `?app_start=z2ui5_cl_smpe_app_11` and
-`?app_start=z2ui5_cl_smpe_app_12`, or from the overview app
-`?app_start=z2ui5_cl_smpe_app_00`, whose Open button puts each in its own tab. Open
+Start them with `?app_start=z2ui5_cl_smps_app_11` and
+`?app_start=z2ui5_cl_smps_app_12`, or from the overview app
+`?app_start=z2ui5_cl_smps_app_00`, whose Open button puts each in its own tab. Open
 both in two browser tabs, create a ticket in the first, press refresh in the
 second — the log entry the handler wrote is there.
 
@@ -52,7 +52,7 @@ created the ticket. That is what the refresh button is for.
 
 ## The two kinds of event
 
-The behavior definition [`z2ui5_r_smpe_tck.bdef.asbdef`](01/z2ui5_r_smpe_tck.bdef.asbdef)
+The behavior definition [`z2ui5_r_smps_tck.bdef.asbdef`](01/z2ui5_r_smps_tck.bdef.asbdef)
 declares one of each — the distinction is the whole point of the sample:
 
 ```abap
@@ -60,28 +60,28 @@ declares one of each — the distinction is the whole point of the sample:
 event TicketCreated;
 
 " data event: an enriched payload, typed by an abstract entity
-event StatusChanged parameter Z2UI5_R_SMPE_TCK_STAT;
+event StatusChanged parameter Z2UI5_R_SMPS_TCK_STAT;
 ```
 
 A **notification** event says *something happened to this instance* and leaves it to
 the consumer to read the current state. A **data** event carries the state along, so
 the consumer needs no second read — at the price of shipping data that may already
 be stale by the time it is handled. The payload type is an ordinary abstract entity,
-[`Z2UI5_R_SMPE_TCK_STAT`](01/z2ui5_r_smpe_tck_stat.ddls.asddls).
+[`Z2UI5_R_SMPS_TCK_STAT`](01/z2ui5_r_smps_tck_stat.ddls.asddls).
 
 ## Who raises them
 
 The additional save of the behavior pool,
-[`Z2UI5_CL_SMPE_BP_TCK`](01/z2ui5_cl_smpe_bp_tck.clas.locals_imp.abap) —
+[`Z2UI5_CL_SMPS_BP_TCK`](01/z2ui5_cl_smps_bp_tck.clas.locals_imp.abap) —
 `save_modified` sees what the transaction changed and raises accordingly:
 
 ```abap
 " on create - key only
-RAISE ENTITY EVENT z2ui5_r_smpe_tck~TicketCreated
+RAISE ENTITY EVENT z2ui5_r_smps_tck~TicketCreated
   FROM VALUE #( FOR c IN create-ticket ( %key = VALUE #( TicketUUID = c-TicketUUID ) ) ).
 
 " on update - key plus payload in %param
-RAISE ENTITY EVENT z2ui5_r_smpe_tck~StatusChanged
+RAISE ENTITY EVENT z2ui5_r_smps_tck~StatusChanged
   FROM VALUE #( FOR t IN lt_current (
                   %key   = VALUE #( TicketUUID = t-TicketUUID )
                   %param = VALUE #( Title = t-Title Status = t-Status … ) ) ).
@@ -89,16 +89,16 @@ RAISE ENTITY EVENT z2ui5_r_smpe_tck~StatusChanged
 
 ## Who listens
 
-A separate class, [`Z2UI5_CL_SMPE_EVT_TCK`](01/z2ui5_cl_smpe_evt_tck.clas.locals_imp.abap),
+A separate class, [`Z2UI5_CL_SMPS_EVT_TCK`](01/z2ui5_cl_smps_evt_tck.clas.locals_imp.abap),
 inheriting from `CL_ABAP_BEHAVIOR_EVENT_HANDLER`. It subscribes per event, receives
 the instances as a table, and writes them into the log:
 
 ```abap
 METHODS on_ticket_created FOR ENTITY EVENT
-  ticketcreated FOR z2ui5_r_smpe_tck~TicketCreated.
+  ticketcreated FOR z2ui5_r_smps_tck~TicketCreated.
 
 METHODS on_status_changed FOR ENTITY EVENT
-  statuschanged FOR z2ui5_r_smpe_tck~StatusChanged.
+  statuschanged FOR z2ui5_r_smps_tck~StatusChanged.
 ```
 
 Nothing registers this class anywhere — the `FOR ENTITY EVENT` declaration *is* the
@@ -110,14 +110,14 @@ the business object changing a line.
 
 | Object | Role |
 |---|---|
-| `Z2UI5_T_SMPE_TCK`, `Z2UI5_D_SMPE_TCK` | the ticket table and its draft table |
-| [`Z2UI5_R_SMPE_TCK`](01/z2ui5_r_smpe_tck.ddls.asddls) + [`.bdef`](01/z2ui5_r_smpe_tck.bdef.asbdef) | the root view entity and the behavior with the two events |
-| [`Z2UI5_CL_SMPE_BP_TCK`](01/z2ui5_cl_smpe_bp_tck.clas.locals_imp.abap) | behavior pool — determination and the additional save that raises |
-| [`Z2UI5_R_SMPE_TCK_STAT`](01/z2ui5_r_smpe_tck_stat.ddls.asddls) | the abstract entity typing the data event payload |
-| [`Z2UI5_CL_SMPE_EVT_TCK`](01/z2ui5_cl_smpe_evt_tck.clas.locals_imp.abap) | the event handler, writes the log |
-| `Z2UI5_T_SMPE_LOG` + [`Z2UI5_R_SMPE_LOG`](01/z2ui5_r_smpe_log.ddls.asddls) | the log table and its CDS view |
-| [`Z2UI5_R_SMPE_TCK_C`](01/z2ui5_r_smpe_tck_c.ddls.asddls), `Z2UI5_SD_SMPE_TCK`, `Z2UI5_SB_SMPE_TCK` | projection, service definition and an OData V4 binding |
-| [`Z2UI5_CL_SMPE_APP_11`](z2ui5_cl_smpe_app_11.clas.abap), [`Z2UI5_CL_SMPE_APP_12`](z2ui5_cl_smpe_app_12.clas.abap) | the two abap2UI5 apps |
+| `Z2UI5_T_SMPS_TCK`, `Z2UI5_D_SMPS_TCK` | the ticket table and its draft table |
+| [`Z2UI5_R_SMPS_TCK`](01/z2ui5_r_smps_tck.ddls.asddls) + [`.bdef`](01/z2ui5_r_smps_tck.bdef.asbdef) | the root view entity and the behavior with the two events |
+| [`Z2UI5_CL_SMPS_BP_TCK`](01/z2ui5_cl_smps_bp_tck.clas.locals_imp.abap) | behavior pool — determination and the additional save that raises |
+| [`Z2UI5_R_SMPS_TCK_STAT`](01/z2ui5_r_smps_tck_stat.ddls.asddls) | the abstract entity typing the data event payload |
+| [`Z2UI5_CL_SMPS_EVT_TCK`](01/z2ui5_cl_smps_evt_tck.clas.locals_imp.abap) | the event handler, writes the log |
+| `Z2UI5_T_SMPS_LOG` + [`Z2UI5_R_SMPS_LOG`](01/z2ui5_r_smps_log.ddls.asddls) | the log table and its CDS view |
+| [`Z2UI5_R_SMPS_TCK_C`](01/z2ui5_r_smps_tck_c.ddls.asddls), `Z2UI5_SD_SMPS_TCK`, `Z2UI5_SB_SMPS_TCK` | projection, service definition and an OData V4 binding |
+| [`Z2UI5_CL_SMPS_APP_11`](z2ui5_cl_smps_app_11.clas.abap), [`Z2UI5_CL_SMPS_APP_12`](z2ui5_cl_smps_app_12.clas.abap) | the two abap2UI5 apps |
 
 The projection, service definition and service binding are there on purpose: the
 same business object can be published as an OData V4 service and consumed by a

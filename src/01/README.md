@@ -32,10 +32,10 @@ the sample keeps working.
 
 | Sample | Shows |
 |---|---|
-| [`315`](z2ui5_cl_smpe_app_315.clas.abap) | two OData models in one view, one table bound to each |
+| [`315`](z2ui5_cl_smps_app_315.clas.abap) | two OData models in one view, one table bound to each |
 
-Start it with `?app_start=z2ui5_cl_smpe_app_315`, or from the overview app
-`?app_start=z2ui5_cl_smpe_app_00`, which lists every sample of this repository.
+Start it with `?app_start=z2ui5_cl_smps_app_315`, or from the overview app
+`?app_start=z2ui5_cl_smps_app_00`, which lists every sample of this repository.
 
 `315` attaches **two** models in one view via `cs_event-set_odata_model`, each under
 its own name, and binds one table to each: `{TRAVEL>/Currency}` and

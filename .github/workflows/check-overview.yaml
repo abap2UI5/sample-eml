@@ -1,6 +1,6 @@
 name: check-overview
 
-# The overview app z2ui5_cl_smpe_app_00 names every sample as a string and
+# The overview app z2ui5_cl_smps_app_00 names every sample as a string and
 # resolves it at runtime, so that it survives a package the system cannot
 # activate and a checkout carrying only part of this repository. The compiler
 # therefore no longer notices a renamed or a newly added sample - this check

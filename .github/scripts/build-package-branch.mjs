@@ -25,7 +25,7 @@ const SRC = 'src';
 // package.devc.xml (abapGit needs the parent package) and the overview app,
 // which is the entry point on every branch - it lists all 30 samples and marks
 // the ones this checkout does not carry as "not on this system"
-const SRC_ALWAYS = /^(package\.devc\.xml|z2ui5_cl_smpe_app_00\.clas\..*)$/;
+const SRC_ALWAYS = /^(package\.devc\.xml|z2ui5_cl_smps_app_00\.clas\..*)$/;
 
 const branch = process.argv[2];
 if (!branch) {
@@ -116,7 +116,7 @@ ${pkg.note ? `\n${wrap(pkg.note)}\n` : ''}
 3. Set up whatever the package builds on: **[src/${pkg.dir}/README.md](src/${pkg.dir}/README.md)**
    says so in one short section.
 4. Start a sample with \`?app_start=<class name>\`, or start the overview with
-   \`?app_start=z2ui5_cl_smpe_app_00\`.
+   \`?app_start=z2ui5_cl_smps_app_00\`.
 
 The overview app ships on every branch and lists **all 30 samples** of the
 repository, not just this package's. The ones that are not on this branch are

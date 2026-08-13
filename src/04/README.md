@@ -2,7 +2,7 @@
 
 *[← all packages](../../README.md)*
 
-`Z2UI5_R_SMPE_TRD` is the business object of [`03` RAP](../03/README.md) **with
+`Z2UI5_R_SMPS_TRD` is the business object of [`03` RAP](../03/README.md) **with
 draft**. Everything you read there still applies — this package adds the one
 mechanism that makes drafts work, and four samples that use it.
 
@@ -21,8 +21,8 @@ whole lifecycle fits in a handful of statements.
 ABAP Platform >= 1909 or a BTP ABAP Environment. The draft enabled business object
 and its two tables come with this package ([`src/04/01`](01)).
 
-Fill the table with `Z2UI5_CL_SMPE_DATA_TRD` (F9 in ADT) or press *Regenerate Demo
-Data* in the overview app `?app_start=z2ui5_cl_smpe_app_00`.
+Fill the table with `Z2UI5_CL_SMPS_DATA_TRD` (F9 in ADT) or press *Regenerate Demo
+Data* in the overview app `?app_start=z2ui5_cl_smps_app_00`.
 
 ## What changes with draft
 
@@ -39,10 +39,10 @@ first.
 
 | You want to | Statement | Sample |
 |---|---|---|
-| see which instances have a draft | `READ … %is_draft = mk-on` | [`06`](z2ui5_cl_smpe_app_06.clas.abap) |
-| enter draft mode | `EXECUTE Edit` / `Resume` | [`07`](z2ui5_cl_smpe_app_07.clas.abap) |
-| change a draft | `UPDATE … %is_draft = mk-on` | [`08`](z2ui5_cl_smpe_app_08.clas.abap) |
-| leave draft mode | `EXECUTE Activate` / `Discard` | [`09`](z2ui5_cl_smpe_app_09.clas.abap) |
+| see which instances have a draft | `READ … %is_draft = mk-on` | [`06`](z2ui5_cl_smps_app_06.clas.abap) |
+| enter draft mode | `EXECUTE Edit` / `Resume` | [`07`](z2ui5_cl_smps_app_07.clas.abap) |
+| change a draft | `UPDATE … %is_draft = mk-on` | [`08`](z2ui5_cl_smps_app_08.clas.abap) |
+| leave draft mode | `EXECUTE Activate` / `Discard` | [`09`](z2ui5_cl_smps_app_09.clas.abap) |
 
 Start at `06` — it carries the one trick the other three reuse.
 
@@ -52,7 +52,7 @@ looks like:
 
 | | | |
 |---|---|---|
-| the whole draft lifecycle | everything from 06–09 | [`10` manage travels with draft](z2ui5_cl_smpe_app_10.clas.abap) |
+| the whole draft lifecycle | everything from 06–09 | [`10` manage travels with draft](z2ui5_cl_smps_app_10.clas.abap) |
 
 ## The snippets
 
@@ -61,7 +61,7 @@ so `%is_draft` is the only thing separating them. Everything that comes back in
 `RESULT` has a draft, the rest lands in `FAILED`.
 
 ```abap
-READ ENTITIES OF z2ui5_r_smpe_trd
+READ ENTITIES OF z2ui5_r_smps_trd
   ENTITY travel
     FIELDS ( travelid ) WITH VALUE #( FOR s_row IN t_result
                                       ( %tky = VALUE #( traveluuid = s_row-traveluuid

@@ -26,7 +26,7 @@ A **Fiori Launchpad** with a tile pointing at abap2UI5 — an on-premise FLP
 The target mapping's URL is the abap2UI5 ICF node plus the app to start:
 
 ```
-/sap/bc/z2ui5?app_start=z2ui5_cl_smpe_app_481
+/sap/bc/z2ui5?app_start=z2ui5_cl_smps_app_481
 ```
 
 The framework detects the launchpad from that context (`scenario=LAUNCHPAD` in the
@@ -38,14 +38,14 @@ message box when it was started standalone — where it then has no shell to tal
 
 | Sample | Shows |
 |---|---|
-| [`481`](z2ui5_cl_smpe_app_481.clas.abap) | read the startup parameters the tile passed in — `client->get( )-t_comp_params` |
-| [`482`](z2ui5_cl_smpe_app_482.clas.abap) | set the shell title from the backend — `follow_up_action( cs_event-set_title_launchpad )` |
-| [`483`](z2ui5_cl_smpe_app_483.clas.abap) | cross-app navigation, **sender** — hands two values over to another tile |
-| [`484`](z2ui5_cl_smpe_app_484.clas.abap) | cross-app navigation, **receiver** — reads them back out of its startup parameters |
+| [`481`](z2ui5_cl_smps_app_481.clas.abap) | read the startup parameters the tile passed in — `client->get( )-t_comp_params` |
+| [`482`](z2ui5_cl_smps_app_482.clas.abap) | set the shell title from the backend — `follow_up_action( cs_event-set_title_launchpad )` |
+| [`483`](z2ui5_cl_smps_app_483.clas.abap) | cross-app navigation, **sender** — hands two values over to another tile |
+| [`484`](z2ui5_cl_smps_app_484.clas.abap) | cross-app navigation, **receiver** — reads them back out of its startup parameters |
 
-Start any of them with `?app_start=z2ui5_cl_smpe_app_<no>` — from a tile, that is
+Start any of them with `?app_start=z2ui5_cl_smps_app_<no>` — from a tile, that is
 what the target mapping's URL carries. The overview app
-`?app_start=z2ui5_cl_smpe_app_00` lists them too, but its Open button starts them
+`?app_start=z2ui5_cl_smps_app_00` lists them too, but its Open button starts them
 standalone, and standalone is exactly the case where they have no shell to talk to
 and say so in a message box.
 
@@ -73,8 +73,8 @@ decides which app answers to it. Configure two target mappings for the pair:
 
 | Semantic object | Action | Starts |
 |---|---|---|
-| `Z2UI5_CL_LP_SAMPLE_03` | `display` | `z2ui5_cl_smpe_app_483` (sender) |
-| `Z2UI5_CL_LP_SAMPLE_04` | `display` | `z2ui5_cl_smpe_app_484` (receiver) |
+| `Z2UI5_CL_LP_SAMPLE_03` | `display` | `z2ui5_cl_smps_app_483` (sender) |
+| `Z2UI5_CL_LP_SAMPLE_04` | `display` | `z2ui5_cl_smps_app_484` (receiver) |
 
 Both literals sit in the classes, so use these two names or change them there. The
 *back to the previous app* button in either sample needs no configuration at all —

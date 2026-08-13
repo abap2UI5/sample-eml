@@ -1,7 +1,7 @@
 {
   "global": {
     "files": "/src/**/*.*",
-    // z2ui5_cl_smpe_evt_tck is a RAP business event handler. Its two
+    // z2ui5_cl_smps_evt_tck is a RAP business event handler. Its two
     // constructs - CLASS ... DEFINITION PUBLIC FOR EVENTS OF <entity> in the
     // global class and METHODS ... FOR ENTITY EVENT <evt> FOR <entity>~<evt>
     // in the handler pool - have no grammar in abaplint, so the class pool
@@ -15,8 +15,8 @@
     // object_naming and xml_consistency still cover the object. Drop this
     // once abaplint parses the RAP event syntax.
     "noIssues": [
-      "z2ui5_cl_smpe_evt_tck\\.clas\\.abap$",
-      "z2ui5_cl_smpe_evt_tck\\.clas\\.locals_imp\\.abap$"
+      "z2ui5_cl_smps_evt_tck\\.clas\\.abap$",
+      "z2ui5_cl_smps_evt_tck\\.clas\\.locals_imp\\.abap$"
     ]
   },
   "dependencies": [
@@ -46,11 +46,11 @@
     "line_length": {
       "length": 255
     },
-    // Every object carries the EML sample token SMPE behind its type token,
+    // Every object carries the stack sample token SMPS behind its type token,
     // the scheme the samples repository uses with its SMP token:
-    //   Z2UI5_CL_SMPE_<object>   classes, including the behavior pools
-    //   Z2UI5_T_SMPE_<object>    persistent tables
-    //   Z2UI5_D_SMPE_<object>    draft tables
+    //   Z2UI5_CL_SMPS_<object>   classes, including the behavior pools
+    //   Z2UI5_T_SMPS_<object>    persistent tables
+    //   Z2UI5_D_SMPS_<object>    draft tables
     // Class names are capped at 25 characters by the leading lookahead. ABAP
     // allows 30, but build_rename (see abap2UI5) replaces the namespace
     // z2ui5 (5 chars) with up to 9, which costs 4 - so 26 is the hard
@@ -63,8 +63,8 @@
     "object_naming": {
       "patternKind": "required",
       "severity": "Error",
-      "clas": "^(?=.{1,25}$)Z2UI5_C(L|X)_SMPE_",
-      "tabl": "^(?=.{1,16}$)Z2UI5_(T|D)_SMPE_"
+      "clas": "^(?=.{1,25}$)Z2UI5_C(L|X)_SMPS_",
+      "tabl": "^(?=.{1,16}$)Z2UI5_(T|D)_SMPS_"
     },
     // enforces the per object type name length limits of the ABAP repository
     "allowed_object_naming": true,
@@ -73,21 +73,21 @@
     "check_include": true,
     // see the note at "superclass_final" below
     "check_syntax": {
-      "exclude": ["z2ui5_cl_smpe_app_489(_ws)?\\.clas\\."]
+      "exclude": ["z2ui5_cl_smps_app_489(_ws)?\\.clas\\."]
     },
     "global_class": true,
     "definitions_top": false,
     "implement_methods": true,
     "method_implemented_twice": true,
     "parser_error": true,
-    // z2ui5_cl_smpe_app_489_ws inherits from cl_apc_wsp_ext_stateless_base.
+    // z2ui5_cl_smps_app_489_ws inherits from cl_apc_wsp_ext_stateless_base.
     // ABAP Push Channels are on-premise only and therefore absent from
     // steampunk-2305-api, the single API dependency of this repository, so
     // the superclass cannot be resolved. The class pool then fails to
     // activate for abaplint, which is why app_489 - the app driving the
     // channel - reports its references to it as unknown as well.
     "superclass_final": {
-      "exclude": ["z2ui5_cl_smpe_app_489_ws\\.clas\\."]
+      "exclude": ["z2ui5_cl_smps_app_489_ws\\.clas\\."]
     },
     "unknown_types": true,
     "xml_consistency": true
