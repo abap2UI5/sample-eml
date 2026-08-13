@@ -1,7 +1,7 @@
 [
   {
     "dir": "01",
-    "branch": "odata",
+    "branch": "01-odata",
     "title": "OData",
     "runsOn": "Cloud + Standard ≥ 7.40 SP08",
     "syntax": "v740sp08",
@@ -9,7 +9,7 @@
   },
   {
     "dir": "02",
-    "branch": "smart-controls",
+    "branch": "02-smart-controls",
     "title": "Smart Controls",
     "runsOn": "Cloud + Standard ≥ 7.40 SP08",
     "syntax": "v740sp08",
@@ -17,7 +17,7 @@
   },
   {
     "dir": "03",
-    "branch": "rap",
+    "branch": "03-rap",
     "title": "RAP",
     "runsOn": "Cloud + Standard ≥ 7.54 (1909)",
     "syntax": "v754",
@@ -25,7 +25,7 @@
   },
   {
     "dir": "04",
-    "branch": "rap-draft",
+    "branch": "04-rap-draft",
     "title": "RAP with Draft",
     "runsOn": "Cloud + Standard ≥ 7.54 (1909)",
     "syntax": "v754",
@@ -33,7 +33,7 @@
   },
   {
     "dir": "05",
-    "branch": "business-events",
+    "branch": "05-business-events",
     "title": "Business Events",
     "runsOn": "Cloud + Standard ≥ 7.56 (2021)",
     "syntax": "v754",
@@ -42,7 +42,7 @@
   },
   {
     "dir": "06",
-    "branch": "stateful-locks",
+    "branch": "06-stateful-locks",
     "title": "Stateful Sessions / Locks",
     "runsOn": "Standard only, ≥ 7.40 SP08",
     "syntax": "v740sp08",
@@ -50,7 +50,7 @@
   },
   {
     "dir": "07",
-    "branch": "amc-apc",
+    "branch": "07-amc-apc",
     "title": "AMC/APC",
     "runsOn": "Standard only, ≥ 7.50",
     "syntax": "v750",
@@ -58,7 +58,7 @@
   },
   {
     "dir": "08",
-    "branch": "mime",
+    "branch": "08-mime",
     "title": "MIME Play Audio",
     "runsOn": "Standard only, ≥ 7.50",
     "syntax": "v750",
@@ -66,7 +66,7 @@
   },
   {
     "dir": "09",
-    "branch": "launchpad",
+    "branch": "09-launchpad",
     "title": "Launchpad",
     "runsOn": "Cloud + Standard ≥ 7.40 SP08",
     "syntax": "v740sp08",

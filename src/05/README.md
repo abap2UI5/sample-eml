@@ -16,7 +16,7 @@ the second shows what arrived. RAP does the wiring in between.
 **Release:** Cloud + Standard ≥ 7.56 (2021) — the highest floor in this
 repository, and the only package whose limit is not EML.
 
-**Branch:** [`business-events`](https://github.com/abap2UI5/samples-ext/tree/business-events)
+**Branch:** [`05-business-events`](https://github.com/abap2UI5/samples-stack/tree/05-business-events)
 — this package alone, without the other eight on your system.
 
 ABAP Platform >= 1909 or a BTP ABAP Environment covers the EML part — but this

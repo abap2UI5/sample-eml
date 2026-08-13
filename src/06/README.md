@@ -17,7 +17,7 @@ in the framework; nothing has to be configured up front.
 function modules nor a stateful ICF session is a released cloud API — this package
 is on-premise by design, not by omission.
 
-**Branch:** [`stateful-locks`](https://github.com/abap2UI5/samples-ext/tree/stateful-locks)
+**Branch:** [`06-stateful-locks`](https://github.com/abap2UI5/samples-stack/tree/06-stateful-locks)
 — this package alone, without the other eight on your system.
 
 ABAP Standard (on-premise). The locks go through the function modules

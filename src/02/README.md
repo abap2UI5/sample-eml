@@ -15,7 +15,7 @@ help and smart filtering for free.
 side of these nine samples asks for nothing beyond the release the package is
 written in — what they need is the service, not the platform.
 
-**Branch:** [`smart-controls`](https://github.com/abap2UI5/samples-ext/tree/smart-controls)
+**Branch:** [`02-smart-controls`](https://github.com/abap2UI5/samples-stack/tree/02-smart-controls)
 — this package alone, without the other eight on your system.
 
 - **SAPUI5**, since `sap.ui.comp` is part of the SAPUI5 distribution.
