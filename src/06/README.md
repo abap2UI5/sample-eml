@@ -24,7 +24,7 @@ ABAP Standard (on-premise). The locks go through the function modules
 `ENQUEUE_E_TABLE` and `ENQUEUE_READ`, which are available there — `485`'s own page
 title points this out.
 
-The lock table `Z2UI5_T_SMPE_01` comes with this package
+The lock table `Z2UI5_T_SMPS_01` comes with this package
 ([`src/06/01`](01)); after the import it only has to be activated, it is never
 filled with data. Keep `SM12` open next to the browser and you can watch the entries
 appear live.
@@ -33,12 +33,12 @@ appear live.
 
 | Sample | Shows |
 |---|---|
-| [`486`](z2ui5_cl_smpe_app_486.clas.abap) | the basics — a counter in a static container. It keeps counting up while the session is stateful and starts over once you switch it off |
-| [`485`](z2ui5_cl_smpe_app_485.clas.abap) | set an `ENQUEUE` lock, read it back with `ENQUEUE_READ`, end and restart the session |
-| [`490`](z2ui5_cl_smpe_app_490.clas.abap) | one lock per screen — every *Next Lock View* navigates into a new app instance that takes the next `VARKEY`, going back releases it |
+| [`486`](z2ui5_cl_smps_app_486.clas.abap) | the basics — a counter in a static container. It keeps counting up while the session is stateful and starts over once you switch it off |
+| [`485`](z2ui5_cl_smps_app_485.clas.abap) | set an `ENQUEUE` lock, read it back with `ENQUEUE_READ`, end and restart the session |
+| [`490`](z2ui5_cl_smps_app_490.clas.abap) | one lock per screen — every *Next Lock View* navigates into a new app instance that takes the next `VARKEY`, going back releases it |
 
-Start any of them with `?app_start=z2ui5_cl_smpe_app_<no>`, or from the overview
-app `?app_start=z2ui5_cl_smpe_app_00`, which lists every sample of this repository.
+Start any of them with `?app_start=z2ui5_cl_smps_app_<no>`, or from the overview
+app `?app_start=z2ui5_cl_smps_app_00`, which lists every sample of this repository.
 Begin with `486`: it makes the mode switch visible in one number before any lock is
 involved.
 

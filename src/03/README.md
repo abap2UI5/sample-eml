@@ -27,19 +27,19 @@ The draft enabled half lives next door in [`04` RAP with Draft](../04/README.md)
 — this package alone, without the other eight on your system.
 
 ABAP Platform >= 1909 or a BTP ABAP Environment. The business object
-`Z2UI5_R_SMPE_TRV` and its table come with this package ([`src/03/01`](01)), so
+`Z2UI5_R_SMPS_TRV` and its table come with this package ([`src/03/01`](01)), so
 nothing else has to be installed.
 
 ## Start here
 
-Run [`00 overview`](../z2ui5_cl_smpe_app_00.clas.abap) —
-`?app_start=z2ui5_cl_smpe_app_00`. It lists every sample of this repository, the
+Run [`00 overview`](../z2ui5_cl_smps_app_00.clas.abap) —
+`?app_start=z2ui5_cl_smps_app_00`. It lists every sample of this repository, the
 RAP ones included, and opens each in a new browser tab, so the overview stays open
 and several samples can run side by side. *Regenerate Demo Data* in its header
 fills both business objects.
 
-Fill the tables before the first run: execute `Z2UI5_CL_SMPE_DATA_TRV` (and
-`Z2UI5_CL_SMPE_DATA_TRD` for the draft package) with F9 in ADT, or press
+Fill the tables before the first run: execute `Z2UI5_CL_SMPS_DATA_TRV` (and
+`Z2UI5_CL_SMPS_DATA_TRD` for the draft package) with F9 in ADT, or press
 *Regenerate Demo Data* in the overview — *Generate Demo Data* in a single sample
 does the same for its own business object. Both offer `data_generate( )`,
 `data_delete( )` and `data_reset( )`.
@@ -50,7 +50,7 @@ produce.
 
 ## The business object
 
-`Z2UI5_R_SMPE_TRV` manages a **travel**. It is an ordinary managed RAP BO — small on
+`Z2UI5_R_SMPS_TRV` manages a **travel**. It is an ordinary managed RAP BO — small on
 purpose, but not so small that consuming it is uninteresting.
 
 | Field | |
@@ -86,11 +86,11 @@ reading order.
 
 | You want to | Statement | Sample |
 |---|---|---|
-| read an instance | `READ ENTITIES` | [`01`](z2ui5_cl_smpe_app_01.clas.abap) |
-| create one | `MODIFY … CREATE` → `MAPPED` | [`02`](z2ui5_cl_smpe_app_02.clas.abap) |
-| change fields | `MODIFY … UPDATE FIELDS` | [`03`](z2ui5_cl_smpe_app_03.clas.abap) |
-| delete one | `MODIFY … DELETE FROM` | [`04`](z2ui5_cl_smpe_app_04.clas.abap) |
-| show BO messages in the UI | `msg_get_collect( )` | [`context`](../00/00/z2ui5_cl_smpe_context.clas.abap) |
+| read an instance | `READ ENTITIES` | [`01`](z2ui5_cl_smps_app_01.clas.abap) |
+| create one | `MODIFY … CREATE` → `MAPPED` | [`02`](z2ui5_cl_smps_app_02.clas.abap) |
+| change fields | `MODIFY … UPDATE FIELDS` | [`03`](z2ui5_cl_smps_app_03.clas.abap) |
+| delete one | `MODIFY … DELETE FROM` | [`04`](z2ui5_cl_smps_app_04.clas.abap) |
+| show BO messages in the UI | `msg_get_collect( )` | [`context`](../00/00/z2ui5_cl_smps_context.clas.abap) |
 
 **The complete app** shows the next step: everything the single statements teach,
 now in one screen with popups, message handling and a refresh — roughly three times
@@ -99,14 +99,14 @@ made sense:
 
 | | | |
 |---|---|---|
-| call a BO action, save and catch what failed | `MODIFY … EXECUTE`, `COMMIT ENTITIES RESPONSE OF` | [`05` manage travels](z2ui5_cl_smpe_app_05.clas.abap) |
+| call a BO action, save and catch what failed | `MODIFY … EXECUTE`, `COMMIT ENTITIES RESPONSE OF` | [`05` manage travels](z2ui5_cl_smps_app_05.clas.abap) |
 
 ## The snippets
 
 **Read** — no SELECT, no OData.
 
 ```abap
-READ ENTITIES OF z2ui5_r_smpe_trv
+READ ENTITIES OF z2ui5_r_smps_trv
   ENTITY travel
     ALL FIELDS WITH VALUE #( ( travelid = travel_id ) )
   RESULT DATA(t_result)
@@ -119,7 +119,7 @@ simply has one row less. The response is what you check, never `sy-subrc`.
 **Create** — the `%cid` is yours; the key the BO assigns comes back under it.
 
 ```abap
-MODIFY ENTITIES OF z2ui5_r_smpe_trv
+MODIFY ENTITIES OF z2ui5_r_smps_trv
   ENTITY travel
     CREATE FIELDS ( agencyid customerid begindate enddate )
     WITH VALUE #( ( %cid = `CREATE_1` agencyid = '070001' customerid = '000001' ) )
@@ -144,7 +144,7 @@ EXECUTE acceptTravel FROM VALUE #( ( travelid = travel_id ) )
 **Save** — validations run here, not at the `MODIFY`.
 
 ```abap
-COMMIT ENTITIES RESPONSE OF z2ui5_r_smpe_trv
+COMMIT ENTITIES RESPONSE OF z2ui5_r_smps_trv
   FAILED DATA(s_failed)
   REPORTED DATA(s_reported).
 ```

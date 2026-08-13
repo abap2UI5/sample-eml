@@ -2,7 +2,7 @@
 
 *[← all packages](../../README.md)*
 
-[`487`](z2ui5_cl_smpe_app_487.clas.abap) plays a sound stored in the **MIME
+[`487`](z2ui5_cl_smps_app_487.clas.abap) plays a sound stored in the **MIME
 repository**, addressed by its ICF path — a success and an error tone, both shipped
 with this package ([`src/08/01`](01)).
 
@@ -24,8 +24,8 @@ app checks the node and warns if it is inactive.
 
 ## The sample
 
-Start it with `?app_start=z2ui5_cl_smpe_app_487`, or from the overview app
-`?app_start=z2ui5_cl_smpe_app_00`, which lists every sample of this repository.
+Start it with `?app_start=z2ui5_cl_smps_app_487`, or from the overview app
+`?app_start=z2ui5_cl_smps_app_00`, which lists every sample of this repository.
 Type the magic key the app tells you and you get the success sound; type anything
 else and you get the error one.
 

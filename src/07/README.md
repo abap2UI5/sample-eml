@@ -31,13 +31,13 @@ message arrive in both at once.
 
 | Object | Role |
 |---|---|
-| [`489`](z2ui5_cl_smpe_app_489.clas.abap) | the app — connect, publish, list the active connections |
-| [`489_ws`](z2ui5_cl_smpe_app_489_ws.clas.abap) | the APC handler, `CL_APC_WSP_EXT_STATELESS_BASE` |
+| [`489`](z2ui5_cl_smps_app_489.clas.abap) | the app — connect, publish, list the active connections |
+| [`489_ws`](z2ui5_cl_smps_app_489_ws.clas.abap) | the APC handler, `CL_APC_WSP_EXT_STATELESS_BASE` |
 | `Z2UI5_AMC_SMP_2` | the messaging channel, `/news_feed` |
 | `Z2UI5_APC_SMP_2` | the push channel and its ICF node |
 
-Start it with `?app_start=z2ui5_cl_smpe_app_489`, or from the overview app
-`?app_start=z2ui5_cl_smpe_app_00`, which lists every sample of this repository.
+Start it with `?app_start=z2ui5_cl_smps_app_489`, or from the overview app
+`?app_start=z2ui5_cl_smps_app_00`, which lists every sample of this repository.
 
 ## Where to go next
 

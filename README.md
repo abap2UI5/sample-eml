@@ -1,5 +1,5 @@
 [![abap version](https://img.shields.io/badge/abap%20version-standard%20%28%E2%89%A5%201909%29-blue)](#setup)
-[![namespace](https://img.shields.io/badge/namespace-z2ui5__cl__smpe-blue)](abaplint.jsonc)
+[![namespace](https://img.shields.io/badge/namespace-z2ui5__cl__smps-blue)](abaplint.jsonc)
 [![dependency](https://img.shields.io/badge/dependency-abap2UI5-blue)](https://github.com/abap2UI5/abap2UI5)
 <br>
 <br>
@@ -42,7 +42,7 @@ for and try it out — the others can wait until you need them.
 | [`src/03`](src/03) | **[RAP](src/03/README.md)** — consume a business object with EML | ABAP Platform >= 1909; the BO ships with this repo | Cloud + Standard ≥ 7.54 (1909) |
 | [`src/04`](src/04) | **[RAP with Draft](src/04/README.md)** — use draft handling | as above | Cloud + Standard ≥ 7.54 (1909) |
 | [`src/05`](src/05) | **[Business Events](src/05/README.md)** — react to RAP events, log them, show them | as above | Cloud + Standard ≥ 7.56 (2021) |
-| [`src/06`](src/06) | **[Stateful Sessions / Locks](src/06/README.md)** — sticky session, `ENQUEUE` | ABAP Standard (on-premise), the table `Z2UI5_T_SMPE_01` | Standard only, ≥ 7.40 SP08 |
+| [`src/06`](src/06) | **[Stateful Sessions / Locks](src/06/README.md)** — sticky session, `ENQUEUE` | ABAP Standard (on-premise), the table `Z2UI5_T_SMPS_01` | Standard only, ≥ 7.40 SP08 |
 | [`src/07`](src/07) | **[AMC/APC](src/07/README.md)** — a news feed over WebSocket | on-premise APC/AMC, the ICF node `Z2UI5_APC_SMP_2` | Standard only, ≥ 7.50 |
 | [`src/08`](src/08) | **[MIME Play Audio](src/08/README.md)** — play a sound from the MIME repository | the ICF service `/SAP/PUBLIC/BC/ABAP/mime_demo` | Standard only, ≥ 7.50 |
 | [`src/09`](src/09) | **[Launchpad](src/09/README.md)** — startup parameters, shell title, cross-app navigation | a Fiori Launchpad with a tile pointing at abap2UI5 | Cloud + Standard ≥ 7.40 SP08 |
@@ -103,13 +103,13 @@ of them.
    short section.
 4. Start an app with `?app_start=<class name>`.
 
-Every sample of the abap2UI5 sample scheme is called `Z2UI5_CL_SMPE_APP_<no>`, and
+Every sample of the abap2UI5 sample scheme is called `Z2UI5_CL_SMPS_APP_<no>`, and
 the tables in the package READMEs give you the number, so sample `487` is
-`?app_start=z2ui5_cl_smpe_app_487`.
+`?app_start=z2ui5_cl_smps_app_487`.
 
 ## The overview app
 
-You do not have to look a number up. `?app_start=z2ui5_cl_smpe_app_00` lists
+You do not have to look a number up. `?app_start=z2ui5_cl_smps_app_00` lists
 **every sample of this repository**, one collapsible section per package, and
 starts each one in a new browser tab — so the overview stays where it is and
 several samples can run side by side. Its header button fills the demo data of
@@ -158,20 +158,20 @@ pushed to one is gone at the next build.
 
 ## Namespace
 
-Every object carries the token **`SMPE`** behind its type token — the scheme the
+Every object carries the token **`SMPS`** behind its type token — the scheme the
 samples repository uses with its `SMP` token:
 
 ```
-Z2UI5_CL_SMPE_<object>    classes, including the behavior pools and event handlers
-Z2UI5_T_SMPE_<object>     persistent tables
-Z2UI5_D_SMPE_<object>     draft tables
-Z2UI5_E_SMPE_<object>     data elements
-Z2UI5_R_SMPE_<object>     CDS entities and their behavior definitions
-Z2UI5_SD_SMPE_<object>    service definitions
-Z2UI5_SB_SMPE_<object>    service bindings
+Z2UI5_CL_SMPS_<object>    classes, including the behavior pools and event handlers
+Z2UI5_T_SMPS_<object>     persistent tables
+Z2UI5_D_SMPS_<object>     draft tables
+Z2UI5_E_SMPS_<object>     data elements
+Z2UI5_R_SMPS_<object>     CDS entities and their behavior definitions
+Z2UI5_SD_SMPS_<object>    service definitions
+Z2UI5_SB_SMPS_<object>    service bindings
 ```
 
-Runnable samples are `Z2UI5_CL_SMPE_APP_<no>`, so the class name is what you pass to
+Runnable samples are `Z2UI5_CL_SMPS_APP_<no>`, so the class name is what you pass to
 `?app_start=`.
 
 Class names are capped at **25** characters, tables at **16**. Both limits and the

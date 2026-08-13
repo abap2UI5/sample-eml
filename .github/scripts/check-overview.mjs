@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Keeps the overview app and the repository in sync.
 //
-// z2ui5_cl_smpe_app_00 references every sample BY NAME and resolves it at
+// z2ui5_cl_smps_app_00 references every sample BY NAME and resolves it at
 // runtime, so that it survives a package the system cannot activate and a
 // checkout that carries only part of this repository (see the class
 // documentation). The price is that the compiler no longer notices a renamed
@@ -27,7 +27,7 @@ import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, basename } from 'node:path';
 
 const SRC = 'src';
-const OVERVIEW = join(SRC, 'z2ui5_cl_smpe_app_00.clas.abap');
+const OVERVIEW = join(SRC, 'z2ui5_cl_smps_app_00.clas.abap');
 const packages = JSON.parse(readFileSync(join('.github', 'packages.json'), 'utf8'));
 const PACKAGES = packages.map((entry) => entry.dir);
 
@@ -40,18 +40,18 @@ const walk = (dir) =>
 const files = walk(SRC);
 
 // a sample is an ABAP class implementing z2ui5_if_app - which leaves out
-// z2ui5_cl_smpe_app_489_ws, the APC handler behind sample 489, and the
+// z2ui5_cl_smps_app_489_ws, the APC handler behind sample 489, and the
 // overview itself
 const samples = files
-  .filter((path) => /^z2ui5_cl_smpe_app_.*\.clas\.abap$/.test(basename(path)))
+  .filter((path) => /^z2ui5_cl_smps_app_.*\.clas\.abap$/.test(basename(path)))
   .filter((path) => basename(path) !== basename(OVERVIEW))
   .filter((path) => /INTERFACES\s+z2ui5_if_app\s*\./i.test(readFileSync(path, 'utf8')))
   .map((path) => basename(path).replace('.clas.abap', '').toUpperCase());
 
-// every Z2UI5_CL_SMPE_* class name the overview carries as a string literal:
+// every Z2UI5_CL_SMPS_* class name the overview carries as a string literal:
 // the samples in model_init and the two demo data classes in cs_class
 const overview = readFileSync(OVERVIEW, 'utf8');
-const listed = [...overview.matchAll(/`(Z2UI5_C[LX]_SMPE_[A-Z0-9_]+)`/g)].map((match) => match[1]);
+const listed = [...overview.matchAll(/`(Z2UI5_C[LX]_SMPS_[A-Z0-9_]+)`/g)].map((match) => match[1]);
 
 const known = new Set(
   files

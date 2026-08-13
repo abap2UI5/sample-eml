@@ -28,18 +28,18 @@ written in — what they need is the service, not the platform.
 
 | Sample | Shows | Service |
 |---|---|---|
-| [`313`](z2ui5_cl_smpe_app_313.clas.abap) | SmartFilterBar + SmartTable with variant management | `UI_PRODUCTLIST` |
-| [`314`](z2ui5_cl_smpe_app_314.clas.abap) | switch the default model — device, HTTP and OData model side by side | `GWSAMPLE_BASIC` |
-| [`319`](z2ui5_cl_smpe_app_319.clas.abap) | SmartMultiInput → an ABAP `SELECT-OPTIONS` range table | `UI_PRODUCTLIST` + value list annotations |
-| [`475`](z2ui5_cl_smpe_app_475.clas.abap) | SmartField inside a SmartForm | `GWSAMPLE_BASIC` |
-| [`476`](z2ui5_cl_smpe_app_476.clas.abap) | SmartForm, display/edit toggle | `GWSAMPLE_BASIC` |
-| [`477`](z2ui5_cl_smpe_app_477.clas.abap) | SmartFilterBar driving a SmartTable | `GWSAMPLE_BASIC` |
-| [`478`](z2ui5_cl_smpe_app_478.clas.abap) | page variant management | `GWSAMPLE_BASIC` |
-| [`479`](z2ui5_cl_smpe_app_479.clas.abap) | SmartChart with NavigationPopover | an analytical service — you supply it |
-| [`493`](z2ui5_cl_smpe_app_493.clas.abap) | classic FilterBar wired to variant management | none — the data is ABAP |
+| [`313`](z2ui5_cl_smps_app_313.clas.abap) | SmartFilterBar + SmartTable with variant management | `UI_PRODUCTLIST` |
+| [`314`](z2ui5_cl_smps_app_314.clas.abap) | switch the default model — device, HTTP and OData model side by side | `GWSAMPLE_BASIC` |
+| [`319`](z2ui5_cl_smps_app_319.clas.abap) | SmartMultiInput → an ABAP `SELECT-OPTIONS` range table | `UI_PRODUCTLIST` + value list annotations |
+| [`475`](z2ui5_cl_smps_app_475.clas.abap) | SmartField inside a SmartForm | `GWSAMPLE_BASIC` |
+| [`476`](z2ui5_cl_smps_app_476.clas.abap) | SmartForm, display/edit toggle | `GWSAMPLE_BASIC` |
+| [`477`](z2ui5_cl_smps_app_477.clas.abap) | SmartFilterBar driving a SmartTable | `GWSAMPLE_BASIC` |
+| [`478`](z2ui5_cl_smps_app_478.clas.abap) | page variant management | `GWSAMPLE_BASIC` |
+| [`479`](z2ui5_cl_smps_app_479.clas.abap) | SmartChart with NavigationPopover | an analytical service — you supply it |
+| [`493`](z2ui5_cl_smps_app_493.clas.abap) | classic FilterBar wired to variant management | none — the data is ABAP |
 
-Start any of them with `?app_start=z2ui5_cl_smpe_app_<no>`, or from the overview
-app `?app_start=z2ui5_cl_smpe_app_00`, which lists every sample of this repository.
+Start any of them with `?app_start=z2ui5_cl_smps_app_<no>`, or from the overview
+app `?app_start=z2ui5_cl_smps_app_00`, which lists every sample of this repository.
 
 ## Two worth a closer look
 
