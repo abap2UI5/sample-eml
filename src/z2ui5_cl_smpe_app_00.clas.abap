@@ -1,4 +1,4 @@
-"! <p class="shorttext synchronized">abap2UI5 samples-ext 00 - overview</p>
+"! <p class="shorttext synchronized">abap2UI5 samples-stack 00 - overview</p>
 "! The entry point of this repository: every sample of every package in one
 "! list, one press away. Start it with ?app_start=z2ui5_cl_smpe_app_00.
 "!
@@ -250,7 +250,7 @@ CLASS z2ui5_cl_smpe_app_00 IMPLEMENTATION.
         )->a( n = `height`       v = `100%`
         )->open( `Shell`
         )->open( `Page`
-            )->a( n = `title` v = `abap2UI5 - samples-ext - 00 Overview`
+            )->a( n = `title` v = `abap2UI5 - samples-stack - 00 Overview`
             )->a( n = `class` v = `sapUiContentPadding` ).
 
     " the button sits in the page header, so it stays reachable no matter
