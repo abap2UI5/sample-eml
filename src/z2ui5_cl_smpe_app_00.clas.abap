@@ -25,6 +25,15 @@
 "! opens, what is missing says so in its Status column and keeps its Open
 "! button disabled. The price is that a renamed class no longer breaks the
 "! build - the CI check `npm run check:overview` covers that instead.
+"!
+"! The page header carries the SHARED OVERVIEW HEADER of the abap2UI5 family -
+"! six icon buttons pointing at the framework start page, the three sample
+"! repositories, the documentation and this repository (render_header). It
+"! answers the same question per button, and for the same reason: a sibling
+"! repository is installed on its own, so an installed overview app is entered
+"! with nav_app_call( ) and a missing one opens its GitHub repository instead.
+"! Keep it in sync with the copies in abap2UI5/samples and
+"! abap2UI5/samples-controls.
 CLASS z2ui5_cl_smpe_app_00 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
@@ -67,7 +76,28 @@ CLASS z2ui5_cl_smpe_app_00 DEFINITION PUBLIC.
     CONSTANTS:
       BEGIN OF cs_event,
         regenerate TYPE string VALUE `REGENERATE` ##NO_TEXT,
+        nav        TYPE string VALUE `NAV_APP` ##NO_TEXT,
       END OF cs_event.
+
+    "! the overview apps of the abap2UI5 family, in the order the shared header
+    "! renders them - each repository is installed on its own, so the header
+    "! asks per entry whether its overview app is on THIS system
+    CONSTANTS:
+      BEGIN OF cs_overview,
+        startup  TYPE string VALUE `z2ui5_cl_app_startup` ##NO_TEXT,
+        samples  TYPE string VALUE `z2ui5_cl_smp_app_000` ##NO_TEXT,
+        controls TYPE string VALUE `z2ui5_cl_dmo_app_overview` ##NO_TEXT,
+        stack    TYPE string VALUE `z2ui5_cl_smpe_app_00` ##NO_TEXT,
+      END OF cs_overview.
+
+    CONSTANTS:
+      BEGIN OF cs_url,
+        docs      TYPE string VALUE `https://abap2UI5.org` ##NO_TEXT,
+        framework TYPE string VALUE `https://github.com/abap2UI5/abap2UI5` ##NO_TEXT,
+        samples   TYPE string VALUE `https://github.com/abap2UI5/samples` ##NO_TEXT,
+        controls  TYPE string VALUE `https://github.com/abap2UI5/samples-controls` ##NO_TEXT,
+        stack     TYPE string VALUE `https://github.com/abap2UI5/samples-stack` ##NO_TEXT,
+      END OF cs_url.
 
     CONSTANTS:
       "! the demo data of the two RAP packages - called by name for the same
@@ -80,6 +110,36 @@ CLASS z2ui5_cl_smpe_app_00 DEFINITION PUBLIC.
     METHODS on_event.
     METHODS view_display.
     METHODS model_init.
+
+    "! The header every abap2UI5 overview app shares: one icon button per
+    "! sibling repository - it jumps into that repository's overview app when
+    "! the app is on this system and opens the repository on GitHub when it is
+    "! not - followed by the documentation and this repository. The entry of
+    "! the repository you are looking at stays visible but disabled, so the
+    "! header reads the same everywhere. Keep it in sync with the copies in
+    "! abap2UI5/samples and abap2UI5/samples-controls.
+    METHODS render_header
+      IMPORTING
+        toolbar TYPE REF TO z2ui5_cl_ai_xml.
+
+    METHODS header_button
+      IMPORTING
+        toolbar TYPE REF TO z2ui5_cl_ai_xml
+        icon    TYPE string
+        tooltip TYPE string
+        href    TYPE string
+        class   TYPE string OPTIONAL
+        here    TYPE abap_bool DEFAULT abap_false.
+
+    "! the press wire of a button whose target is EXTERNAL: a Button carries no
+    "! href, and cs_event-open_new_tab is same-origin only, so the new tab is
+    "! opened by the URLHELPER frontend action - client-side, inside the click
+    "! handler, which is what keeps the popup blocker quiet
+    METHODS open_url
+      IMPORTING
+        href          TYPE string
+      RETURNING
+        VALUE(result) TYPE string.
 
     "! one package each - same markup, different binding
     METHODS render_package
@@ -154,6 +214,19 @@ CLASS z2ui5_cl_smpe_app_00 IMPLEMENTATION.
         ENDIF.
         client->message_toast_display( text ).
 
+      WHEN cs_event-nav.
+
+        " a header button whose target overview app is on this system - the
+        " class travels as the event argument and is resolved here, for the
+        " same reason the samples are (see the class documentation)
+        TRY.
+            DATA(classname) = to_upper( client->get_event_arg( ) ).
+            DATA li_app TYPE REF TO z2ui5_if_app.
+            CREATE OBJECT li_app TYPE (classname).
+            client->nav_app_call( li_app ).
+          CATCH cx_root ##NO_HANDLER.
+        ENDTRY.
+
     ENDCASE.
 
   ENDMETHOD.
@@ -176,12 +249,14 @@ CLASS z2ui5_cl_smpe_app_00 IMPLEMENTATION.
     " the button sits in the page header, so it stays reachable no matter
     " which package the user has scrolled to. It is hidden outright when
     " neither RAP package is installed - there would be nothing to fill.
-    page->open( `headerContent`
-        )->leaf( `Button`
-            )->a( n = `text`    v = `Regenerate Demo Data`
-            )->a( n = `icon`    v = `sap-icon://refresh`
-            )->a( n = `visible` v = z2ui5_cl_ai_xml=>as_bool( demo_data_installed )
-            )->a( n = `press`   v = client->_event( cs_event-regenerate ) ).
+    DATA(toolbar) = page->open( `headerContent` ).
+    toolbar->leaf( `Button`
+        )->a( n = `text`    v = `Regenerate Demo Data`
+        )->a( n = `icon`    v = `sap-icon://refresh`
+        )->a( n = `visible` v = z2ui5_cl_ai_xml=>as_bool( demo_data_installed )
+        )->a( n = `press`   v = client->_event( cs_event-regenerate ) ).
+
+    render_header( toolbar ).
 
     page->leaf( `MessageStrip`
         )->a( n = `text`     v = `Every sample of this repository, one package per section - Open starts it ` &&
@@ -238,6 +313,88 @@ CLASS z2ui5_cl_smpe_app_00 IMPLEMENTATION.
                     items = client->_bind( t_launchpad ) ).
 
     client->view_display( view->stringify( ) ).
+
+  ENDMETHOD.
+
+
+  METHOD render_header.
+
+    header_button( toolbar = toolbar
+                   icon    = `sap-icon://home`
+                   tooltip = `abap2UI5 - the start page of the framework`
+                   class   = cs_overview-startup
+                   href    = cs_url-framework ).
+
+    header_button( toolbar = toolbar
+                   icon    = `sap-icon://lightbulb`
+                   tooltip = `Samples - binding, events, popups, tables and much more`
+                   class   = cs_overview-samples
+                   href    = cs_url-samples ).
+
+    header_button( toolbar = toolbar
+                   icon    = `sap-icon://palette`
+                   tooltip = `Controls - the UI5 Demo Kit, rebuilt with abap2UI5`
+                   class   = cs_overview-controls
+                   href    = cs_url-controls ).
+
+    header_button( toolbar = toolbar
+                   icon    = `sap-icon://database`
+                   tooltip = `Stack - OData, RAP, WebSockets and the Fiori Launchpad`
+                   class   = cs_overview-stack
+                   href    = cs_url-stack
+                   here    = abap_true ).
+
+    header_button( toolbar = toolbar
+                   icon    = `sap-icon://learning-assistant`
+                   tooltip = `Documentation - guides, tutorials and the API reference`
+                   href    = cs_url-docs ).
+
+    header_button( toolbar = toolbar
+                   icon    = `sap-icon://source-code`
+                   tooltip = `GitHub - the source code of this repository`
+                   href    = cs_url-stack ).
+
+  ENDMETHOD.
+
+
+  METHOD header_button.
+
+    DATA(button) = toolbar->leaf( `Button` ).
+    button->a( n = `icon` v = icon
+        )->a( n = `type` v = `Transparent` ).
+
+    IF here = abap_true.
+      " where you are: the button stays, so every overview shows the same row,
+      " but there is nowhere to go
+      button->a( n = `tooltip` v = |{ tooltip } - you are here|
+          )->a( n = `enabled` v = z2ui5_cl_ai_xml=>as_bool( abap_false ) ).
+      RETURN.
+    ENDIF.
+
+    IF class IS NOT INITIAL AND class_check_installed( class ) = abap_true.
+      " installed on this system: jump right into it, the back button returns
+      button->a( n = `tooltip` v = tooltip
+          )->a( n = `press`   v = client->_event( val   = cs_event-nav
+                                                  t_arg = VALUE #( ( class ) ) ) ).
+      RETURN.
+    ENDIF.
+
+    button->a( n = `tooltip` v = COND #( WHEN class IS INITIAL
+                                         THEN tooltip
+                                         ELSE |{ tooltip } - not installed, opens GitHub| )
+        )->a( n = `press`   v = open_url( href ) ).
+
+  ENDMETHOD.
+
+
+  METHOD open_url.
+
+    " REDIRECT takes a { URL, NEW_WINDOW } object literal - NEW_WINDOW true is
+    " what target="_blank" does on a Link
+    result = client->follow_up_action(
+                 val   = client->cs_event-urlhelper
+                 t_arg = VALUE #( ( `REDIRECT` )
+                                  ( |\{ URL: '{ href }', NEW_WINDOW: true \}| ) ) ).
 
   ENDMETHOD.
 
