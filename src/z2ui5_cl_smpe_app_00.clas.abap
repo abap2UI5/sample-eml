@@ -371,7 +371,9 @@ CLASS z2ui5_cl_smpe_app_00 IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    IF class IS NOT INITIAL AND class_check_installed( class ) = abap_true.
+    " to_upper: the repository stores class names in upper case, while the
+    " constants above follow this repository's lower-case spelling of them
+    IF class IS NOT INITIAL AND class_check_installed( to_upper( class ) ) = abap_true.
       " installed on this system: jump right into it, the back button returns
       button->a( n = `tooltip` v = tooltip
           )->a( n = `press`   v = client->_event( val   = cs_event-nav
