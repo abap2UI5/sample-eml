@@ -12,7 +12,7 @@ help and smart filtering for free.
 ## What you need
 
 **Release:** Cloud + Standard ≥ 7.40 SP08. The metadata does the work, so the ABAP
-side of these eight samples asks for nothing beyond the release the package is
+side of these nine samples asks for nothing beyond the release the package is
 written in — what they need is the service, not the platform.
 
 **Branch:** [`smart-controls`](https://github.com/abap2UI5/samples-ext/tree/smart-controls)
@@ -36,6 +36,7 @@ written in — what they need is the service, not the platform.
 | [`477`](z2ui5_cl_smpe_app_477.clas.abap) | SmartFilterBar driving a SmartTable | `GWSAMPLE_BASIC` |
 | [`478`](z2ui5_cl_smpe_app_478.clas.abap) | page variant management | `GWSAMPLE_BASIC` |
 | [`479`](z2ui5_cl_smpe_app_479.clas.abap) | SmartChart with NavigationPopover | an analytical service — you supply it |
+| [`493`](z2ui5_cl_smpe_app_493.clas.abap) | classic FilterBar wired to variant management | none — the data is ABAP |
 
 Start any of them with `?app_start=z2ui5_cl_smpe_app_<no>`, or from the overview
 app `?app_start=z2ui5_cl_smpe_app_00`, which lists every sample of this repository.
