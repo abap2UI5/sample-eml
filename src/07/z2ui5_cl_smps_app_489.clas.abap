@@ -136,7 +136,7 @@ CLASS z2ui5_cl_smps_app_489 IMPLEMENTATION.
 
   METHOD on_event_toggle.
 
-    " The ToggleButton binds WS_ACTIVE two-way, so the control has already
+    " The ToggleButton binds WS_ACTIVE, so the control has already
     " opened or closed the connection client-side when this event arrives -
     " only the counter and the label are left to sort out.
     IF ws_active = abap_true.
@@ -256,7 +256,7 @@ CLASS z2ui5_cl_smps_app_489 IMPLEMENTATION.
         colorscheme = `7`
         icon        = `sap-icon://connected` ).
 
-    " Two-way bound to the control's checkActive, so pressing it opens or
+    " Bound to the control's checkActive, so pressing it opens or
     " closes the connection in the browser right away; the roundtrip only
     " brings the counter and the label up to date.
     footer->toggle_button(

@@ -53,7 +53,7 @@ CLASS z2ui5_cl_smps_app_493 IMPLEMENTATION.
       page->message_strip(
           text     = `Enter filters, press Go, then save the selection as a variant. `
                   && `Selecting it again restores the values into the fields AND into `
-                  && `ABAP - the two-way binding carries them back, so Go filters on `
+                  && `ABAP - the binding carries them back, so Go filters on `
                   && `the restored values without any extra wiring.`
           type     = `Information`
           showicon = abap_true
@@ -69,7 +69,7 @@ CLASS z2ui5_cl_smps_app_493 IMPLEMENTATION.
 
       " A CLASSIC sap.ui.comp.filterbar.FilterBar: unlike a SmartFilterBar it
       " has no OData metadata to build itself from, so its filters are named
-      " here and their controls are ordinary sap.m inputs, bound two-way like
+      " here and their controls are ordinary sap.m inputs, bound like
       " in any other abap2UI5 app. persistencykey is what the variant is
       " stored under - the wiring action below hands it to the variant
       " management as the PersonalizableInfo keyName.
@@ -147,7 +147,7 @@ CLASS z2ui5_cl_smps_app_493 IMPLEMENTATION.
 
   METHOD search.
 
-    " the restored variant values arrived through the two-way binding of the
+    " the restored variant values arrived through the binding of the
     " filter controls, so ms_filter is already current here - selecting a
     " variant needs no roundtrip of its own
     mt_result = VALUE #( ).
