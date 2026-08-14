@@ -49,32 +49,41 @@ CLASS z2ui5_cl_smps_app_486 IMPLEMENTATION.
     set_session_stateful( client   = client
                           stateful = abap_true ).
 
-    DATA(view) = z2ui5_cl_xml_view=>factory( ).
+    DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
+        )->a( n = `displayBlock` v = `true`
+        )->a( n = `height`       v = `100%`
+        )->a( n = `xmlns`        v = `sap.m`
+        )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+        )->a( n = `xmlns:core`   v = `sap.ui.core`
+        )->a( n = `xmlns:tnt`    v = `sap.tnt` ).
 
-    DATA(page) = view->shell( )->page(
-      title          = `abap2UI5 - Sample: Sticky Session`
-      navbuttonpress = client->_event( `BACK` )
-      shownavbutton  = client->check_app_prev_stack( ) ).
+    DATA(page) = view->ele( `Shell` )->ele( `Page`
+        )->a( n = `title`          v = `abap2UI5 - Sample: Sticky Session`
+        )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
+        )->a( n = `navButtonPress` v = client->_event( `BACK` ) ).
 
-    DATA(vbox) = page->vbox( ).
-    vbox->info_label( client->_bind( session_text ) ).
+    DATA(vbox) = page->ele( `VBox` ).
+    vbox->ele( n = `InfoLabel` ns = `tnt`
+        )->a( n = `text` v = client->_bind( session_text ) ).
 
-    DATA(hbox) = vbox->hbox( alignitems = `Center` ).
-    hbox->label( text  = `press button to increment counter in backend session`
-                 class = `sapUiTinyMarginEnd` ).
-    hbox->button(
-      text  = client->_bind( instance_counter )
-      press = client->_event( `INCREMENT` )
-      type  = `Emphasized` ).
+    DATA(hbox) = vbox->ele( `HBox`
+        )->a( n = `alignItems` v = `Center` ).
+    hbox->tag( `Label`
+        )->a( n = `text`  v = `press button to increment counter in backend session`
+        )->a( n = `class` v = `sapUiTinyMarginEnd` ).
+    hbox->tag( `Button`
+        )->a( n = `press` v = client->_event( `INCREMENT` )
+        )->a( n = `text`  v = client->_bind( instance_counter )
+        )->a( n = `type`  v = `Emphasized` ).
 
-    hbox = vbox->hbox( ).
-    hbox->button(
-      text  = `End session`
-      press = client->_event( `END_SESSION` ) ).
+    hbox = vbox->ele( `HBox` ).
+    hbox->tag( `Button`
+        )->a( n = `press` v = client->_event( `END_SESSION` )
+        )->a( n = `text`  v = `End session` ).
 
-    hbox->button(
-      text  = `Start session again`
-      press = client->_event( `START_SESSION` ) ).
+    hbox->tag( `Button`
+        )->a( n = `press` v = client->_event( `START_SESSION` )
+        )->a( n = `text`  v = `Start session again` ).
 
     client->view_display( view->stringify( ) ).
 

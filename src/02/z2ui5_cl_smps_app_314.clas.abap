@@ -39,68 +39,64 @@ CLASS z2ui5_cl_smps_app_314 IMPLEMENTATION.
         INSERT ls_row INTO TABLE t_tab.
       ENDDO.
 
-      DATA(view) = z2ui5_cl_xml_view=>factory( ).
-      DATA(page) = view->shell(
-          )->page(
-              title          = `abap2UI5 - Device Model, HTTP Model, OData Model`
-              navbuttonpress = client->_event_nav_app_leave( )
-              shownavbutton  = client->check_app_prev_stack( ) ).
+      DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
+          )->a( n = `displayBlock` v = `true`
+          )->a( n = `height`       v = `100%`
+          )->a( n = `xmlns`        v = `sap.m`
+          )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+          )->a( n = `xmlns:core`   v = `sap.ui.core` ).
+      DATA(page) = view->ele( `Shell` )->ele( `Page`
+              )->a( n = `title`          v = `abap2UI5 - Device Model, HTTP Model, OData Model`
+              )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
+              )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) ).
 
-      page->input( description = `device model`
-                   value       = `{device>/resize/width}`
-                   enabled     = abap_false ).
+      page->tag( `Input`
+          )->a( n = `description` v = `device model`
+          )->a( n = `enabled`     b = abap_false
+          )->a( n = `value`       v = `{device>/resize/width}` ).
 
       mv_val = `input value with http model`.
-      page->input( client->_bind( val                  = mv_val
+      page->tag( `Input`
+          )->a( n = `value` v = client->_bind( val                  = mv_val
                                        switch_default_model = abap_true ) ).
 
-      DATA(tab) = page->table( client->_bind( val                  = t_tab
+      DATA(tab) = page->ele( `Table`
+          )->a( n = `items` v = client->_bind( val                  = t_tab
                                                    switch_default_model = abap_true ) ).
 
-      tab->header_toolbar(
-          )->toolbar(
-              )->title( `table with http model (framework default)` ).
+      tab->ele( `headerToolbar` )->ele( `Toolbar` )->tag( `Title`
+                  )->a( n = `text` v = `table with http model (framework default)` ).
 
-      tab->columns(
-          )->column(
-              )->text( `Value` )->get_parent(
-          )->column(
-              )->text( `Info` )->get_parent(
-          )->column(
-              )->text( `Description` )->get_parent( ).
+      tab->ele( `columns` )->ele( `Column` )->tag( `Text`
+                  )->a( n = `text` v = `Value` )->end( )->ele( `Column` )->tag( `Text`
+                  )->a( n = `text` v = `Info` )->end( )->ele( `Column` )->tag( `Text`
+                  )->a( n = `text` v = `Description` )->end( ).
 
-      tab->items( )->column_list_item( )->cells(
-         )->text( `{http>VALUE}`
-         )->text( `{http>INFO}`
-         )->text( `{http>DESCR}`).
+      tab->ele( `items` )->ele( `ColumnListItem` )->ele( `cells` )->tag( `Text`
+             )->a( n = `text` v = `{http>VALUE}` )->tag( `Text`
+             )->a( n = `text` v = `{http>INFO}` )->tag( `Text`
+             )->a( n = `text` v = `{http>DESCR}` ).
 
-      tab = page->table(
-         items   = `{/BusinessPartnerSet}`
-         growing = abap_true ).
+      tab = page->ele( `Table`
+          )->a( n = `items`   v = `{/BusinessPartnerSet}`
+          )->a( n = `growing` b = abap_true ).
 
-      tab->header_toolbar(
-        )->toolbar(
-        )->title( `table with odata model` ).
+      tab->ele( `headerToolbar` )->ele( `Toolbar` )->tag( `Title`
+            )->a( n = `text` v = `table with odata model` ).
 
-      tab->columns(
-          )->column( )->text( `BusinessPartnerID` )->get_parent(
-          )->column( )->text( `CompanyName` )->get_parent(
-          )->column( )->text( `WebAddress` )->get_parent(
-*          )->column( )->text( `SupplementID` )->get_parent(
-*          )->column( )->text( `SupplementText` )->get_parent(
-*          )->column( )->text( `Price` )->get_parent(
-*          )->column( )->text( `CurrencyCode` )->get_parent( ).
-        ).
+      tab->ele( `columns` )->ele( `Column` )->tag( `Text`
+              )->a( n = `text` v = `BusinessPartnerID` )->end( )->ele( `Column` )->tag( `Text`
+              )->a( n = `text` v = `CompanyName` )->end( )->ele( `Column` )->tag( `Text`
+              )->a( n = `text` v = `WebAddress` )->end( ).
 
-      tab->items( )->column_list_item( )->cells(
-         )->text( `{BusinessPartnerID}`
-         )->text( `{CompanyName}`
-         )->text( `{WebAddress}`
-*         )->text( `{SupplementID}`
-*         )->text( `{SupplementText}`
-*         )->text( `{Price}`
-*         )->text( `{CurrencyCode}`
-         ).
+      tab->ele( `items` )->ele( `ColumnListItem` )->ele( `cells` )->tag( `Text`
+             )->a( n = `text` v = `{BusinessPartnerID}` )->tag( `Text`
+             )->a( n = `text` v = `{CompanyName}` )->tag( `Text`
+             )->a( n = `text` v = `{WebAddress}` ).
+*             )->tag( `Text` )->a( n = `text` v = `{SupplementID}`
+*             )->tag( `Text` )->a( n = `text` v = `{SupplementText}`
+*             )->tag( `Text` )->a( n = `text` v = `{Price}`
+*             )->tag( `Text` )->a( n = `text` v = `{CurrencyCode}` ).
 
       client->view_display( val                       = view->stringify( )
                             switch_default_model_path = `/sap/opu/odata/iwbep/gwsample_basic/` ).

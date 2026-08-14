@@ -46,32 +46,33 @@ CLASS z2ui5_cl_smps_app_12 IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD view_display.
-    DATA(view) = z2ui5_cl_xml_view=>factory( ).
-    DATA(page) = view->shell(
-        )->page(
-            title          = `RAP Events Demo - Event Log (abap2UI5)`
-            navbuttonpress = client->_event_nav_app_leave( )
-            shownavbutton  = client->check_app_prev_stack( ) ).
+    DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
+        )->a( n = `displayBlock` v = `true`
+        )->a( n = `height`       v = `100%`
+        )->a( n = `xmlns`        v = `sap.m`
+        )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+        )->a( n = `xmlns:core`   v = `sap.ui.core` ).
+    DATA(page) = view->ele( `Shell` )->ele( `Page`
+            )->a( n = `title`          v = `RAP Events Demo - Event Log (abap2UI5)`
+            )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
+            )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) ).
 
-    DATA(table) = page->table( client->_bind( mt_log ) ).
-    table->header_toolbar(
-        )->toolbar(
-            )->title( `Business Events`
-            )->toolbar_spacer(
-            )->button(
-                icon  = `sap-icon://refresh`
-                press = client->_event( `REFRESH` ) ).
+    DATA(table) = page->ele( `Table`
+        )->a( n = `items` v = client->_bind( mt_log ) ).
+    table->ele( `headerToolbar` )->ele( `Toolbar` )->tag( `Title`
+                )->a( n = `text` v = `Business Events` )->tag( `ToolbarSpacer` )->tag( `Button`
+                )->a( n = `press` v = client->_event( `REFRESH` )
+                )->a( n = `icon`  v = `sap-icon://refresh` ).
 
-    table->columns(
-        )->column( )->text( `Event` )->get_parent(
-        )->column( )->text( `Details` )->get_parent(
-        )->column( )->text( `User` ).
+    table->ele( `columns` )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `Event` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `Details` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `User` ).
 
-    table->items( )->column_list_item(
-        )->cells(
-            )->text( `{EVENT_NAME}`
-            )->text( `{LOG_TEXT}`
-            )->text( `{CREATED_BY}` ).
+    table->ele( `items` )->ele( `ColumnListItem` )->ele( `cells` )->tag( `Text`
+                )->a( n = `text` v = `{EVENT_NAME}` )->tag( `Text`
+                )->a( n = `text` v = `{LOG_TEXT}` )->tag( `Text`
+                )->a( n = `text` v = `{CREATED_BY}` ).
 
     client->view_display( view->stringify( ) ).
   ENDMETHOD.

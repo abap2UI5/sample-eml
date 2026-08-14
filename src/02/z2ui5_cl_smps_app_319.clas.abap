@@ -110,72 +110,82 @@ CLASS z2ui5_cl_smps_app_319 IMPLEMENTATION.
     t_result = t_product.
     hint     = `No conditions yet - showing all demo products. Open the value help and add conditions.`.
 
-    DATA(view) = z2ui5_cl_xml_view=>factory( ).
+    DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
+        )->a( n = `displayBlock` v = `true`
+        )->a( n = `height`       v = `100%`
+        )->a( n = `xmlns`        v = `sap.m`
+        )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+        )->a( n = `xmlns:core`   v = `sap.ui.core`
+        )->a( n = `xmlns:smi`    v = `sap.ui.comp.smartmultiinput`
+        )->a( n = `xmlns:z2ui5`  v = `z2ui5.cc` ).
 
-    DATA(page) = view->shell( )->page( title      = `SmartMultiInput - conditions to ABAP SELECT-OPTIONS`
-                                       navbuttonpress = m_client->_event_nav_app_leave( )
-                                       shownavbutton  = m_client->check_app_prev_stack( ) ).
+    DATA(page) = view->ele( `Shell` )->ele( `Page`
+        )->a( n = `title`          v = `SmartMultiInput - conditions to ABAP SELECT-OPTIONS`
+        )->a( n = `showNavButton`  b = m_client->check_app_prev_stack( )
+        )->a( n = `navButtonPress` v = m_client->_event_nav_app_leave( ) ).
 
-    page->message_strip(
-        text     = `Open the value help (icon on the right), add one or more conditions on Product Type ` &&
+    page->tag( `MessageStrip`
+        )->a( n = `text` v = `Open the value help (icon on the right), add one or more conditions on Product Type ` &&
                    `(contains, between, greater than, exclude ...). Each condition is turned into an ABAP ` &&
                    `SELECT-OPTIONS row and filters the demo product list below.`
-        type     = `Information`
-        showicon = abap_true
-        class    = `sapUiSmallMargin` ).
+        )->a( n = `type`     v = `Information`
+        )->a( n = `showIcon` b = abap_true
+        )->a( n = `class`    v = `sapUiSmallMargin` ).
 
     " the invisible companion mirrors tokens + range data into the (switched) app
     " model so the backend can read AND restore the input across roundtrips
-    page->_z2ui5( )->smartmultiinput_ext(
-                          addedtokens   = m_client->_bind( val = m_selection-product_type-tokens_added switch_default_model = abap_true )
-                          removedtokens = m_client->_bind( val = m_selection-product_type-tokens_removed switch_default_model = abap_true )
-                          rangedata     = m_client->_bind( val = m_selection-product_type-ranges switch_default_model = abap_true )
-                          change        = m_client->_event( `PRODTYPE_CHANGED` )
-                          multiinputid  = `ProductTypeMultiInput` ).
+    page->tag( n = `SmartMultiInputExt` ns = `z2ui5`
+        )->a( n = `multiInputId`  v = `ProductTypeMultiInput`
+        )->a( n = `rangeData`     v = m_client->_bind( val = m_selection-product_type-ranges switch_default_model = abap_true )
+        )->a( n = `change`        v = m_client->_event( `PRODTYPE_CHANGED` )
+        )->a( n = `addedTokens`   v = m_client->_bind( val = m_selection-product_type-tokens_added switch_default_model = abap_true )
+        )->a( n = `removedTokens` v = m_client->_bind( val = m_selection-product_type-tokens_removed switch_default_model = abap_true ) ).
 
-    page->smart_multi_input(
-      id                = `ProductTypeMultiInput`
-      value             = `{ProductType}`
-      entityset         = `ProductType_2`
-      supportranges     = `true`
-      enableodataselect = `true` ).
+    page->ele( n = `SmartMultiInput` ns = `smi`
+        )->a( n = `id`                v = `ProductTypeMultiInput`
+        )->a( n = `value`             v = `{ProductType}`
+        )->a( n = `entitySet`         v = `ProductType_2`
+        )->a( n = `supportRanges`     v = `true`
+        )->a( n = `enableODataSelect` v = `true` ).
 
-    page->button( text  = `Search`
-                  type  = `Emphasized`
-                  icon  = `sap-icon://search`
-                  press = m_client->_event( `SEARCH` )
-                  class = `sapUiSmallMarginBegin` ).
+    page->tag( `Button`
+        )->a( n = `press` v = m_client->_event( `SEARCH` )
+        )->a( n = `text`  v = `Search`
+        )->a( n = `icon`  v = `sap-icon://search`
+        )->a( n = `type`  v = `Emphasized`
+        )->a( n = `class` v = `sapUiSmallMarginBegin` ).
 
-    page->object_status( text  = m_client->_bind( val = hint switch_default_model = abap_true )
-                         class = `sapUiSmallMargin` ).
+    page->ele( `ObjectStatus`
+        )->a( n = `text`  v = m_client->_bind( val = hint switch_default_model = abap_true )
+        )->a( n = `class` v = `sapUiSmallMargin` ).
 
     " derived ABAP SELECT-OPTIONS (r_product_type): SIGN / OPTION / LOW / HIGH
-    DATA(sel) = page->table( m_client->_bind( val = t_selopt switch_default_model = abap_true ) ).
-    sel->header_toolbar( )->overflow_toolbar( )->title( `Derived ABAP SELECT-OPTIONS  ( ... WHERE ProductType IN r_product_type )` ).
-    sel->columns(
-        )->column( )->text( `SIGN` )->get_parent(
-        )->column( )->text( `OPTION` )->get_parent(
-        )->column( )->text( `LOW` )->get_parent(
-        )->column( )->text( `HIGH` ).
-    sel->items(
-        )->column_list_item(
-            )->cells(
-                )->text( `{http>SIGN}`
-                )->text( `{http>OPTION}`
-                )->text( `{http>LOW}`
-                )->text( `{http>HIGH}` ).
+    DATA(sel) = page->ele( `Table`
+        )->a( n = `items` v = m_client->_bind( val = t_selopt switch_default_model = abap_true ) ).
+    sel->ele( `headerToolbar` )->ele( `OverflowToolbar` )->tag( `Title`
+        )->a( n = `text` v = `Derived ABAP SELECT-OPTIONS  ( ... WHERE ProductType IN r_product_type )` ).
+    sel->ele( `columns` )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `SIGN` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `OPTION` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `LOW` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `HIGH` ).
+    sel->ele( `items` )->ele( `ColumnListItem` )->ele( `cells` )->tag( `Text`
+                    )->a( n = `text` v = `{http>SIGN}` )->tag( `Text`
+                    )->a( n = `text` v = `{http>OPTION}` )->tag( `Text`
+                    )->a( n = `text` v = `{http>LOW}` )->tag( `Text`
+                    )->a( n = `text` v = `{http>HIGH}` ).
 
     " the rows the range selects out of the demo product list
-    DATA(res) = page->table( m_client->_bind( val = t_result switch_default_model = abap_true ) ).
-    res->header_toolbar( )->overflow_toolbar( )->title( `Matching demo products (local sample data)` ).
-    res->columns(
-        )->column( )->text( `Product Type` )->get_parent(
-        )->column( )->text( `Name` ).
-    res->items(
-        )->column_list_item(
-            )->cells(
-                )->text( `{http>PRODUCT_TYPE}`
-                )->text( `{http>NAME}` ).
+    DATA(res) = page->ele( `Table`
+        )->a( n = `items` v = m_client->_bind( val = t_result switch_default_model = abap_true ) ).
+    res->ele( `headerToolbar` )->ele( `OverflowToolbar` )->tag( `Title`
+        )->a( n = `text` v = `Matching demo products (local sample data)` ).
+    res->ele( `columns` )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `Product Type` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `Name` ).
+    res->ele( `items` )->ele( `ColumnListItem` )->ele( `cells` )->tag( `Text`
+                    )->a( n = `text` v = `{http>PRODUCT_TYPE}` )->tag( `Text`
+                    )->a( n = `text` v = `{http>NAME}` ).
 
     " OData service block - adjust to your value-list-annotated Gateway service.
     " The SmartMultiInput's value help (Product Type) comes from here; the demo

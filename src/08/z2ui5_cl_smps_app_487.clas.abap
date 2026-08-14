@@ -36,7 +36,13 @@ CLASS z2ui5_cl_smps_app_487 IMPLEMENTATION.
 
   METHOD view_display.
 
-    DATA(view) = z2ui5_cl_xml_view=>factory( ).
+    DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
+        )->a( n = `displayBlock` v = `true`
+        )->a( n = `height`       v = `100%`
+        )->a( n = `xmlns`        v = `sap.m`
+        )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+        )->a( n = `xmlns:core`   v = `sap.ui.core`
+        )->a( n = `xmlns:z2ui5`  v = `z2ui5.cc` ).
 
     SELECT
       SINGLE FROM icfservloc
@@ -46,29 +52,35 @@ CLASS z2ui5_cl_smps_app_487 IMPLEMENTATION.
 
     " Note, these are demo sounds and are part of the abap2UI5 sample repo.
     " They are NOT meant to use in production.
-    DATA(vbox) = view->page( `Play success and error sounds` )->vbox( `sapUiSmallMargin` ).
+    DATA(vbox) = view->ele( `Page`
+        )->a( n = `title` v = `Play success and error sounds` )->ele( `VBox`
+        )->a( n = `class` v = `sapUiSmallMargin` ).
 
     IF icfactive = abap_false.
-      vbox->message_strip(
-          text    = `ICF Service '/SAP/PUBLIC/BC/ABAP/mime_demo' is not active. Sounds will not play. Please activate the ICF service first.`
-          type    = `Warning`
-          visible = abap_true ).
+      vbox->tag( `MessageStrip`
+          )->a( n = `text`    v = `ICF Service '/SAP/PUBLIC/BC/ABAP/mime_demo' is not active. Sounds will not play. Please activate the ICF service first.`
+          )->a( n = `type`    v = `Warning`
+          )->a( n = `visible` b = abap_true ).
     ENDIF.
 
-    vbox->message_strip(
-        text    = client->_bind( message-text )
-        type    = client->_bind( message-type )
-        visible = `{= !!$` && client->_bind( message-text ) && ` }` ).
-    vbox->text( `The magic key is: abap2UI5` ).
-    vbox->input( id          = `inputApp`
-                 value       = client->_bind( magic_key )
-                 placeholder = `Enter magic key`
-                 submit      = client->_event( `enter` ) ).
-    vbox->button( text  = `submit`
-                  type  = `accept`
-                  press = client->_event( `enter` ) ).
+    vbox->tag( `MessageStrip`
+        )->a( n = `text`    v = client->_bind( message-text )
+        )->a( n = `type`    v = client->_bind( message-type )
+        )->a( n = `visible` v = `{= !!$` && client->_bind( message-text ) && ` }` ).
+    vbox->tag( `Text`
+        )->a( n = `text` v = `The magic key is: abap2UI5` ).
+    vbox->tag( `Input`
+        )->a( n = `id`          v = `inputApp`
+        )->a( n = `placeholder` v = `Enter magic key`
+        )->a( n = `value`       v = client->_bind( magic_key )
+        )->a( n = `submit`      v = client->_event( `enter` ) ).
+    vbox->tag( `Button`
+        )->a( n = `press` v = client->_event( `enter` )
+        )->a( n = `text`  v = `submit`
+        )->a( n = `type`  v = `accept` ).
 
-    view->_z2ui5( )->focus( `inputApp` ).
+    view->tag( n = `Focus` ns = `z2ui5`
+        )->a( n = `focusId` v = `inputApp` ).
     client->view_display( view->stringify( ) ).
 
   ENDMETHOD.

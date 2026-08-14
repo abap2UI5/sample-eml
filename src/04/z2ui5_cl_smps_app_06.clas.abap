@@ -105,40 +105,39 @@ CLASS z2ui5_cl_smps_app_06 IMPLEMENTATION.
 
   METHOD view_display.
 
-    DATA(view) = z2ui5_cl_xml_view=>factory( ).
-    DATA(table) = view->shell(
-        )->page(
-            title          = `abap2UI5 - EML - 06 Which Travels Have a Draft?`
-            navbuttonpress = client->_event_nav_app_leave( )
-            shownavbutton  = client->check_app_prev_stack( )
-            )->table( client->_bind( t_travels ) ).
+    DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
+        )->a( n = `displayBlock` v = `true`
+        )->a( n = `height`       v = `100%`
+        )->a( n = `xmlns`        v = `sap.m`
+        )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+        )->a( n = `xmlns:core`   v = `sap.ui.core` ).
+    DATA(table) = view->ele( `Shell` )->ele( `Page`
+            )->a( n = `title`          v = `abap2UI5 - EML - 06 Which Travels Have a Draft?`
+            )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
+            )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) )->ele( `Table`
+                )->a( n = `items` v = client->_bind( t_travels ) ).
 
-    table->header_toolbar( )->toolbar(
-        )->title( `READ ENTITIES ... WITH %is_draft = mk-on`
-        )->toolbar_spacer(
-        )->button(
-            text  = `Generate Demo Data`
-            press = client->_event( `GENERATE` )
-        )->button(
-            icon  = `sap-icon://refresh`
-            press = client->_event( `REFRESH` ) ).
+    table->ele( `headerToolbar` )->ele( `Toolbar` )->tag( `Title`
+            )->a( n = `text` v = `READ ENTITIES ... WITH %is_draft = mk-on` )->tag( `ToolbarSpacer` )->tag( `Button`
+            )->a( n = `press` v = client->_event( `GENERATE` )
+            )->a( n = `text`  v = `Generate Demo Data` )->tag( `Button`
+            )->a( n = `press` v = client->_event( `REFRESH` )
+            )->a( n = `icon`  v = `sap-icon://refresh` ).
 
-    table->columns(
-        )->column( )->text( `ID` )->get_parent(
-        )->column( )->text( `Customer` )->get_parent(
-        )->column( )->text( `Description` )->get_parent(
-        )->column( )->text( `Status` )->get_parent(
-        )->column( )->text( `Draft` ).
+    table->ele( `columns` )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `ID` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `Customer` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `Description` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `Status` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `Draft` ).
 
-    table->items( )->column_list_item(
-        )->cells(
-            )->text( `{TRAVEL_ID}`
-            )->text( `{CUSTOMER_ID}`
-            )->text( `{DESCRIPTION}`
-            )->text( `{STATUS}`
-            )->object_status(
-                text  = `{DRAFT_TEXT}`
-                state = `{DRAFT_STATE}` ).
+    table->ele( `items` )->ele( `ColumnListItem` )->ele( `cells` )->tag( `Text`
+                )->a( n = `text` v = `{TRAVEL_ID}` )->tag( `Text`
+                )->a( n = `text` v = `{CUSTOMER_ID}` )->tag( `Text`
+                )->a( n = `text` v = `{DESCRIPTION}` )->tag( `Text`
+                )->a( n = `text` v = `{STATUS}` )->ele( `ObjectStatus`
+                )->a( n = `state` v = `{DRAFT_STATE}`
+                )->a( n = `text`  v = `{DRAFT_TEXT}` ).
 
     client->view_display( view->stringify( ) ).
 

@@ -107,49 +107,50 @@ CLASS z2ui5_cl_smps_app_11 IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD view_display.
-    DATA(view) = z2ui5_cl_xml_view=>factory( ).
-    DATA(page) = view->shell(
-        )->page(
-            title          = `RAP Events Demo - Tickets (abap2UI5)`
-            navbuttonpress = client->_event_nav_app_leave( )
-            shownavbutton  = client->check_app_prev_stack( ) ).
+    DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
+        )->a( n = `displayBlock` v = `true`
+        )->a( n = `height`       v = `100%`
+        )->a( n = `xmlns`        v = `sap.m`
+        )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+        )->a( n = `xmlns:core`   v = `sap.ui.core`
+        )->a( n = `xmlns:form`   v = `sap.ui.layout.form` ).
+    DATA(page) = view->ele( `Shell` )->ele( `Page`
+            )->a( n = `title`          v = `RAP Events Demo - Tickets (abap2UI5)`
+            )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
+            )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) ).
 
     " --- create form ---
-    page->simple_form( editable = abap_true
-        )->content( `form`
-        )->label( `Title`
-        )->input( client->_bind( ms_create-title )
-        )->label( `Priority (H / M / L)`
-        )->input( client->_bind( ms_create-priority )
-        )->label( `Status`
-        )->input( client->_bind( ms_create-status )
-        )->button(
-            text  = `Create Ticket`
-            press = client->_event( `CREATE` )
-            type  = `Emphasized` ).
+    page->ele( n = `SimpleForm` ns = `form`
+        )->a( n = `editable` b = abap_true )->ele( n = `content` ns = `form` )->tag( `Label`
+            )->a( n = `text` v = `Title` )->tag( `Input`
+            )->a( n = `value` v = client->_bind( ms_create-title ) )->tag( `Label`
+            )->a( n = `text` v = `Priority (H / M / L)` )->tag( `Input`
+            )->a( n = `value` v = client->_bind( ms_create-priority ) )->tag( `Label`
+            )->a( n = `text` v = `Status` )->tag( `Input`
+            )->a( n = `value` v = client->_bind( ms_create-status ) )->tag( `Button`
+            )->a( n = `press` v = client->_event( `CREATE` )
+            )->a( n = `text`  v = `Create Ticket`
+            )->a( n = `type`  v = `Emphasized` ).
 
     " --- tickets table ---
-    DATA(table) = page->table( client->_bind( mt_tickets ) ).
-    table->header_toolbar(
-        )->toolbar(
-            )->title( `Tickets`
-            )->toolbar_spacer(
-            )->button(
-                icon  = `sap-icon://refresh`
-                press = client->_event( `REFRESH` ) ).
+    DATA(table) = page->ele( `Table`
+        )->a( n = `items` v = client->_bind( mt_tickets ) ).
+    table->ele( `headerToolbar` )->ele( `Toolbar` )->tag( `Title`
+                )->a( n = `text` v = `Tickets` )->tag( `ToolbarSpacer` )->tag( `Button`
+                )->a( n = `press` v = client->_event( `REFRESH` )
+                )->a( n = `icon`  v = `sap-icon://refresh` ).
 
-    table->columns(
-        )->column( )->text( `Title` )->get_parent(
-        )->column( )->text( `Priority` )->get_parent(
-        )->column( )->text( `Status` )->get_parent(
-        )->column( )->text( `Created By` ).
+    table->ele( `columns` )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `Title` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `Priority` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `Status` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `Created By` ).
 
-    table->items( )->column_list_item(
-        )->cells(
-            )->text( `{TITLE}`
-            )->text( `{PRIORITY}`
-            )->text( `{STATUS}`
-            )->text( `{CREATED_BY}` ).
+    table->ele( `items` )->ele( `ColumnListItem` )->ele( `cells` )->tag( `Text`
+                )->a( n = `text` v = `{TITLE}` )->tag( `Text`
+                )->a( n = `text` v = `{PRIORITY}` )->tag( `Text`
+                )->a( n = `text` v = `{STATUS}` )->tag( `Text`
+                )->a( n = `text` v = `{CREATED_BY}` ).
 
     client->view_display( view->stringify( ) ).
   ENDMETHOD.

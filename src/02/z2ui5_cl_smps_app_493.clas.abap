@@ -42,30 +42,35 @@ CLASS z2ui5_cl_smps_app_493 IMPLEMENTATION.
 
       mt_result = data_all( ).
 
-      DATA(view) = z2ui5_cl_xml_view=>factory( ).
+      DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
+          )->a( n = `displayBlock`                 v = `true`
+          )->a( n = `height`                       v = `100%`
+          )->a( n = `xmlns`                        v = `sap.m`
+          )->a( n = `xmlns:mvc`                    v = `sap.ui.core.mvc`
+          )->a( n = `xmlns:core`                   v = `sap.ui.core`
+          )->a( n = `xmlns:fb`                     v = `sap.ui.comp.filterbar`
+          )->a( n = `xmlns:smartVariantManagement` v = `sap.ui.comp.smartvariants` ).
 
-      DATA(page) = view->shell(
-          )->page(
-              title          = `abap2UI5 - Smart Controls - Classic FilterBar Variants`
-              navbuttonpress = client->_event_nav_app_leave( )
-              shownavbutton  = client->check_app_prev_stack( ) ).
+      DATA(page) = view->ele( `Shell` )->ele( `Page`
+              )->a( n = `title`          v = `abap2UI5 - Smart Controls - Classic FilterBar Variants`
+              )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
+              )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) ).
 
-      page->message_strip(
-          text     = `Enter filters, press Go, then save the selection as a variant. `
+      page->tag( `MessageStrip`
+          )->a( n = `text`     v = `Enter filters, press Go, then save the selection as a variant. `
                   && `Selecting it again restores the values into the fields AND into `
                   && `ABAP - the binding carries them back, so Go filters on `
                   && `the restored values without any extra wiring.`
-          type     = `Information`
-          showicon = abap_true
-          class    = `sapUiSmallMargin` ).
+          )->a( n = `type`     v = `Information`
+          )->a( n = `showIcon` b = abap_true
+          )->a( n = `class`    v = `sapUiSmallMargin` ).
 
       " The variant container. It owns the persistency (sap.ui.fl / LREP) and
       " is the only piece a SmartFilterBar would bring along by itself - see
       " sample 478 for that variant of the same screen.
-      page->hbox(
-          )->smart_variant_management(
-              id             = `variantMgmt`
-              persistencykey = `Z2UI5_493_VARIANT` ).
+      page->ele( `HBox` )->tag( n = `SmartVariantManagement` ns = `smartVariantManagement`
+              )->a( n = `id`             v = `variantMgmt`
+              )->a( n = `persistencyKey` v = `Z2UI5_493_VARIANT` ).
 
       " A CLASSIC sap.ui.comp.filterbar.FilterBar: unlike a SmartFilterBar it
       " has no OData metadata to build itself from, so its filters are named
@@ -73,52 +78,48 @@ CLASS z2ui5_cl_smps_app_493 IMPLEMENTATION.
       " in any other abap2UI5 app. persistencykey is what the variant is
       " stored under - the wiring action below hands it to the variant
       " management as the PersonalizableInfo keyName.
-      DATA(filter) = page->filter_bar(
-          id             = `filterBar`
-          persistencykey = `Z2UI5_493_FILTERBAR`
-          usetoolbar     = `false`
-          search         = client->_event( `SEARCH` )
-          )->filter_group_items( ).
+      DATA(filter) = page->ele( n = `FilterBar` ns = `fb`
+          )->a( n = `useToolbar`     v = `false`
+          )->a( n = `search`         v = client->_event( `SEARCH` )
+          )->a( n = `id`             v = `filterBar`
+          )->a( n = `persistencyKey` v = `Z2UI5_493_FILTERBAR` )->ele( n = `filterGroupItems` ns = `fb` ).
 
-      filter->filter_group_item(
-          name               = `PRODUCT`
-          label              = `Product`
-          groupname          = `__BASIC`
-          visibleinfilterbar = `true`
-          )->filter_control(
-              )->input( client->_bind( ms_filter-product ) ).
+      filter->ele( n = `FilterGroupItem` ns = `fb`
+          )->a( n = `name`               v = `PRODUCT`
+          )->a( n = `label`              v = `Product`
+          )->a( n = `groupName`          v = `__BASIC`
+          )->a( n = `visibleInFilterBar` v = `true` )->ele( n = `control` ns = `fb` )->tag( `Input`
+                  )->a( n = `value` v = client->_bind( ms_filter-product ) ).
 
-      filter->filter_group_item(
-          name               = `CATEGORY`
-          label              = `Category`
-          groupname          = `__BASIC`
-          visibleinfilterbar = `true`
-          )->filter_control(
-              )->input( client->_bind( ms_filter-category ) ).
+      filter->ele( n = `FilterGroupItem` ns = `fb`
+          )->a( n = `name`               v = `CATEGORY`
+          )->a( n = `label`              v = `Category`
+          )->a( n = `groupName`          v = `__BASIC`
+          )->a( n = `visibleInFilterBar` v = `true` )->ele( n = `control` ns = `fb` )->tag( `Input`
+                  )->a( n = `value` v = client->_bind( ms_filter-category ) ).
 
-      filter->filter_group_item(
-          name               = `SUPPLIER`
-          label              = `Supplier`
-          groupname          = `__BASIC`
-          visibleinfilterbar = `true`
-          )->filter_control(
-              )->input( client->_bind( ms_filter-supplier ) ).
+      filter->ele( n = `FilterGroupItem` ns = `fb`
+          )->a( n = `name`               v = `SUPPLIER`
+          )->a( n = `label`              v = `Supplier`
+          )->a( n = `groupName`          v = `__BASIC`
+          )->a( n = `visibleInFilterBar` v = `true` )->ele( n = `control` ns = `fb` )->tag( `Input`
+                  )->a( n = `value` v = client->_bind( ms_filter-supplier ) ).
 
-      DATA(tab) = page->table( items      = client->_bind( mt_result )
-                               headertext = `Products` ).
+      DATA(tab) = page->ele( `Table`
+          )->a( n = `items`      v = client->_bind( mt_result )
+          )->a( n = `headerText` v = `Products` ).
 
-      tab->columns(
-          )->column( )->text( `Product` )->get_parent(
-          )->column( )->text( `Category` )->get_parent(
-          )->column( )->text( `Supplier` )->get_parent(
-          )->column( )->text( `Price` ).
+      tab->ele( `columns` )->ele( `Column` )->tag( `Text`
+              )->a( n = `text` v = `Product` )->end( )->ele( `Column` )->tag( `Text`
+              )->a( n = `text` v = `Category` )->end( )->ele( `Column` )->tag( `Text`
+              )->a( n = `text` v = `Supplier` )->end( )->ele( `Column` )->tag( `Text`
+              )->a( n = `text` v = `Price` ).
 
-      tab->items( )->column_list_item(
-          )->cells(
-              )->text( `{PRODUCT}`
-              )->text( `{CATEGORY}`
-              )->text( `{SUPPLIER}`
-              )->text( `{PRICE}` ).
+      tab->ele( `items` )->ele( `ColumnListItem` )->ele( `cells` )->tag( `Text`
+                  )->a( n = `text` v = `{PRODUCT}` )->tag( `Text`
+                  )->a( n = `text` v = `{CATEGORY}` )->tag( `Text`
+                  )->a( n = `text` v = `{SUPPLIER}` )->tag( `Text`
+                  )->a( n = `text` v = `{PRICE}` ).
 
       client->view_display( view->stringify( ) ).
 

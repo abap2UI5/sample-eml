@@ -166,32 +166,34 @@ CLASS z2ui5_cl_smps_app_07 IMPLEMENTATION.
 
   METHOD view_display.
 
-    DATA(view) = z2ui5_cl_xml_view=>factory( ).
-    DATA(table) = view->shell(
-        )->page(
-            title          = `abap2UI5 - EML - 07 Enter Draft Mode`
-            navbuttonpress = client->_event_nav_app_leave( )
-            shownavbutton  = client->check_app_prev_stack( )
-            )->table( client->_bind( t_travels ) ).
+    DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
+        )->a( n = `displayBlock` v = `true`
+        )->a( n = `height`       v = `100%`
+        )->a( n = `xmlns`        v = `sap.m`
+        )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+        )->a( n = `xmlns:core`   v = `sap.ui.core` ).
+    DATA(table) = view->ele( `Shell` )->ele( `Page`
+            )->a( n = `title`          v = `abap2UI5 - EML - 07 Enter Draft Mode`
+            )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
+            )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) )->ele( `Table`
+                )->a( n = `items` v = client->_bind( t_travels ) ).
 
-    table->header_toolbar( )->toolbar(
-        )->title( `EXECUTE Edit  /  EXECUTE Resume` ).
+    table->ele( `headerToolbar` )->ele( `Toolbar` )->tag( `Title`
+            )->a( n = `text` v = `EXECUTE Edit  /  EXECUTE Resume` ).
 
-    table->columns(
-        )->column( )->text( `ID` )->get_parent(
-        )->column( )->text( `Description - active` )->get_parent(
-        )->column( )->text( `Description - draft` )->get_parent(
-        )->column( )->text( `` ).
+    table->ele( `columns` )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `ID` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `Description - active` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `Description - draft` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `` ).
 
-    table->items( )->column_list_item(
-        )->cells(
-            )->text( `{TRAVEL_ID}`
-            )->text( `{DESCRIPTION}`
-            )->text( `{DRAFT_DESCRIPTION}`
-            )->button(
-                text  = `{DRAFT_TEXT}`
-                press = client->_event( val   = `OPEN`
-                                        t_arg = VALUE #( ( `${TRAVEL_UUID}` ) ) ) ).
+    table->ele( `items` )->ele( `ColumnListItem` )->ele( `cells` )->tag( `Text`
+                )->a( n = `text` v = `{TRAVEL_ID}` )->tag( `Text`
+                )->a( n = `text` v = `{DESCRIPTION}` )->tag( `Text`
+                )->a( n = `text` v = `{DRAFT_DESCRIPTION}` )->tag( `Button`
+                )->a( n = `press` v = client->_event( val   = `OPEN`
+                                        t_arg = VALUE #( ( `${TRAVEL_UUID}` ) ) )
+                )->a( n = `text`  v = `{DRAFT_TEXT}` ).
 
     client->view_display( view->stringify( ) ).
 
