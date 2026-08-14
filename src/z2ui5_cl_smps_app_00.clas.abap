@@ -133,7 +133,7 @@ CLASS z2ui5_cl_smps_app_00 DEFINITION PUBLIC.
     "! copies in abap2UI5/samples and abap2UI5/samples-controls.
     METHODS render_header
       IMPORTING
-        page  TYPE REF TO z2ui5_cl_ai_xml
+        page  TYPE REF TO z2ui5_cl_ui5_view_builder
         title TYPE string.
 
     "! A repository that is not on this system stays clickable and says what is
@@ -147,7 +147,7 @@ CLASS z2ui5_cl_smps_app_00 DEFINITION PUBLIC.
 
     METHODS header_button
       IMPORTING
-        toolbar     TYPE REF TO z2ui5_cl_ai_xml
+        toolbar     TYPE REF TO z2ui5_cl_ui5_view_builder
         icon        TYPE string
         "! the entry's name - the tooltip opens with it and the popover of an
         "! uninstalled repository is titled after it
@@ -177,7 +177,7 @@ CLASS z2ui5_cl_smps_app_00 DEFINITION PUBLIC.
     "! one package each - same markup, different binding
     METHODS render_package
       IMPORTING
-        page  TYPE REF TO z2ui5_cl_ai_xml
+        page  TYPE REF TO z2ui5_cl_ui5_view_builder
         title TYPE string
         hint  TYPE string
         items TYPE string.
@@ -275,16 +275,16 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
 
   METHOD view_display.
 
-    DATA(view) = z2ui5_cl_ai_xml=>factory( ).
+    DATA(view) = z2ui5_cl_ui5_view_builder=>factory( ).
 
-    DATA(page) = view->open( n = `View` ns = `mvc`
+    DATA(page) = view->ele( n = `View` ns = `mvc`
         )->a( n = `xmlns`        v = `sap.m`
         )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
         )->a( n = `xmlns:core`   v = `sap.ui.core`
         )->a( n = `displayBlock` v = `true`
         )->a( n = `height`       v = `100%`
-        )->open( `Shell`
-        )->open( `Page`
+        )->ele( `Shell`
+        )->ele( `Page`
             )->a( n = `class` v = `sapUiContentPadding` ).
 
     " title and back button come with the custom header (render_header), not
@@ -292,7 +292,7 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
     render_header( page  = page
                    title = `abap2UI5 - samples-stack - 00 Overview` ).
 
-    page->leaf( `MessageStrip`
+    page->tag( `MessageStrip`
         )->a( n = `text`     v = `Every sample of this repository, one package per section - Open starts it ` &&
                                  `in a new browser tab. A row whose Status says so is not on this system: ` &&
                                  `either the package was not installed, or the release cannot activate it. ` &&
@@ -363,31 +363,31 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
     " 3rem. This row used to put a ToolbarSeparator between its groups, which
     " on 1.71 swallowed every icon behind the first one; the gap now rides on
     " the first icon of each group (group_start).
-    DATA(bar) = page->open( `customHeader` )->open( `Bar` ).
+    DATA(bar) = page->ele( `customHeader` )->ele( `Bar` ).
 
     " left: what the stock page header would render on its own
-    DATA(left) = bar->open( `contentLeft` ).
+    DATA(left) = bar->ele( `contentLeft` ).
 
-    left->leaf( `Button`
+    left->tag( `Button`
         )->a( n = `icon`    v = `sap-icon://nav-back`
         )->a( n = `type`    v = `Transparent`
         )->a( n = `tooltip` v = `Back`
-        )->a( n = `visible` v = z2ui5_cl_ai_xml=>as_bool( client->check_app_prev_stack( ) )
+        )->a( n = `visible` b = client->check_app_prev_stack( )
         )->a( n = `press`   v = client->_event_nav_app_leave( ) ).
 
-    left->leaf( `Title`
+    left->tag( `Title`
         )->a( n = `text`  v = title
         )->a( n = `level` v = `H2` ).
 
-    DATA(right) = bar->open( `contentRight` ).
+    DATA(right) = bar->ele( `contentRight` ).
 
     " this repository's own action first - it fills the tables the RAP samples
     " read, and it is hidden outright when neither RAP package is installed
-    right->leaf( `Button`
+    right->tag( `Button`
         )->a( n = `text`    v = `Regenerate Demo Data`
         )->a( n = `icon`    v = `sap-icon://refresh`
         )->a( n = `type`    v = `Transparent`
-        )->a( n = `visible` v = z2ui5_cl_ai_xml=>as_bool( demo_data_installed )
+        )->a( n = `visible` b = demo_data_installed
         )->a( n = `press`   v = client->_event( cs_event-regenerate ) ).
 
     " then the sample repositories of the abap2UI5 family, one icon each ...
@@ -437,24 +437,24 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
 
   METHOD install_display.
 
-    DATA(info) = z2ui5_cl_ai_xml=>factory( ).
+    DATA(info) = z2ui5_cl_ui5_view_builder=>factory( ).
 
-    info->open( n = `FragmentDefinition` ns = `core`
+    info->ele( n = `FragmentDefinition` ns = `core`
         )->a( n = `xmlns`      v = `sap.m`
         )->a( n = `xmlns:core` v = `sap.ui.core`
 
-        )->open( `Popover`
+        )->ele( `Popover`
             )->a( n = `title`        v = |{ name } - not installed|
             )->a( n = `placement`    v = `Bottom`
             )->a( n = `contentWidth` v = `26rem`
 
-            )->open( `VBox`
+            )->ele( `VBox`
                 )->a( n = `class` v = `sapUiContentPadding`
 
-                )->leaf( `Text`
+                )->tag( `Text`
                     )->a( n = `text` v = |This system does not have { name } installed, so there is no app to | &&
                                          |jump to. Install the repository with abapGit, then this icon opens it right here.|
-                )->leaf( `Link`
+                )->tag( `Link`
                     )->a( n = `text`   v = href
                     )->a( n = `href`   v = href
                     )->a( n = `target` v = `_blank`
@@ -531,7 +531,7 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
                                    THEN `sapUiMediumMarginBegin sapUiTinyMarginEnd`
                                    ELSE `sapUiTinyMarginBeginEnd` ).
 
-    toolbar->leaf( n = `Icon` ns = `core`
+    toolbar->tag( n = `Icon` ns = `core`
         )->a( n = `src`     v = icon
         )->a( n = `size`    v = `1.125rem`
         )->a( n = `class`   v = css_class
@@ -568,68 +568,68 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
 
     " collapsible: nine packages are a long page, and most readers came for
     " one of them
-    DATA(panel) = page->open( `Panel`
+    DATA(panel) = page->ele( `Panel`
         )->a( n = `headerText` v = title
         )->a( n = `expandable` v = `true`
         )->a( n = `expanded`   v = `true`
         )->a( n = `width`      v = `auto`
         )->a( n = `class`      v = `sapUiSmallMarginBottom` ).
 
-    panel->leaf( `Text`
+    panel->tag( `Text`
         )->a( n = `text`  v = hint
         )->a( n = `class` v = `sapUiSmallMarginBottom` ).
 
-    DATA(table) = panel->open( `Table`
+    DATA(table) = panel->ele( `Table`
         )->a( n = `items` v = items ).
 
-    table->open( `columns`
-        )->open( `Column`
+    table->ele( `columns`
+        )->ele( `Column`
             )->a( n = `width` v = `4rem`
-            )->leaf( `Text`
+            )->tag( `Text`
                 )->a( n = `text` v = `#`
-        )->shut(
-        )->open( `Column`
-            )->leaf( `Text`
+        )->end(
+        )->ele( `Column`
+            )->tag( `Text`
                 )->a( n = `text` v = `Sample`
-        )->shut(
-        )->open( `Column`
+        )->end(
+        )->ele( `Column`
             )->a( n = `demandPopin`    v = `true`
             )->a( n = `minScreenWidth` v = `Tablet`
-            )->leaf( `Text`
+            )->tag( `Text`
                 )->a( n = `text` v = `Shows`
-        )->shut(
-        )->open( `Column`
+        )->end(
+        )->ele( `Column`
             )->a( n = `demandPopin`    v = `true`
             )->a( n = `minScreenWidth` v = `Desktop`
-            )->leaf( `Text`
+            )->tag( `Text`
                 )->a( n = `text` v = `Class`
-        )->shut(
-        )->open( `Column`
+        )->end(
+        )->ele( `Column`
             )->a( n = `width` v = `9rem`
-            )->leaf( `Text`
+            )->tag( `Text`
                 )->a( n = `text` v = `Status`
-        )->shut(
-        )->open( `Column`
+        )->end(
+        )->ele( `Column`
             )->a( n = `width`  v = `7rem`
             )->a( n = `hAlign` v = `End`
-            )->leaf( `Text`
+            )->tag( `Text`
                 )->a( n = `text` v = `Demo` ).
 
-    table->open( `items`
-        )->open( `ColumnListItem`
-            )->open( `cells`
-                )->leaf( `Text`
+    table->ele( `items`
+        )->ele( `ColumnListItem`
+            )->ele( `cells`
+                )->tag( `Text`
                     )->a( n = `text` v = `{NO}`
-                )->leaf( `Text`
+                )->tag( `Text`
                     )->a( n = `text` v = `{TITLE}`
-                )->leaf( `Text`
+                )->tag( `Text`
                     )->a( n = `text` v = `{DETAIL}`
-                )->leaf( `Text`
+                )->tag( `Text`
                     )->a( n = `text` v = `{CLASSNAME}`
-                )->leaf( `ObjectStatus`
+                )->tag( `ObjectStatus`
                     )->a( n = `text`  v = `{STATUS}`
                     )->a( n = `state` v = `{STATE}`
-                )->leaf( `Button`
+                )->tag( `Button`
                     )->a( n = `text` v = `Open`
                     )->a( n = `icon` v = `sap-icon://play`
                     " a sample that is not on this system has no URL worth
