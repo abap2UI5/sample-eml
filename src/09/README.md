@@ -56,7 +56,7 @@ navigates with the frontend event `cs_event-cross_app_nav_to_ext`, naming the ta
 by its **semantic object and action** — not by a class name and not by a URL:
 
 ```abap
-press = client->_event_client(
+press = client->follow_up_action(
     val   = client->cs_event-cross_app_nav_to_ext
     t_arg = VALUE #(
         ( `{ semanticObject: "Z2UI5_CL_LP_SAMPLE_04",  action: "display" }` )

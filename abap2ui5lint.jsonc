@@ -14,5 +14,47 @@
   "ui5": "1.71",
   "distribution": "openui5",
 
+  // src/02 is the Smart Controls package, and its README says so: sap.ui.comp
+  // driven by OData metadata, SAPUI5 + an activated Gateway service. Those
+  // samples exist to show a SAPUI5-only technology, so on the OpenUI5 setting
+  // above the whole folder reports itself, three times over:
+  //
+  //   * sapui5-only-control  — the point of the package
+  //   * unknown-aggregation  — a knock-on: sap.ui.comp is not in the metadata
+  //     snapshot, so an aggregation under a smart control cannot be resolved
+  //     and is attributed to the nearest control that IS known (sap.m.Page).
+  //     The chains themselves are correct — controlConfiguration really does
+  //     sit under SmartFilterBar
+  //   * render-error         — the render gate serves the OpenUI5 runtime,
+  //     which has no sap/ui/comp/... modules to load
+  //
+  // Excluded per rule rather than by flipping "distribution" to sapui5, so
+  // every other package keeps being checked against the OpenUI5 landscape it
+  // is meant to run on.
+  "rules": {
+    "sapui5-only-control": { "exclude": ["/src/02/"] },
+    "unknown-aggregation": { "exclude": ["/src/02/"] },
+    // A render error carries no line, so a source directive cannot reach it —
+    // the config is the only instrument. Two shapes here, both about what the
+    // static harness can serve rather than about the app:
+    //
+    //   * src/03 + src/04 (RAP) bind an ObjectStatus `state` to a CDS entity
+    //     field. The field has no ABAP declaration to read a type from, so the
+    //     mock model seeds '' and strict validation rejects it as a ValueState
+    //     — the running app gets Success/Warning/Error from the entity
+    //   * app 487 and 489 load abap2UI5's own custom controls (z2ui5/cc/Focus,
+    //     z2ui5/cc/Websocket), which the framework serves at runtime and the
+    //     harness does not have
+    "render-error": {
+      "exclude": [
+        "/src/02/",
+        "/src/03/z2ui5_cl_smps_app_05\\.",
+        "/src/04/z2ui5_cl_smps_app_(06|10)\\.",
+        "/src/07/z2ui5_cl_smps_app_489\\.",
+        "/src/08/z2ui5_cl_smps_app_487\\."
+      ]
+    }
+  },
+
   "failOn": "warning"
 }

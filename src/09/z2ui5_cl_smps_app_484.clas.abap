@@ -64,10 +64,10 @@ CLASS z2ui5_cl_smps_app_484 IMPLEMENTATION.
                   )->a( n = `text` v = `Launchpad active` )->tag( `Input`
                   )->a( n = `enabled` b = abap_false
                   )->a( n = `value`   b = check_launchpad_active )->tag( `Button`
-                  )->a( n = `press`   v = client->_event_client( client->cs_event-cross_app_nav_to_prev_app )
+                  )->a( n = `press`   v = client->follow_up_action( client->cs_event-cross_app_nav_to_prev_app )
                   )->a( n = `text`    v = `back to the previous app`
                   )->a( n = `visible` b = check_launchpad_active )->tag( `Button`
-                  )->a( n = `press`   v = client->_event_client(
+                  )->a( n = `press`   v = client->follow_up_action(
                       val   = client->cs_event-cross_app_nav_to_ext
                       t_arg = VALUE #( ( `{ semanticObject: "Z2UI5_CL_LP_SAMPLE_03",  action: "display" }` ) ) )
                   )->a( n = `text`    v = `navigate to the sender app`

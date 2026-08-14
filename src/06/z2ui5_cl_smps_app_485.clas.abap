@@ -112,7 +112,6 @@ CLASS z2ui5_cl_smps_app_485 IMPLEMENTATION.
       WHEN `LOCK`.
         lcl_locking=>acquire_lock( ).
         client->message_toast_display( `Lock acquired. Press 'Refresh lock counter'` ).
-        client->view_model_update( ).
       WHEN `END_SESSION`.
         set_session_stateful( client   = client
                               stateful = abap_false ).
@@ -121,7 +120,6 @@ CLASS z2ui5_cl_smps_app_485 IMPLEMENTATION.
                               stateful = abap_true ).
       WHEN `REFRESH`.
         update_lock_counter( ).
-        client->view_model_update( ).
       WHEN `ROLLBACK`.
         ROLLBACK WORK.
         client->message_toast_display( |ROLLBACK WORK done, { lock_counter } locks released. Press 'Refresh lock counter'| ).
@@ -141,7 +139,6 @@ CLASS z2ui5_cl_smps_app_485 IMPLEMENTATION.
     ELSE.
       session_text = `Session OFF (stateless)`.
     ENDIF.
-    client->view_model_update( ).
 
   ENDMETHOD.
 
@@ -159,10 +156,10 @@ CLASS z2ui5_cl_smps_app_485 IMPLEMENTATION.
 
         TRY.
             on_event( client ).
+          " abap2ui5lint-disable-next-line non-released-api -- z2ui5_cx_util_error is the exception the framework itself raises out of main( ); catching it is the only way to show the error handling this sample is about
           CATCH z2ui5_cx_util_error INTO DATA(x_error).
             error-text = x_error->get_text( ).
             error-flag = abap_true.
-            client->view_model_update( ).
         ENDTRY.
 
       CATCH cx_root INTO DATA(lx).

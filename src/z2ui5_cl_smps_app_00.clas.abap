@@ -5,7 +5,7 @@
 "! The Open button of a row starts its sample in a NEW BROWSER TAB, so the
 "! overview stays where it is and several samples can run side by side. That
 "! is a pure frontend action: the row carries the finished ?app_start= URL of
-"! its class and the button is wired with _event_client( ), which opens the
+"! its class and the button is wired with follow_up_action( ), which opens the
 "! tab inside the click handler without a roundtrip - a window.open( ) from a
 "! server response would be swallowed by the popup blocker.
 "!
@@ -637,9 +637,9 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
                     )->a( n = `enabled` v = `{INSTALLED}`
                     " ${URL} is resolved by UI5 against the row the button
                     " sits in, so one wire serves every sample - and
-                    " _event_client keeps it a frontend action, which is what
+                    " follow_up_action keeps it a frontend action, which is what
                     " lets the browser accept the new tab
-                    )->a( n = `press` v = client->_event_client(
+                    )->a( n = `press` v = client->follow_up_action(
                                               val   = client->cs_event-open_new_tab
                                               t_arg = VALUE #( ( `${URL}` ) ) ) ).
 

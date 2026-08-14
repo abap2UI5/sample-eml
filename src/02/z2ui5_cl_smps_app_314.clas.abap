@@ -78,6 +78,7 @@ CLASS z2ui5_cl_smps_app_314 IMPLEMENTATION.
              )->a( n = `text` v = `{http>DESCR}` ).
 
       tab = page->ele( `Table`
+          " abap2ui5lint-disable-next-line unknown-binding-path hardcoded-binding-path -- the default model IS the OData service here (switch_default_model_path), so the entity set is an absolute service path with no ABAP variable to derive it from
           )->a( n = `items`   v = `{/BusinessPartnerSet}`
           )->a( n = `growing` b = abap_true ).
 

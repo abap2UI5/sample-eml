@@ -86,7 +86,6 @@ CLASS z2ui5_cl_smps_app_09 IMPLEMENTATION.
     IF data_save( ) = abap_true.
 
       data_read( ).
-      client->view_model_update( ).
       client->message_toast_display( `Draft activated - it is the active travel now` ).
 
     ENDIF.
@@ -118,7 +117,6 @@ CLASS z2ui5_cl_smps_app_09 IMPLEMENTATION.
     IF data_save( ) = abap_true.
 
       data_read( ).
-      client->view_model_update( ).
       client->message_toast_display( `Draft discarded - the active travel is unchanged` ).
 
     ENDIF.

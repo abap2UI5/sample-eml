@@ -95,7 +95,6 @@ CLASS z2ui5_cl_smps_app_05 IMPLEMENTATION.
     CASE client->get( )-event.
       WHEN `REFRESH`.
         data_read( ).
-        client->view_model_update( ).
       WHEN `GENERATE`.
         on_event_generate( ).
       WHEN `CREATE`.
@@ -135,7 +134,6 @@ CLASS z2ui5_cl_smps_app_05 IMPLEMENTATION.
     " app and the ADT console application create exactly the same set
     client->message_toast_display( z2ui5_cl_smps_data_trv=>data_reset( ) ).
     data_read( ).
-    client->view_model_update( ).
 
   ENDMETHOD.
 
@@ -169,7 +167,6 @@ CLASS z2ui5_cl_smps_app_05 IMPLEMENTATION.
 
       client->popup_destroy( ).
       data_read( ).
-      client->view_model_update( ).
       client->message_toast_display( |Travel { s_mapped-travel[ 1 ]-travelid ALPHA = OUT } created| ).
 
     ENDIF.
@@ -201,7 +198,6 @@ CLASS z2ui5_cl_smps_app_05 IMPLEMENTATION.
     IF data_save( ) = abap_true.
 
       data_read( ).
-      client->view_model_update( ).
       client->message_toast_display( |Travel { travel_id } updated| ).
 
     ENDIF.
@@ -230,7 +226,6 @@ CLASS z2ui5_cl_smps_app_05 IMPLEMENTATION.
     IF data_save( ) = abap_true.
 
       data_read( ).
-      client->view_model_update( ).
       client->message_toast_display( |Travel { travel_id } accepted| ).
 
     ENDIF.
@@ -259,7 +254,6 @@ CLASS z2ui5_cl_smps_app_05 IMPLEMENTATION.
     IF data_save( ) = abap_true.
 
       data_read( ).
-      client->view_model_update( ).
       client->message_toast_display( |Travel { travel_id } rejected| ).
 
     ENDIF.
@@ -288,7 +282,6 @@ CLASS z2ui5_cl_smps_app_05 IMPLEMENTATION.
     IF data_save( ) = abap_true.
 
       data_read( ).
-      client->view_model_update( ).
       client->message_toast_display( |Travel { travel_id } deleted| ).
 
     ENDIF.
