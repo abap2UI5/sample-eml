@@ -657,11 +657,11 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
                       detail    = detail
                       classname = to_upper( classname )
                       installed = class_check_installed( classname )
-                      url       = z2ui5_cl_util=>app_get_url( classname = classname
-                                                              origin    = s_config-origin
-                                                              pathname  = s_config-pathname
-                                                              search    = s_config-search
-                                                              hash      = s_config-hash ) ).
+                      url       = z2ui5_cl_smps_context=>app_get_url( classname = classname
+                                                                      origin    = s_config-origin
+                                                                      pathname  = s_config-pathname
+                                                                      search    = s_config-search
+                                                                      hash      = s_config-hash ) ).
 
     " an enum typed property rejects the empty string, so the rows that are
     " fine say None rather than nothing
