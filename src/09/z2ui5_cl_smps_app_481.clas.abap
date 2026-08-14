@@ -18,24 +18,31 @@ CLASS z2ui5_cl_smps_app_481 IMPLEMENTATION.
         client->message_box_display( `No Launchpad Active, Sample not working!` ).
       ENDIF.
 
-      DATA(view) = z2ui5_cl_xml_view=>factory( ).
-      DATA(page) = view->shell( )->page( showheader = abap_false ).
-      page->message_strip(
-          text     = `Reads the startup parameters the Fiori Launchpad passed to this app ` &&
+      DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
+          )->a( n = `displayBlock` v = `true`
+          )->a( n = `height`       v = `100%`
+          )->a( n = `xmlns`        v = `sap.m`
+          )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+          )->a( n = `xmlns:core`   v = `sap.ui.core`
+          )->a( n = `xmlns:form`   v = `sap.ui.layout.form` ).
+      DATA(page) = view->ele( `Shell` )->ele( `Page`
+          )->a( n = `showHeader` b = abap_false ).
+      page->tag( `MessageStrip`
+          )->a( n = `text`     v = `Reads the startup parameters the Fiori Launchpad passed to this app ` &&
                      `tile (the ComponentData) via client->get( )-t_comp_params - start the ` &&
                      `tile with URL parameters to see them. Only works inside a launchpad.`
-          type     = `Information`
-          showicon = abap_true
-          class    = `sapUiSmallMargin` ).
-      page->simple_form( title    = `Launchpad - Read Startup Parameters`
-                         editable = abap_true
-          )->content( `form`
-              )->label( ``
-              )->button( text  = `Read Parameters`
-                         press = client->_event( `READ_PARAMS` )
-              )->label( ``
-              )->button( text  = `Go Back`
-                         press = client->_event_nav_app_leave( ) ).
+          )->a( n = `type`     v = `Information`
+          )->a( n = `showIcon` b = abap_true
+          )->a( n = `class`    v = `sapUiSmallMargin` ).
+      page->ele( n = `SimpleForm` ns = `form`
+          )->a( n = `title`    v = `Launchpad - Read Startup Parameters`
+          )->a( n = `editable` b = abap_true )->ele( n = `content` ns = `form` )->tag( `Label`
+                  )->a( n = `text` v = `` )->tag( `Button`
+                  )->a( n = `press` v = client->_event( `READ_PARAMS` )
+                  )->a( n = `text`  v = `Read Parameters` )->tag( `Label`
+                  )->a( n = `text` v = `` )->tag( `Button`
+                  )->a( n = `press` v = client->_event_nav_app_leave( )
+                  )->a( n = `text`  v = `Go Back` ).
 
       client->view_display( view->stringify( ) ).
 

@@ -40,51 +40,62 @@ CLASS z2ui5_cl_smps_app_485 IMPLEMENTATION.
     set_session_stateful( client   = client
                           stateful = abap_true ).
 
-    DATA(view) = z2ui5_cl_xml_view=>factory( ).
+    DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
+        )->a( n = `displayBlock` v = `true`
+        )->a( n = `height`       v = `100%`
+        )->a( n = `xmlns`        v = `sap.m`
+        )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+        )->a( n = `xmlns:core`   v = `sap.ui.core`
+        )->a( n = `xmlns:tnt`    v = `sap.tnt` ).
 
-    DATA(page) = view->shell( )->page(
-      title          = `abap2UI5 - Sample: Sticky Session with locks - (ABAP Standard Only)`
-      navbuttonpress = client->_event( `BACK` )
-      shownavbutton  = client->check_app_prev_stack( ) ).
+    DATA(page) = view->ele( `Shell` )->ele( `Page`
+        )->a( n = `title`          v = `abap2UI5 - Sample: Sticky Session with locks - (ABAP Standard Only)`
+        )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
+        )->a( n = `navButtonPress` v = client->_event( `BACK` ) ).
 
-    page->message_strip(
-        text    = client->_bind( error-text )
-        type    = `Error`
-        visible = client->_bind( error-flag ) ).
+    page->tag( `MessageStrip`
+        )->a( n = `text`    v = client->_bind( error-text )
+        )->a( n = `type`    v = `Error`
+        )->a( n = `visible` v = client->_bind( error-flag ) ).
 
-    DATA(vbox) = page->vbox( ).
+    DATA(vbox) = page->ele( `VBox` ).
 
-    DATA(hbox) = vbox->hbox( alignitems = `Center` ).
+    DATA(hbox) = vbox->ele( `HBox`
+        )->a( n = `alignItems` v = `Center` ).
 
-    hbox->info_label( client->_bind( session_text ) ).
+    hbox->ele( n = `InfoLabel` ns = `tnt`
+        )->a( n = `text` v = client->_bind( session_text ) ).
 
-    hbox->button(
-      text  = `End session`
-      press = client->_event( `END_SESSION` ) ).
+    hbox->tag( `Button`
+        )->a( n = `press` v = client->_event( `END_SESSION` )
+        )->a( n = `text`  v = `End session` ).
 
-    hbox->button(
-      text  = `Start session again`
-      press = client->_event( `START_SESSION` ) ).
+    hbox->tag( `Button`
+        )->a( n = `press` v = client->_event( `START_SESSION` )
+        )->a( n = `text`  v = `Start session again` ).
 
-    hbox = vbox->hbox( alignitems = `Center` ).
-    hbox->label( text  = `press button to create lock entry (SM12) in backend session`
-                 class = `sapUiTinyMarginEnd` ).
-    hbox->button(
-      text  = `Lock`
-      press = client->_event( `LOCK` )
-      type  = `Emphasized` ).
+    hbox = vbox->ele( `HBox`
+        )->a( n = `alignItems` v = `Center` ).
+    hbox->tag( `Label`
+        )->a( n = `text`  v = `press button to create lock entry (SM12) in backend session`
+        )->a( n = `class` v = `sapUiTinyMarginEnd` ).
+    hbox->tag( `Button`
+        )->a( n = `press` v = client->_event( `LOCK` )
+        )->a( n = `text`  v = `Lock`
+        )->a( n = `type`  v = `Emphasized` ).
 
-    hbox = vbox->hbox( ).
+    hbox = vbox->ele( `HBox` ).
 
-    hbox->button(
-      text  = `Refresh lock counter`
-      press = client->_event( `REFRESH` ) ).
+    hbox->tag( `Button`
+        )->a( n = `press` v = client->_event( `REFRESH` )
+        )->a( n = `text`  v = `Refresh lock counter` ).
 
-    hbox->button(
-      text  = `Rollback Work`
-      press = client->_event( `ROLLBACK` ) ).
+    hbox->tag( `Button`
+        )->a( n = `press` v = client->_event( `ROLLBACK` )
+        )->a( n = `text`  v = `Rollback Work` ).
 
-    vbox->hbox( )->info_label( client->_bind( lock_text ) ).
+    vbox->ele( `HBox` )->ele( n = `InfoLabel` ns = `tnt`
+        )->a( n = `text` v = client->_bind( lock_text ) ).
 
     client->view_display( view->stringify( ) ).
 

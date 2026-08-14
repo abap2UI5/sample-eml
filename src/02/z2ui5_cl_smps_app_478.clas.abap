@@ -21,62 +21,67 @@ CLASS z2ui5_cl_smps_app_478 IMPLEMENTATION.
 
     IF client->check_on_init( ).
 
-      DATA(view) = z2ui5_cl_xml_view=>factory( ).
+      DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
+          )->a( n = `displayBlock`                 v = `true`
+          )->a( n = `height`                       v = `100%`
+          )->a( n = `xmlns`                        v = `sap.m`
+          )->a( n = `xmlns:mvc`                    v = `sap.ui.core.mvc`
+          )->a( n = `xmlns:core`                   v = `sap.ui.core`
+          )->a( n = `xmlns:smartFilterBar`         v = `sap.ui.comp.smartfilterbar`
+          )->a( n = `xmlns:smartTable`             v = `sap.ui.comp.smarttable`
+          )->a( n = `xmlns:smartVariantManagement` v = `sap.ui.comp.smartvariants` ).
 
-      DATA(page) = view->shell(
-          )->page(
-              title          = `abap2UI5 - Smart Controls - Page Variant`
-              navbuttonpress = client->_event_nav_app_leave( )
-              shownavbutton  = client->check_app_prev_stack( ) ).
+      DATA(page) = view->ele( `Shell` )->ele( `Page`
+              )->a( n = `title`          v = `abap2UI5 - Smart Controls - Page Variant`
+              )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
+              )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) ).
 
       " Page variant: one SmartVariantManagement in front of the page owns the
       " persistency (PageVariantPKey) and both smart controls register with it
       " through their smartvariant association, each contributing its own
       " persistencykey. Everything below is metadata-driven - no model data.
-      page->hbox(
-          )->smart_variant_management(
-              id             = `pageVariantId`
-              persistencykey = `PageVariantPKey` ).
+      page->ele( `HBox` )->tag( n = `SmartVariantManagement` ns = `smartVariantManagement`
+              )->a( n = `id`             v = `pageVariantId`
+              )->a( n = `persistencyKey` v = `PageVariantPKey` ).
 
       " The tutorial's onFiltersChanged handler is not published, so there is no
       " original body to rebuild - but the original IS a controller function, i.e.
       " client-side. The wire therefore stays roundtrip-free (control_global
       " MESSAGE_TOAST): a backend round-trip fired in the middle of the variant /
       " filter handshake is exactly what a smart control does not expect.
-      page->smart_filter_bar(
-          id                     = `smartFilterBar`
-          entityset              = `ProductSet`
-          smartvariant           = `pageVariantId`
-          persistencykey         = `SmartFilterPKey`
-          assignedfilterschanged = client->_event_client(
+      page->ele( n = `SmartFilterBar` ns = `smartFilterBar`
+          )->a( n = `id`                     v = `smartFilterBar`
+          )->a( n = `entitySet`              v = `ProductSet`
+          )->a( n = `persistencyKey`         v = `SmartFilterPKey`
+          )->a( n = `smartVariant`           v = `pageVariantId`
+          )->a( n = `assignedFiltersChanged` v = client->_event_client(
               val   = client->cs_event-control_global
-              t_arg = VALUE #( ( `MESSAGE_TOAST` ) ( `show` ) ( `Assigned filters changed` ) ) )
-          )->_control_configuration(
-              )->control_configuration(
-                  key                           = `Category`
-                  visibleinadvancedarea         = `true`
-                  previnitdatafetchinvalhelpdia = `false` ).
+              t_arg = VALUE #( ( `MESSAGE_TOAST` ) ( `show` ) ( `Assigned filters changed` ) ) ) )->ele( n = `controlConfiguration` ns = `smartFilterBar` 
+                  )->tag( n = `ControlConfiguration` ns = `smartFilterBar`
+                  )->a( n = `key`                                      v = `Category`
+                  )->a( n = `visibleInAdvancedArea`                    v = `true`
+                  )->a( n = `preventInitialDataFetchInValueHelpDialog` v = `false` ).
 
       " GWSAMPLE_BASIC carries no UI.LineItem annotation, and without one a
       " SmartTable starts with NO columns at all - it renders the "add columns to
       " see the content" placeholder instead of falling back to all metadata
       " fields. The initially visible fields therefore have to be named; the
       " tutorial's own service annotates the four columns it shows.
-      page->smart_table(
-          id                      = `smartTable_ResponsiveTable`
-          smartfilterid           = `smartFilterBar`
-          smartvariant            = `pageVariantId`
-          tabletype               = `ResponsiveTable`
-          editable                = `false`
-          entityset               = `ProductSet`
-          initiallyvisiblefields  = `ProductID,Name,Category,SupplierName,Price`
-          usevariantmanagement    = `true`
-          usetablepersonalisation = `true`
-          header                  = `Products`
-          showrowcount            = `true`
-          enableexport            = `false`
-          enableautobinding       = `true`
-          persistencykey          = `SmartTablePKey` ).
+      page->ele( n = `SmartTable` ns = `smartTable`
+          )->a( n = `id`                      v = `smartTable_ResponsiveTable`
+          )->a( n = `smartFilterId`           v = `smartFilterBar`
+          )->a( n = `tableType`               v = `ResponsiveTable`
+          )->a( n = `editable`                v = `false`
+          )->a( n = `initiallyVisibleFields`  v = `ProductID,Name,Category,SupplierName,Price`
+          )->a( n = `entitySet`               v = `ProductSet`
+          )->a( n = `useVariantManagement`    v = `true`
+          )->a( n = `useTablePersonalisation` v = `true`
+          )->a( n = `header`                  v = `Products`
+          )->a( n = `showRowCount`            v = `true`
+          )->a( n = `enableExport`            v = `false`
+          )->a( n = `enableAutoBinding`       v = `true`
+          )->a( n = `persistencyKey`          v = `SmartTablePKey`
+          )->a( n = `smartVariant`            v = `pageVariantId` ).
 
       client->view_display( val                       = view->stringify( )
                             switch_default_model_path = c_odata_service ).

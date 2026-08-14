@@ -180,99 +180,102 @@ CLASS z2ui5_cl_smps_app_489 IMPLEMENTATION.
       WHERE icf_name = `Z2UI5_APC_SMP_2`
       INTO @DATA(icfactive).
 
-    DATA(view) = z2ui5_cl_xml_view=>factory( ).
-    DATA(page) = view->shell(
-                    )->page(
-                       title          = `abap2UI5 - Sample: News Feed over WebSocket`
-                       navbuttonpress = client->_event_nav_app_leave( )
-                       shownavbutton  = client->check_app_prev_stack( ) ).
+    DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
+        )->a( n = `displayBlock` v = `true`
+        )->a( n = `height`       v = `100%`
+        )->a( n = `xmlns`        v = `sap.m`
+        )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+        )->a( n = `xmlns:core`   v = `sap.ui.core`
+        )->a( n = `xmlns:form`   v = `sap.ui.layout.form`
+        )->a( n = `xmlns:tnt`    v = `sap.tnt` ).
+    DATA(page) = view->ele( `Shell` )->ele( `Page`
+                        )->a( n = `title`          v = `abap2UI5 - Sample: News Feed over WebSocket`
+                        )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
+                        )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) ).
 
-    page->header_content(
-       )->button( id = `button_hint_id`
-           icon      = `sap-icon://hint`
-           tooltip   = `Sample information`
-           press     = client->_event( `CLICK_HINT_ICON` ) ).
+    page->ele( `headerContent` )->tag( `Button`
+           )->a( n = `press`   v = client->_event( `CLICK_HINT_ICON` )
+           )->a( n = `icon`    v = `sap-icon://hint`
+           )->a( n = `id`      v = `button_hint_id`
+           )->a( n = `tooltip` v = `Sample information` ).
 
-    page->message_strip(
-        text     = `This sample consumes an ABAP Push Channel without a line of JavaScript: the z2ui5:Websocket ` &&
+    page->tag( `MessageStrip`
+        )->a( n = `text`     v = `This sample consumes an ABAP Push Channel without a line of JavaScript: the z2ui5:Websocket ` &&
                    `custom control keeps the connection open, reports every message through its 'received' event ` &&
                    `and a failure through 'error'; publishing goes back into the AMC channel from ABAP. The ` &&
                    `button in the footer opens and closes the connection.`
-        type     = `Information`
-        showicon = abap_true
-        class    = `sapUiSmallMargin` ).
+        )->a( n = `type`     v = `Information`
+        )->a( n = `showIcon` b = abap_true
+        )->a( n = `class`    v = `sapUiSmallMargin` ).
 
     IF icfactive = abap_false.
-      page->message_strip(
-          text    = `ICF Service '/sap/bc/apc/sap/z2ui5_apc_smp_2' is not active. WebSocket communication will not work. Please activate the ICF Service in transaction SICF.`
-          type    = `Warning`
-          visible = abap_true ).
+      page->tag( `MessageStrip`
+          )->a( n = `text`    v = `ICF Service '/sap/bc/apc/sap/z2ui5_apc_smp_2' is not active. WebSocket communication will not work. Please activate the ICF Service in transaction SICF.`
+          )->a( n = `type`    v = `Warning`
+          )->a( n = `visible` b = abap_true ).
     ENDIF.
 
     " The connection itself: an invisible control that writes each inbound
     " message into WS_MESSAGE and raises WS_RECEIVED so the app can process
     " it. Built generically rather than through _z2ui5( )->websocket( ),
     " because that builder method predates the control's error event.
-    page->_generic(
-        name   = `Websocket`
-        ns     = `z2ui5`
-        t_prop = VALUE #(
-            ( n = `path`        v = `/sap/bc/apc/sap/z2ui5_apc_smp_2` )
-            ( n = `value`       v = client->_bind( ws_message ) )
-            ( n = `checkActive` v = client->_bind( ws_active ) )
-            ( n = `received`    v = client->_event( `WS_RECEIVED` ) )
-            ( n = `error`       v = client->_event(
+    page->ele( n = `Websocket` ns = `z2ui5`
+        )->a( n = `path`        v = `/sap/bc/apc/sap/z2ui5_apc_smp_2`
+        )->a( n = `value`       v = client->_bind( ws_message )
+        )->a( n = `checkActive` v = client->_bind( ws_active )
+        )->a( n = `received`    v = client->_event( `WS_RECEIVED` )
+        )->a( n = `error`       v = client->_event(
                                         val   = `WS_ERROR`
                                         t_arg = VALUE #( ( `${$parameters>/code}` )
-                                                         ( `${$parameters>/message}` ) ) ) ) ) ).
+                                                         ( `${$parameters>/message}` ) ) ) ).
 
-    DATA(form) = page->simple_form( editable = abap_true
-                                    title    = `Publish news`
-                                    class    = `sapUiTinyMarginBottom`
-                    )->content( `form` ).
+    DATA(form) = page->ele( n = `SimpleForm` ns = `form`
+        )->a( n = `title`    v = `Publish news`
+        )->a( n = `class`    v = `sapUiTinyMarginBottom`
+        )->a( n = `editable` b = abap_true )->ele( n = `content` ns = `form` ).
 
     " Publishing while disconnected would work - it goes into the channel
     " from ABAP - but the app would not see its own news come back.
-    form->feed_input(
-        value   = client->_bind( news_input )
-        enabled = client->_bind( ws_active )
-        post    = client->_event( `POST` ) ).
+    form->ele( `FeedInput`
+        )->a( n = `enabled` v = client->_bind( ws_active )
+        )->a( n = `value`   v = client->_bind( news_input )
+        )->a( n = `post`    v = client->_event( `POST` ) ).
 
-    form->label( `Author`
-       )->input( value       = client->_bind( author_input )
-                 placeholder = `Anonymous` ).
+    form->tag( `Label`
+        )->a( n = `text` v = `Author` )->tag( `Input`
+           )->a( n = `placeholder` v = `Anonymous`
+           )->a( n = `value`       v = client->_bind( author_input ) ).
 
-    page->list(
-              headertext = `News`
-              items      = client->_bind( t_news )
-         )->feed_list_item(
-              sender   = `{AUTHOR}`
-              text     = `{TEXT}`
-              showicon = abap_false ).
+    page->ele( `List`
+        )->a( n = `headerText` v = `News`
+        )->a( n = `items`      v = client->_bind( t_news ) )->ele( `FeedListItem`
+             )->a( n = `sender`   v = `{AUTHOR}`
+             )->a( n = `showIcon` b = abap_false
+             )->a( n = `text`     v = `{TEXT}` ).
 
-    DATA(footer) = page->footer( )->overflow_toolbar( ).
-    footer->info_label(
-        text        = client->_bind( connections )
-        colorscheme = `7`
-        icon        = `sap-icon://connected` ).
+    DATA(footer) = page->ele( `footer` )->ele( `OverflowToolbar` ).
+    footer->ele( n = `InfoLabel` ns = `tnt`
+        )->a( n = `text`        v = client->_bind( connections )
+        )->a( n = `colorScheme` v = `7`
+        )->a( n = `icon`        v = `sap-icon://connected` ).
 
     " Bound to the control's checkActive, so pressing it opens or
     " closes the connection in the browser right away; the roundtrip only
     " brings the counter and the label up to date.
-    footer->toggle_button(
-        text    = client->_bind( ws_status )
-        icon    = `sap-icon://connected`
-        pressed = client->_bind( ws_active )
-        press   = client->_event( `TOGGLE_CONNECTION` ) ).
+    footer->tag( `ToggleButton`
+        )->a( n = `press`   v = client->_event( `TOGGLE_CONNECTION` )
+        )->a( n = `text`    v = client->_bind( ws_status )
+        )->a( n = `icon`    v = `sap-icon://connected`
+        )->a( n = `pressed` v = client->_bind( ws_active ) ).
 
     " eraser, not clear-all: the clear-all glyph reached the SAP icon font
     " after 1.71, so on the oldest release abap2UI5 supports the button
     " renders with no icon at all - UI5 says nothing about a name it does
     " not know, it simply draws nothing
-    footer->toolbar_spacer( )->button(
-        text  = `Clear`
-        icon  = `sap-icon://eraser`
-        press = client->_event( `CLEAR` ) ).
+    footer->tag( `ToolbarSpacer` )->tag( `Button`
+        )->a( n = `press` v = client->_event( `CLEAR` )
+        )->a( n = `text`  v = `Clear`
+        )->a( n = `icon`  v = `sap-icon://eraser` ).
 
     client->view_display( view->stringify( ) ).
 
@@ -281,12 +284,17 @@ CLASS z2ui5_cl_smps_app_489 IMPLEMENTATION.
 
   METHOD popover_display.
 
-    DATA(view) = z2ui5_cl_xml_view=>factory_popup( ).
-    view->quick_view( placement = `Bottom`
-                      width     = `auto`
-              )->quick_view_page( pageid      = `sampleInformationId`
-                                  header      = `Sample information`
-                                  description = `This sample shows how to consume APC messages over websocket. Open the app multiple times and post something.` ).
+    DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `FragmentDefinition` ns = `core`
+        )->a( n = `xmlns`      v = `sap.m`
+        )->a( n = `xmlns:core` v = `sap.ui.core`
+        )->a( n = `xmlns:form` v = `sap.ui.layout.form`
+        )->a( n = `xmlns:tnt`  v = `sap.tnt` ).
+    view->ele( `QuickView`
+        )->a( n = `placement` v = `Bottom`
+        )->a( n = `width`     v = `auto` )->ele( `QuickViewPage`
+                  )->a( n = `description` v = `This sample shows how to consume APC messages over websocket. Open the app multiple times and post something.`
+                  )->a( n = `header`      v = `Sample information`
+                  )->a( n = `pageId`      v = `sampleInformationId` ).
 
     client->popover_display(
       xml   = view->stringify( )

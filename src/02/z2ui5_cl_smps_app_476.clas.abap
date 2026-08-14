@@ -23,75 +23,51 @@ CLASS z2ui5_cl_smps_app_476 IMPLEMENTATION.
 
     IF client->check_on_init( ).
 
-      DATA(view) = z2ui5_cl_xml_view=>factory( ).
+      DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
+          )->a( n = `displayBlock` v = `true`
+          )->a( n = `height`       v = `100%`
+          )->a( n = `xmlns`        v = `sap.m`
+          )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+          )->a( n = `xmlns:core`   v = `sap.ui.core` ).
 
-      DATA(page) = view->shell(
-          )->page(
-              title          = `abap2UI5 - Smart Controls - SmartForm`
-              navbuttonpress = client->_event_nav_app_leave( )
-              shownavbutton  = client->check_app_prev_stack( ) ).
+      DATA(page) = view->ele( `Shell` )->ele( `Page`
+              )->a( n = `title`          v = `abap2UI5 - Smart Controls - SmartForm`
+              )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
+              )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) ).
 
       " editTogglable renders the display/edit toggle in the form header. The
       " element binding replaces the controller's bindElement( ) - an OData ENTITY
       " path into the service, so there is no client->_bind( ) variable behind it;
       " every SmartField value and the form title {Name} are relative to it.
-      DATA(form) = page->_generic(
-          name   = `SmartForm`
-          ns     = `smartForm`
-          t_prop = VALUE #( ( n = `id`            v = `smartForm` )
-                            ( n = `editTogglable` v = `true` )
-                            ( n = `title`         v = `{Name}` )
-                            ( n = `flexEnabled`   v = `false` )
-                            ( n = `binding`       v = `{/ProductSet('AR-FB-1000')}` ) ) ).
+      DATA(form) = page->ele( n = `SmartForm` ns = `smartForm`
+          )->a( n = `id`            v = `smartForm`
+          )->a( n = `editTogglable` v = `true`
+          )->a( n = `title`         v = `{Name}`
+          )->a( n = `flexEnabled`   v = `false`
+          )->a( n = `binding`       v = `{/ProductSet('AR-FB-1000')}` ).
 
-      DATA(group) = form->_generic(
-          name   = `Group`
-          ns     = `smartForm`
-          t_prop = VALUE #( ( n = `label` v = `Product` ) ) ).
+      DATA(group) = form->ele( n = `Group` ns = `smartForm`
+          )->a( n = `label` v = `Product` ).
 
-      group->_generic( name = `GroupElement` ns = `smartForm`
-          )->_generic(
-              name   = `SmartField`
-              ns     = `smartField`
-              t_prop = VALUE #( ( n = `value` v = `{ProductID}` ) ) ).
+      group->ele( n = `GroupElement` ns = `smartForm` )->ele( n = `SmartField` ns = `smartField`
+              )->a( n = `value` v = `{ProductID}` ).
 
-      group->_generic( name = `GroupElement` ns = `smartForm`
-          )->_generic(
-              name   = `SmartField`
-              ns     = `smartField`
-              t_prop = VALUE #( ( n = `value` v = `{Name}` ) ) ).
+      group->ele( n = `GroupElement` ns = `smartForm` )->ele( n = `SmartField` ns = `smartField`
+              )->a( n = `value` v = `{Name}` ).
 
       " elementForLabel picks the second field of the group element as the one the
       " group label belongs to (0-based, so Description)
-      group->_generic(
-          name   = `GroupElement`
-          ns     = `smartForm`
-          t_prop = VALUE #( ( n = `elementForLabel` v = `1` ) )
-          )->_generic(
-              name   = `SmartField`
-              ns     = `smartField`
-              t_prop = VALUE #( ( n = `value` v = `{Category}` ) )
-          )->get_parent(
-          )->_generic(
-              name   = `SmartField`
-              ns     = `smartField`
-              t_prop = VALUE #( ( n = `value` v = `{Description}` ) ) ).
+      group->ele( n = `GroupElement` ns = `smartForm`
+          )->a( n = `elementForLabel` v = `1` )->ele( n = `SmartField` ns = `smartField`
+              )->a( n = `value` v = `{Category}` )->end( )->ele( n = `SmartField` ns = `smartField`
+              )->a( n = `value` v = `{Description}` ).
 
-      group->_generic( name = `GroupElement` ns = `smartForm`
-          )->_generic(
-              name   = `SmartField`
-              ns     = `smartField`
-              t_prop = VALUE #( ( n = `value` v = `{Price}` ) ) ).
+      group->ele( n = `GroupElement` ns = `smartForm` )->ele( n = `SmartField` ns = `smartField`
+              )->a( n = `value` v = `{Price}` ).
 
-      form->_generic(
-          name   = `Group`
-          ns     = `smartForm`
-          t_prop = VALUE #( ( n = `label` v = `Supplier` ) )
-          )->_generic( name = `GroupElement` ns = `smartForm`
-              )->_generic(
-                  name   = `SmartField`
-                  ns     = `smartField`
-                  t_prop = VALUE #( ( n = `value` v = `{SupplierName}` ) ) ).
+      form->ele( n = `Group` ns = `smartForm`
+          )->a( n = `label` v = `Supplier` )->ele( n = `GroupElement` ns = `smartForm` )->ele( n = `SmartField` ns = `smartField`
+                  )->a( n = `value` v = `{SupplierName}` ).
 
       client->view_display( val                       = view->stringify( )
                             switch_default_model_path = c_odata_service ).

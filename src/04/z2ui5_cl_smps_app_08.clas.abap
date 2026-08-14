@@ -128,35 +128,38 @@ CLASS z2ui5_cl_smps_app_08 IMPLEMENTATION.
 
   METHOD view_display.
 
-    DATA(view) = z2ui5_cl_xml_view=>factory( ).
-    DATA(page) = view->shell(
-        )->page(
-            title          = `abap2UI5 - EML - 08 Change and Save a Draft`
-            navbuttonpress = client->_event_nav_app_leave( )
-            shownavbutton  = client->check_app_prev_stack( ) ).
+    DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
+        )->a( n = `displayBlock` v = `true`
+        )->a( n = `height`       v = `100%`
+        )->a( n = `xmlns`        v = `sap.m`
+        )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+        )->a( n = `xmlns:core`   v = `sap.ui.core` ).
+    DATA(page) = view->ele( `Shell` )->ele( `Page`
+            )->a( n = `title`          v = `abap2UI5 - EML - 08 Change and Save a Draft`
+            )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
+            )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) ).
 
-    page->message_strip(
-        text = `Only travels that already have a draft show up here - create one with the Enter Draft Mode app.`
-        type = `Information` ).
+    page->tag( `MessageStrip`
+        )->a( n = `text` v = `Only travels that already have a draft show up here - create one with the Enter Draft Mode app.`
+        )->a( n = `type` v = `Information` ).
 
-    DATA(table) = page->table( client->_bind( t_drafts ) ).
+    DATA(table) = page->ele( `Table`
+        )->a( n = `items` v = client->_bind( t_drafts ) ).
 
-    table->header_toolbar( )->toolbar(
-        )->title( `UPDATE ... WITH %is_draft = mk-on` ).
+    table->ele( `headerToolbar` )->ele( `Toolbar` )->tag( `Title`
+            )->a( n = `text` v = `UPDATE ... WITH %is_draft = mk-on` ).
 
-    table->columns(
-        )->column( )->text( `ID` )->get_parent(
-        )->column( )->text( `Description (draft)` )->get_parent(
-        )->column( )->text( `` ).
+    table->ele( `columns` )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `ID` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `Description (draft)` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `` ).
 
-    table->items( )->column_list_item(
-        )->cells(
-            )->text( `{TRAVEL_ID}`
-            )->input( `{DESCRIPTION}`
-            )->button(
-                text  = `Save Draft`
-                press = client->_event( val   = `SAVE`
-                                        t_arg = VALUE #( ( `${TRAVEL_UUID}` ) ) ) ).
+    table->ele( `items` )->ele( `ColumnListItem` )->ele( `cells` )->tag( `Text`
+                )->a( n = `text` v = `{TRAVEL_ID}` )->tag( `Input`
+                )->a( n = `value` v = `{DESCRIPTION}` )->tag( `Button`
+                )->a( n = `press` v = client->_event( val   = `SAVE`
+                                        t_arg = VALUE #( ( `${TRAVEL_UUID}` ) ) )
+                )->a( n = `text`  v = `Save Draft` ).
 
     client->view_display( view->stringify( ) ).
 

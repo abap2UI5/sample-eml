@@ -107,52 +107,46 @@ CLASS z2ui5_cl_smps_app_01 IMPLEMENTATION.
 
   METHOD view_display.
 
-    DATA(view) = z2ui5_cl_xml_view=>factory( ).
-    view->shell(
-        )->page(
-            title          = `abap2UI5 - EML - 01 Read Travel`
-            navbuttonpress = client->_event_nav_app_leave( )
-            shownavbutton  = client->check_app_prev_stack( )
-            )->simple_form(
-                title    = `READ ENTITIES OF Z2UI5_R_SMPS_TRV`
-                editable = abap_true
-                )->content( `form`
-                )->label( `Travel ID`
-                )->input(
-                    value       = client->_bind( travel_id )
-                    placeholder = `No travel in the table - press Regenerate Demo Data in the overview`
-                )->button(
-                    text  = `Read`
-                    press = client->_event( `READ` )
-                    type  = `Emphasized`
-                )->label( `Agency`
-                )->input(
-                    value   = client->_bind( s_travel-agency_id )
-                    enabled = abap_false
-                )->label( `Customer`
-                )->input(
-                    value   = client->_bind( s_travel-customer_id )
-                    enabled = abap_false
-                )->label( `Begin Date`
-                )->input(
-                    value   = client->_bind( s_travel-begin_date )
-                    enabled = abap_false
-                )->label( `End Date`
-                )->input(
-                    value   = client->_bind( s_travel-end_date )
-                    enabled = abap_false
-                )->label( `Total Price`
-                )->input(
-                    value   = client->_bind( s_travel-total_price )
-                    enabled = abap_false
-                )->label( `Status`
-                )->input(
-                    value   = client->_bind( s_travel-overall_status )
-                    enabled = abap_false
-                )->label( `Description`
-                )->input(
-                    value   = client->_bind( s_travel-description )
-                    enabled = abap_false ).
+    DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
+        )->a( n = `displayBlock` v = `true`
+        )->a( n = `height`       v = `100%`
+        )->a( n = `xmlns`        v = `sap.m`
+        )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+        )->a( n = `xmlns:core`   v = `sap.ui.core`
+        )->a( n = `xmlns:form`   v = `sap.ui.layout.form` ).
+    view->ele( `Shell` )->ele( `Page`
+            )->a( n = `title`          v = `abap2UI5 - EML - 01 Read Travel`
+            )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
+            )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) )->ele( n = `SimpleForm` ns = `form`
+                )->a( n = `title`    v = `READ ENTITIES OF Z2UI5_R_SMPS_TRV`
+                )->a( n = `editable` b = abap_true )->ele( n = `content` ns = `form` )->tag( `Label`
+                    )->a( n = `text` v = `Travel ID` )->tag( `Input`
+                    )->a( n = `placeholder` v = `No travel in the table - press Regenerate Demo Data in the overview`
+                    )->a( n = `value`       v = client->_bind( travel_id ) )->tag( `Button`
+                    )->a( n = `press` v = client->_event( `READ` )
+                    )->a( n = `text`  v = `Read`
+                    )->a( n = `type`  v = `Emphasized` )->tag( `Label`
+                    )->a( n = `text` v = `Agency` )->tag( `Input`
+                    )->a( n = `enabled` b = abap_false
+                    )->a( n = `value`   v = client->_bind( s_travel-agency_id ) )->tag( `Label`
+                    )->a( n = `text` v = `Customer` )->tag( `Input`
+                    )->a( n = `enabled` b = abap_false
+                    )->a( n = `value`   v = client->_bind( s_travel-customer_id ) )->tag( `Label`
+                    )->a( n = `text` v = `Begin Date` )->tag( `Input`
+                    )->a( n = `enabled` b = abap_false
+                    )->a( n = `value`   v = client->_bind( s_travel-begin_date ) )->tag( `Label`
+                    )->a( n = `text` v = `End Date` )->tag( `Input`
+                    )->a( n = `enabled` b = abap_false
+                    )->a( n = `value`   v = client->_bind( s_travel-end_date ) )->tag( `Label`
+                    )->a( n = `text` v = `Total Price` )->tag( `Input`
+                    )->a( n = `enabled` b = abap_false
+                    )->a( n = `value`   v = client->_bind( s_travel-total_price ) )->tag( `Label`
+                    )->a( n = `text` v = `Status` )->tag( `Input`
+                    )->a( n = `enabled` b = abap_false
+                    )->a( n = `value`   v = client->_bind( s_travel-overall_status ) )->tag( `Label`
+                    )->a( n = `text` v = `Description` )->tag( `Input`
+                    )->a( n = `enabled` b = abap_false
+                    )->a( n = `value`   v = client->_bind( s_travel-description ) ).
     client->view_display( view->stringify( ) ).
 
   ENDMETHOD.

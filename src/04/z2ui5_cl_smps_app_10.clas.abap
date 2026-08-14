@@ -345,55 +345,51 @@ CLASS z2ui5_cl_smps_app_10 IMPLEMENTATION.
 
   METHOD view_display.
 
-    DATA(view) = z2ui5_cl_xml_view=>factory( ).
-    DATA(page) = view->shell(
-        )->page(
-            title          = `abap2UI5 - EML - 10 Travels with Draft Handling`
-            navbuttonpress = client->_event_nav_app_leave( )
-            shownavbutton  = client->check_app_prev_stack( ) ).
+    DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
+        )->a( n = `displayBlock` v = `true`
+        )->a( n = `height`       v = `100%`
+        )->a( n = `xmlns`        v = `sap.m`
+        )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+        )->a( n = `xmlns:core`   v = `sap.ui.core`
+        )->a( n = `xmlns:form`   v = `sap.ui.layout.form` ).
+    DATA(page) = view->ele( `Shell` )->ele( `Page`
+            )->a( n = `title`          v = `abap2UI5 - EML - 10 Travels with Draft Handling`
+            )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
+            )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) ).
 
-    DATA(table) = page->table( client->_bind( t_travels ) ).
-    table->header_toolbar(
-        )->toolbar(
-            )->title( `Travels (Z2UI5_R_SMPS_TRD)`
-            )->toolbar_spacer(
-            )->button(
-                text  = `Generate Demo Data`
-                icon  = `sap-icon://add`
-                press = client->_event( `GENERATE` )
-            )->button(
-                icon  = `sap-icon://refresh`
-                press = client->_event( `REFRESH` ) ).
+    DATA(table) = page->ele( `Table`
+        )->a( n = `items` v = client->_bind( t_travels ) ).
+    table->ele( `headerToolbar` )->ele( `Toolbar` )->tag( `Title`
+                )->a( n = `text` v = `Travels (Z2UI5_R_SMPS_TRD)` )->tag( `ToolbarSpacer` )->tag( `Button`
+                )->a( n = `press` v = client->_event( `GENERATE` )
+                )->a( n = `text`  v = `Generate Demo Data`
+                )->a( n = `icon`  v = `sap-icon://add` )->tag( `Button`
+                )->a( n = `press` v = client->_event( `REFRESH` )
+                )->a( n = `icon`  v = `sap-icon://refresh` ).
 
-    table->columns(
-        )->column( )->text( `ID` )->get_parent(
-        )->column( )->text( `Customer` )->get_parent(
-        )->column( )->text( `Begin Date` )->get_parent(
-        )->column( )->text( `End Date` )->get_parent(
-        )->column( )->text( `Total Price` )->get_parent(
-        )->column( )->text( `Status` )->get_parent(
-        )->column( )->text( `Draft` )->get_parent(
-        )->column( )->text( `Actions` ).
+    table->ele( `columns` )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `ID` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `Customer` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `Begin Date` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `End Date` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `Total Price` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `Status` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `Draft` )->end( )->ele( `Column` )->tag( `Text`
+            )->a( n = `text` v = `Actions` ).
 
-    table->items( )->column_list_item(
-        )->cells(
-            )->text( `{TRAVEL_ID}`
-            )->text( `{CUSTOMER_ID}`
-            )->text( `{BEGIN_DATE}`
-            )->text( `{END_DATE}`
-            )->text( `{TOTAL_PRICE}`
-            )->object_status(
-                text  = `{OVERALL_STATUS}`
-                state = `{STATUS_STATE}`
-            )->get_parent(
-            )->object_status(
-                text  = `{DRAFT_TEXT}`
-                state = `Warning`
-            )->get_parent(
-            )->button(
-                icon    = `sap-icon://edit`
-                tooltip = `Edit Travel`
-                press   = client->_event( val = `EDIT` t_arg = VALUE #( ( `${TRAVEL_UUID}` ) ) ) ).
+    table->ele( `items` )->ele( `ColumnListItem` )->ele( `cells` )->tag( `Text`
+                )->a( n = `text` v = `{TRAVEL_ID}` )->tag( `Text`
+                )->a( n = `text` v = `{CUSTOMER_ID}` )->tag( `Text`
+                )->a( n = `text` v = `{BEGIN_DATE}` )->tag( `Text`
+                )->a( n = `text` v = `{END_DATE}` )->tag( `Text`
+                )->a( n = `text` v = `{TOTAL_PRICE}` )->ele( `ObjectStatus`
+                )->a( n = `state` v = `{STATUS_STATE}`
+                )->a( n = `text`  v = `{OVERALL_STATUS}` )->end( )->ele( `ObjectStatus`
+                )->a( n = `state` v = `Warning`
+                )->a( n = `text`  v = `{DRAFT_TEXT}` )->end( )->tag( `Button`
+                )->a( n = `press`   v = client->_event( val = `EDIT` t_arg = VALUE #( ( `${TRAVEL_UUID}` ) ) )
+                )->a( n = `icon`    v = `sap-icon://edit`
+                )->a( n = `tooltip` v = `Edit Travel` ).
 
     client->view_display( view->stringify( ) ).
 
@@ -402,47 +398,44 @@ CLASS z2ui5_cl_smps_app_10 IMPLEMENTATION.
 
   METHOD popup_edit_display.
 
-    DATA(popup) = z2ui5_cl_xml_view=>factory_popup( ).
-    DATA(dialog) = popup->dialog(
-        title        = |Edit Travel { s_draft-travel_id } (Draft)|
-        contentwidth = `30rem` ).
+    DATA(popup) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `FragmentDefinition` ns = `core`
+        )->a( n = `xmlns`      v = `sap.m`
+        )->a( n = `xmlns:core` v = `sap.ui.core`
+        )->a( n = `xmlns:form` v = `sap.ui.layout.form` ).
+    DATA(dialog) = popup->ele( `Dialog`
+        )->a( n = `title`        v = |Edit Travel { s_draft-travel_id } (Draft)|
+        )->a( n = `contentWidth` v = `30rem` ).
 
-    dialog->simple_form( editable = abap_true
-        )->content( `form`
-        )->label( `Agency ID`
-        )->input( client->_bind( s_draft-agency_id )
-        )->label( `Customer ID`
-        )->input( client->_bind( s_draft-customer_id )
-        )->label( `Begin Date`
-        )->date_picker(
-            value       = client->_bind( s_draft-begin_date )
-            valueformat = `yyyyMMdd`
-        )->label( `End Date`
-        )->date_picker(
-            value       = client->_bind( s_draft-end_date )
-            valueformat = `yyyyMMdd`
-        )->label( `Booking Fee`
-        )->input( client->_bind( s_draft-booking_fee )
-        )->label( `Currency`
-        )->input( client->_bind( s_draft-currency )
-        )->label( `Description`
-        )->input( client->_bind( s_draft-description ) ).
+    dialog->ele( n = `SimpleForm` ns = `form`
+        )->a( n = `editable` b = abap_true )->ele( n = `content` ns = `form` )->tag( `Label`
+            )->a( n = `text` v = `Agency ID` )->tag( `Input`
+            )->a( n = `value` v = client->_bind( s_draft-agency_id ) )->tag( `Label`
+            )->a( n = `text` v = `Customer ID` )->tag( `Input`
+            )->a( n = `value` v = client->_bind( s_draft-customer_id ) )->tag( `Label`
+            )->a( n = `text` v = `Begin Date` )->tag( `DatePicker`
+            )->a( n = `value`       v = client->_bind( s_draft-begin_date )
+            )->a( n = `valueFormat` v = `yyyyMMdd` )->tag( `Label`
+            )->a( n = `text` v = `End Date` )->tag( `DatePicker`
+            )->a( n = `value`       v = client->_bind( s_draft-end_date )
+            )->a( n = `valueFormat` v = `yyyyMMdd` )->tag( `Label`
+            )->a( n = `text` v = `Booking Fee` )->tag( `Input`
+            )->a( n = `value` v = client->_bind( s_draft-booking_fee ) )->tag( `Label`
+            )->a( n = `text` v = `Currency` )->tag( `Input`
+            )->a( n = `value` v = client->_bind( s_draft-currency ) )->tag( `Label`
+            )->a( n = `text` v = `Description` )->tag( `Input`
+            )->a( n = `value` v = client->_bind( s_draft-description ) ).
 
-    dialog->buttons(
-        )->button(
-            text  = `Activate`
-            press = client->_event( `ACTIVATE` )
-            type  = `Emphasized`
-        )->button(
-            text  = `Save Draft`
-            press = client->_event( `SAVE_DRAFT` )
-        )->button(
-            text  = `Discard Draft`
-            press = client->_event( `DISCARD` )
-            type  = `Reject`
-        )->button(
-            text  = `Close`
-            press = client->_event( `POPUP_CLOSE` ) ).
+    dialog->ele( `buttons` )->tag( `Button`
+            )->a( n = `press` v = client->_event( `ACTIVATE` )
+            )->a( n = `text`  v = `Activate`
+            )->a( n = `type`  v = `Emphasized` )->tag( `Button`
+            )->a( n = `press` v = client->_event( `SAVE_DRAFT` )
+            )->a( n = `text`  v = `Save Draft` )->tag( `Button`
+            )->a( n = `press` v = client->_event( `DISCARD` )
+            )->a( n = `text`  v = `Discard Draft`
+            )->a( n = `type`  v = `Reject` )->tag( `Button`
+            )->a( n = `press` v = client->_event( `POPUP_CLOSE` )
+            )->a( n = `text`  v = `Close` ).
 
     client->popup_display( popup->stringify( ) ).
 

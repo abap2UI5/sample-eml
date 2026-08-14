@@ -21,44 +21,48 @@ CLASS z2ui5_cl_smps_app_477 IMPLEMENTATION.
 
     IF client->check_on_init( ).
 
-      DATA(view) = z2ui5_cl_xml_view=>factory( ).
+      DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
+          )->a( n = `displayBlock`         v = `true`
+          )->a( n = `height`               v = `100%`
+          )->a( n = `xmlns`                v = `sap.m`
+          )->a( n = `xmlns:mvc`            v = `sap.ui.core.mvc`
+          )->a( n = `xmlns:core`           v = `sap.ui.core`
+          )->a( n = `xmlns:smartFilterBar` v = `sap.ui.comp.smartfilterbar`
+          )->a( n = `xmlns:smartTable`     v = `sap.ui.comp.smarttable` ).
 
-      DATA(page) = view->shell(
-          )->page(
-              title          = `abap2UI5 - Smart Controls - SmartTable`
-              navbuttonpress = client->_event_nav_app_leave( )
-              shownavbutton  = client->check_app_prev_stack( ) ).
+      DATA(page) = view->ele( `Shell` )->ele( `Page`
+              )->a( n = `title`          v = `abap2UI5 - Smart Controls - SmartTable`
+              )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
+              )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) ).
 
       " No model data and no event wiring: the SmartTable binds itself
       " (enableautobinding) and reads the SmartFilterBar's conditions through the
       " smartfilterid association - the whole app is the view plus the service.
-      page->smart_filter_bar(
-          id        = `smartFilterBar`
-          entityset = `ProductSet`
-          )->_control_configuration(
-              )->control_configuration(
-                  key                           = `Category`
-                  visibleinadvancedarea         = `true`
-                  previnitdatafetchinvalhelpdia = `false` ).
+      page->ele( n = `SmartFilterBar` ns = `smartFilterBar`
+          )->a( n = `id`        v = `smartFilterBar`
+          )->a( n = `entitySet` v = `ProductSet` )->ele( n = `controlConfiguration` ns = `smartFilterBar` )->tag( n = `ControlConfiguration` ns = `smartFilterBar`
+                  )->a( n = `key`                                      v = `Category`
+                  )->a( n = `visibleInAdvancedArea`                    v = `true`
+                  )->a( n = `preventInitialDataFetchInValueHelpDialog` v = `false` ).
 
       " GWSAMPLE_BASIC carries no UI.LineItem annotation, and without one a
       " SmartTable starts with NO columns at all - it renders the "add columns to
       " see the content" placeholder instead of falling back to all metadata
       " fields. The initially visible fields therefore have to be named; the
       " tutorial's own service annotates the four columns it shows.
-      page->smart_table(
-          id                      = `smartTable_ResponsiveTable`
-          smartfilterid           = `smartFilterBar`
-          tabletype               = `ResponsiveTable`
-          editable                = `false`
-          entityset               = `ProductSet`
-          initiallyvisiblefields  = `ProductID,Name,Category,SupplierName,Price`
-          usevariantmanagement    = `false`
-          usetablepersonalisation = `false`
-          header                  = `Products`
-          showrowcount            = `true`
-          enableexport            = `false`
-          enableautobinding       = `true` ).
+      page->ele( n = `SmartTable` ns = `smartTable`
+          )->a( n = `id`                      v = `smartTable_ResponsiveTable`
+          )->a( n = `smartFilterId`           v = `smartFilterBar`
+          )->a( n = `tableType`               v = `ResponsiveTable`
+          )->a( n = `editable`                v = `false`
+          )->a( n = `initiallyVisibleFields`  v = `ProductID,Name,Category,SupplierName,Price`
+          )->a( n = `entitySet`               v = `ProductSet`
+          )->a( n = `useVariantManagement`    v = `false`
+          )->a( n = `useTablePersonalisation` v = `false`
+          )->a( n = `header`                  v = `Products`
+          )->a( n = `showRowCount`            v = `true`
+          )->a( n = `enableExport`            v = `false`
+          )->a( n = `enableAutoBinding`       v = `true` ).
 
       client->view_display( val                       = view->stringify( )
                             switch_default_model_path = c_odata_service ).
