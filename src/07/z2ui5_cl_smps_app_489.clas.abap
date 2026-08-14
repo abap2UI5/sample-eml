@@ -81,7 +81,6 @@ CLASS z2ui5_cl_smps_app_489 IMPLEMENTATION.
     " The view is displayed once, on init - the Websocket control lives in
     " it and must not be torn down and reconnected on every message, so
     " every event only refreshes the model.
-    client->view_model_update( ).
 
   ENDMETHOD.
 
@@ -96,6 +95,7 @@ CLASS z2ui5_cl_smps_app_489 IMPLEMENTATION.
         " Published from ABAP straight into the AMC channel - every APC
         " connection bound to it, this app's own included, receives it back
         " through the Websocket control.
+        " abap2ui5lint-disable-next-line non-released-api -- the vendored ajson copy: no released JSON writer exists, and a sample class installed on its own cannot ship its own
         z2ui5_cl_smps_app_489_ws=>send( z2ui5_cl_ajson=>create_empty(
             )->set(
                 iv_path         = `/`
@@ -126,6 +126,7 @@ CLASS z2ui5_cl_smps_app_489 IMPLEMENTATION.
               )->to_abap_corresponding_only(
               )->to_abap( IMPORTING ev_container = s_news ).
             INSERT s_news INTO TABLE t_news.
+          " abap2ui5lint-disable-next-line non-released-api -- the exception of the parse below
           CATCH z2ui5_cx_ajson_error INTO DATA(error).
             client->message_toast_display( error->get_text( ) ).
         ENDTRY.
@@ -258,6 +259,7 @@ CLASS z2ui5_cl_smps_app_489 IMPLEMENTATION.
     footer->ele( n = `InfoLabel` ns = `tnt`
         )->a( n = `text`        v = client->_bind( connections )
         )->a( n = `colorScheme` v = `7`
+        " abap2ui5lint-disable-next-line member-too-new -- sap.tnt.InfoLabel icon is @since 1.74; this package needs 7.40 SP08 and a UI5 with sap.tnt anyway, and the label without its icon would not show what the sample shows
         )->a( n = `icon`        v = `sap-icon://connected` ).
 
     " Bound to the control's checkActive, so pressing it opens or

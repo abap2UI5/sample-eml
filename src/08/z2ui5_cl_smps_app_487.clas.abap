@@ -77,7 +77,7 @@ CLASS z2ui5_cl_smps_app_487 IMPLEMENTATION.
     vbox->tag( `Button`
         )->a( n = `press` v = client->_event( `enter` )
         )->a( n = `text`  v = `submit`
-        )->a( n = `type`  v = `accept` ).
+        )->a( n = `type`  v = `Accept` ).
 
     view->tag( n = `Focus` ns = `z2ui5`
         )->a( n = `focusId` v = `inputApp` ).
@@ -105,7 +105,6 @@ CLASS z2ui5_cl_smps_app_487 IMPLEMENTATION.
         message-text = `That wasn't the magic key`.
       ENDIF.
       magic_key = VALUE #( ).
-      client->view_model_update( ).
     ENDIF.
 
   ENDMETHOD.

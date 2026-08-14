@@ -52,11 +52,9 @@ CLASS z2ui5_cl_smps_app_06 IMPLEMENTATION.
       CASE client->get( )-event.
         WHEN `REFRESH`.
           data_read( ).
-          client->view_model_update( ).
         WHEN `GENERATE`.
           client->message_toast_display( z2ui5_cl_smps_data_trd=>data_reset( ) ).
           data_read( ).
-          client->view_model_update( ).
       ENDCASE.
     ENDIF.
 

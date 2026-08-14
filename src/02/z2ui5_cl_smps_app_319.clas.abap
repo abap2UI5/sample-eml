@@ -202,7 +202,6 @@ CLASS z2ui5_cl_smps_app_319 IMPLEMENTATION.
     CASE m_client->get( )-event.
       WHEN `PRODTYPE_CHANGED` OR `SEARCH`.
         do_search( ).
-        m_client->view_model_update( ).
     ENDCASE.
 
   ENDMETHOD.

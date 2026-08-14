@@ -92,7 +92,6 @@ CLASS z2ui5_cl_smps_app_10 IMPLEMENTATION.
     CASE client->get( )-event.
       WHEN `REFRESH`.
         data_read( ).
-        client->view_model_update( ).
       WHEN `GENERATE`.
         on_event_generate( ).
       WHEN `EDIT`.
@@ -114,7 +113,6 @@ CLASS z2ui5_cl_smps_app_10 IMPLEMENTATION.
 
     client->message_toast_display( z2ui5_cl_smps_data_trd=>data_reset( ) ).
     data_read( ).
-    client->view_model_update( ).
 
   ENDMETHOD.
 
@@ -160,7 +158,6 @@ CLASS z2ui5_cl_smps_app_10 IMPLEMENTATION.
 
       draft_read( uuid ).
       data_read( ).
-      client->view_model_update( ).
       popup_edit_display( ).
 
     ENDIF.
@@ -196,7 +193,6 @@ CLASS z2ui5_cl_smps_app_10 IMPLEMENTATION.
     IF data_save( ) = abap_true.
 
       data_read( ).
-      client->view_model_update( ).
       client->message_toast_display( `Draft saved - the changes are kept even after logoff` ).
 
     ENDIF.
@@ -226,7 +222,6 @@ CLASS z2ui5_cl_smps_app_10 IMPLEMENTATION.
 
       client->popup_destroy( ).
       data_read( ).
-      client->view_model_update( ).
       client->message_toast_display( |Travel { s_draft-travel_id } activated| ).
 
     ENDIF.
@@ -254,7 +249,6 @@ CLASS z2ui5_cl_smps_app_10 IMPLEMENTATION.
 
       client->popup_destroy( ).
       data_read( ).
-      client->view_model_update( ).
       client->message_toast_display( |Draft of travel { s_draft-travel_id } discarded| ).
 
     ENDIF.

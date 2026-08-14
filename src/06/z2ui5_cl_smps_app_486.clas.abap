@@ -99,7 +99,6 @@ CLASS z2ui5_cl_smps_app_486 IMPLEMENTATION.
         client->nav_app_leave( ).
       WHEN `INCREMENT`.
         instance_counter = lcl_static_container=>increment( ).
-        client->view_model_update( ).
       WHEN `END_SESSION`.
         set_session_stateful( client   = client
                               stateful = abap_false ).
@@ -122,7 +121,6 @@ CLASS z2ui5_cl_smps_app_486 IMPLEMENTATION.
     ELSE.
       session_text = `Session OFF (stateless)`.
     ENDIF.
-    client->view_model_update( ).
 
   ENDMETHOD.
 

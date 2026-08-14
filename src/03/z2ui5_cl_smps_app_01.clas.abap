@@ -100,8 +100,6 @@ CLASS z2ui5_cl_smps_app_01 IMPLEMENTATION.
 
     ENDIF.
 
-    client->view_model_update( ).
-
   ENDMETHOD.
 
 

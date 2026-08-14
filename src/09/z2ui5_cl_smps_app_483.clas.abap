@@ -42,7 +42,7 @@ CLASS z2ui5_cl_smps_app_483 IMPLEMENTATION.
 
       page->tag( `MessageStrip`
           )->a( n = `text`     v = `SENDER side of launchpad cross-app navigation: the button navigates to ` &&
-                     `the receiver tile via _event_client( cs_event-cross_app_nav_to_ext ), ` &&
+                     `the receiver tile via follow_up_action( cs_event-cross_app_nav_to_ext ), ` &&
                      `handing over the bound Product and Quantity values as navigation ` &&
                      `parameters - the receiver (z2ui5_cl_smps_app_484) reads them from its ` &&
                      `startup parameters. ` &&
@@ -58,10 +58,10 @@ CLASS z2ui5_cl_smps_app_483 IMPLEMENTATION.
                   )->a( n = `value` v = client->_bind( nav_params-product ) )->tag( `Label`
                   )->a( n = `text` v = `Quantity (sent as navigation parameter)` )->tag( `Input`
                   )->a( n = `value` v = client->_bind( nav_params-quantity ) )->tag( `Button`
-                  )->a( n = `press`   v = client->_event_client( client->cs_event-cross_app_nav_to_prev_app )
+                  )->a( n = `press`   v = client->follow_up_action( client->cs_event-cross_app_nav_to_prev_app )
                   )->a( n = `text`    v = `back to the previous app`
                   )->a( n = `visible` v = client->get( )-check_launchpad_active )->tag( `Button`
-                  )->a( n = `press`   v = client->_event_client(
+                  )->a( n = `press`   v = client->follow_up_action(
                       val   = client->cs_event-cross_app_nav_to_ext
                       t_arg = VALUE #(
                           ( `{ semanticObject: "Z2UI5_CL_LP_SAMPLE_04",  action: "display" }` )

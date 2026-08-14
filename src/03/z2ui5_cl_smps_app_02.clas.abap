@@ -122,7 +122,6 @@ CLASS z2ui5_cl_smps_app_02 IMPLEMENTATION.
     " available in MAPPED, addressed by the %cid sent above
     created_id = |{ s_mapped-travel[ %cid = `CREATE_1` ]-travelid ALPHA = OUT }|.
     client->message_toast_display( |Travel { created_id } created| ).
-    client->view_model_update( ).
 
   ENDMETHOD.
 

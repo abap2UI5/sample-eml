@@ -55,7 +55,6 @@ CLASS z2ui5_cl_smps_app_490 IMPLEMENTATION.
               RETURN.
           ENDCASE.
 
-          client->view_model_update( ).
         CATCH cx_root INTO DATA(lx).
           client->message_box_display( lx ).
       ENDTRY.
@@ -111,7 +110,6 @@ CLASS z2ui5_cl_smps_app_490 IMPLEMENTATION.
               client->nav_app_leave( ).
               RETURN.
           ENDCASE.
-          client->view_model_update( ).
 
         CATCH cx_root INTO lx.
           client->message_box_display( lx ).

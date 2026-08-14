@@ -54,7 +54,7 @@ CLASS z2ui5_cl_smps_app_478 IMPLEMENTATION.
           )->a( n = `entitySet`              v = `ProductSet`
           )->a( n = `persistencyKey`         v = `SmartFilterPKey`
           )->a( n = `smartVariant`           v = `pageVariantId`
-          )->a( n = `assignedFiltersChanged` v = client->_event_client(
+          )->a( n = `assignedFiltersChanged` v = client->follow_up_action(
               val   = client->cs_event-control_global
               t_arg = VALUE #( ( `MESSAGE_TOAST` ) ( `show` ) ( `Assigned filters changed` ) ) ) )->ele( n = `controlConfiguration` ns = `smartFilterBar` 
                   )->tag( n = `ControlConfiguration` ns = `smartFilterBar`

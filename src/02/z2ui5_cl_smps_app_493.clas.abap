@@ -3,8 +3,6 @@ CLASS z2ui5_cl_smps_app_493 DEFINITION PUBLIC.
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
 
-  PROTECTED SECTION.
-
     TYPES:
       BEGIN OF ty_s_product,
         product  TYPE string,
@@ -21,8 +19,13 @@ CLASS z2ui5_cl_smps_app_493 DEFINITION PUBLIC.
         supplier TYPE string,
       END OF ty_s_filter.
 
+    " bound into the view, so both must be PUBLIC: only public attributes are
+    " serialized into the model, and a bound protected one fails the first
+    " roundtrip with BINDING_ERROR
     DATA ms_filter TYPE ty_s_filter.
     DATA mt_result TYPE ty_t_product.
+
+  PROTECTED SECTION.
 
     METHODS data_all
       RETURNING

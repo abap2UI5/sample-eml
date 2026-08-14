@@ -99,7 +99,6 @@ CLASS z2ui5_cl_smps_app_04 IMPLEMENTATION.
     ENDIF.
 
     data_read( ).
-    client->view_model_update( ).
     client->message_toast_display( |Travel { travel_id } deleted| ).
 
   ENDMETHOD.
