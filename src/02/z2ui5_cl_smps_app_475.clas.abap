@@ -22,11 +22,13 @@ CLASS z2ui5_cl_smps_app_475 IMPLEMENTATION.
     IF client->check_on_init( ).
 
       DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
-          )->a( n = `displayBlock` v = `true`
-          )->a( n = `height`       v = `100%`
-          )->a( n = `xmlns`        v = `sap.m`
-          )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
-          )->a( n = `xmlns:core`   v = `sap.ui.core` ).
+          )->a( n = `displayBlock`     v = `true`
+          )->a( n = `height`           v = `100%`
+          )->a( n = `xmlns`            v = `sap.m`
+          )->a( n = `xmlns:mvc`        v = `sap.ui.core.mvc`
+          )->a( n = `xmlns:core`       v = `sap.ui.core`
+          )->a( n = `xmlns:smartField` v = `sap.ui.comp.smartfield`
+          )->a( n = `xmlns:smartForm`  v = `sap.ui.comp.smartform` ).
 
       DATA(page) = view->ele( `Shell` )->ele( `Page`
               )->a( n = `title`          v = `abap2UI5 - Smart Controls - SmartField`

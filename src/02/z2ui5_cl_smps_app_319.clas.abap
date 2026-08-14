@@ -116,7 +116,8 @@ CLASS z2ui5_cl_smps_app_319 IMPLEMENTATION.
         )->a( n = `xmlns`        v = `sap.m`
         )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
         )->a( n = `xmlns:core`   v = `sap.ui.core`
-        )->a( n = `xmlns:smi`    v = `sap.ui.comp.smartmultiinput` ).
+        )->a( n = `xmlns:smi`    v = `sap.ui.comp.smartmultiinput`
+        )->a( n = `xmlns:z2ui5`  v = `z2ui5.cc` ).
 
     DATA(page) = view->ele( `Shell` )->ele( `Page`
         )->a( n = `title`          v = `SmartMultiInput - conditions to ABAP SELECT-OPTIONS`
@@ -124,7 +125,7 @@ CLASS z2ui5_cl_smps_app_319 IMPLEMENTATION.
         )->a( n = `navButtonPress` v = m_client->_event_nav_app_leave( ) ).
 
     page->tag( `MessageStrip`
-        )->a( n = `text`     v = `Open the value help (icon on the right), add one or more conditions on Product Type ` &&
+        )->a( n = `text` v = `Open the value help (icon on the right), add one or more conditions on Product Type ` &&
                    `(contains, between, greater than, exclude ...). Each condition is turned into an ABAP ` &&
                    `SELECT-OPTIONS row and filters the demo product list below.`
         )->a( n = `type`     v = `Information`

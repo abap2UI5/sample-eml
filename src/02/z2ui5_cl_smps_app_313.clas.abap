@@ -30,41 +30,11 @@ CLASS z2ui5_cl_smps_app_313 IMPLEMENTATION.
 
     IF client->check_on_init( ).
 
-*      DATA(view) = z2ui5_cl_xml_view=>factory( ).
-*
-*      DATA(page) = view->shell(
-*          )->page(
-*              title          = `abap2UI5 - Smart Controls with Variants`
-*              navbuttonpress = client->_event_nav_app_leave( )
-*              shownavbutton  = client->check_app_prev_stack( ) ).
-*
-*      page->smart_filter_bar(
-*          id             = `smartFilterBar`
-*          persistencykey = `SmartFilterPKey`
-*          entityset      = `BookingSupplement`
-*        )->_control_configuration(
-*          )->control_configuration(
-*          previnitdatafetchinvalhelpdia = abap_false
-*          visibleinadvancedarea         = abap_true
-*          key                           = `TravelID`
-*        )->get_parent(
-*        )->smart_table(
-*          id                      = `smartFiltertable`
-*          smartfilterid           = `smartFilterBar`
-*          tabletype               = `ResponsiveTable`
-*          editable                = abap_false
-*          initiallyvisiblefields  = `TravelID,BookingID`
-*          entityset               = `BookingSupplement`
-*          usevariantmanagement    = abap_true
-*          useexporttoexcel        = abap_true
-*          usetablepersonalisation = abap_true
-*          header                  = `Test`
-*          showrowcount            = abap_true
-*          enableexport            = abap_false
-*          enableautobinding       = abap_true ).
-*
-*      client->view_display( val                       = view->stringify( )
-*                            switch_default_model_path = `/sap/opu/odata/DMO/API_TRAVEL_U_V2/` ).
+      " An earlier revision of this app ran the same two smart controls against
+      " the BookingSupplement entity of /sap/opu/odata/DMO/API_TRAVEL_U_V2/. It
+      " was kept here commented out and is gone with the move to
+      " z2ui5_cl_ui5_view_builder - the service and entity set are the only part
+      " of it that was not already in the code below.
 
       DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
           )->a( n = `displayBlock`         v = `true`
@@ -83,7 +53,7 @@ CLASS z2ui5_cl_smps_app_313 IMPLEMENTATION.
       page->ele( n = `SmartFilterBar` ns = `smartFilterBar`
           )->a( n = `id`             v = `smartFilterBar`
           )->a( n = `entitySet`      v = `ProductType_2`
-          )->a( n = `persistencyKey` v = `SmartFilterPKey` )->ele( n = `controlConfiguration` ns = `smartFilterBar` 
+          )->a( n = `persistencyKey` v = `SmartFilterPKey` )->ele( n = `controlConfiguration` ns = `smartFilterBar`
           )->tag( n = `ControlConfiguration` ns = `smartFilterBar`
               )->a( n = `key`                                      v = `ProductType`
               )->a( n = `visibleInAdvancedArea`                    b = abap_true

@@ -187,7 +187,8 @@ CLASS z2ui5_cl_smps_app_489 IMPLEMENTATION.
         )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
         )->a( n = `xmlns:core`   v = `sap.ui.core`
         )->a( n = `xmlns:form`   v = `sap.ui.layout.form`
-        )->a( n = `xmlns:tnt`    v = `sap.tnt` ).
+        )->a( n = `xmlns:tnt`    v = `sap.tnt`
+        )->a( n = `xmlns:z2ui5`  v = `z2ui5.cc` ).
     DATA(page) = view->ele( `Shell` )->ele( `Page`
                         )->a( n = `title`          v = `abap2UI5 - Sample: News Feed over WebSocket`
                         )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
@@ -200,7 +201,7 @@ CLASS z2ui5_cl_smps_app_489 IMPLEMENTATION.
            )->a( n = `tooltip` v = `Sample information` ).
 
     page->tag( `MessageStrip`
-        )->a( n = `text`     v = `This sample consumes an ABAP Push Channel without a line of JavaScript: the z2ui5:Websocket ` &&
+        )->a( n = `text` v = `This sample consumes an ABAP Push Channel without a line of JavaScript: the z2ui5:Websocket ` &&
                    `custom control keeps the connection open, reports every message through its 'received' event ` &&
                    `and a failure through 'error'; publishing goes back into the AMC channel from ABAP. The ` &&
                    `button in the footer opens and closes the connection.`
