@@ -265,9 +265,13 @@ CLASS z2ui5_cl_smps_app_489 IMPLEMENTATION.
         pressed = client->_bind( ws_active )
         press   = client->_event( `TOGGLE_CONNECTION` ) ).
 
+    " eraser, not clear-all: the clear-all glyph reached the SAP icon font
+    " after 1.71, so on the oldest release abap2UI5 supports the button
+    " renders with no icon at all - UI5 says nothing about a name it does
+    " not know, it simply draws nothing
     footer->toolbar_spacer( )->button(
         text  = `Clear`
-        icon  = `sap-icon://clear-all`
+        icon  = `sap-icon://eraser`
         press = client->_event( `CLEAR` ) ).
 
     client->view_display( view->stringify( ) ).
