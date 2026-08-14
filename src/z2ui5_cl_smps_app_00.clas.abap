@@ -29,8 +29,8 @@
 "! The page has no header of its own: render_header( ) puts a Bar into its
 "! customHeader, with the back button and the title on the left and the SHARED
 "! OVERVIEW HEADER of the abap2UI5 family on the right - one core:Icon per
-"! sample repository, a ToolbarSeparator, then the documentation and this
-"! repository. It answers the same question per icon, and for the same reason:
+"! sample repository, then, set apart by a wider gap, the documentation and
+"! this repository. It answers the same question per icon, and for the same reason:
 "! a sibling repository is installed on its own, so an installed overview app
 "! is entered with nav_app_call( ) and a missing one opens a popover saying it
 "! has to be installed first, with the link to its repository. Keep it in sync
@@ -127,7 +127,7 @@ CLASS z2ui5_cl_smps_app_00 DEFINITION PUBLIC.
     "! The header every abap2UI5 overview app shares: one icon button per
     "! sample repository - it jumps into that repository's overview app when
     "! the app is on this system and says how to install it when it is not -
-    "! followed by a separator and what leaves the system, the documentation
+    "! followed by a wider gap and what leaves the system, the documentation
     "! and this repository. Exactly one entry is inactive: the repository you
     "! are looking at, there is nowhere to go from it. Keep it in sync with the
     "! copies in abap2UI5/samples and abap2UI5/samples-controls.
@@ -135,12 +135,6 @@ CLASS z2ui5_cl_smps_app_00 DEFINITION PUBLIC.
       IMPORTING
         page  TYPE REF TO z2ui5_cl_ai_xml
         title TYPE string.
-
-    "! the vertical line that groups the header row: the sample repositories of
-    "! the family first, then what leaves the system
-    METHODS header_separator
-      IMPORTING
-        toolbar TYPE REF TO z2ui5_cl_ai_xml.
 
     "! A repository that is not on this system stays clickable and says what is
     "! missing - a popover on the icon that was pressed, with the GitHub link
@@ -153,19 +147,22 @@ CLASS z2ui5_cl_smps_app_00 DEFINITION PUBLIC.
 
     METHODS header_button
       IMPORTING
-        toolbar   TYPE REF TO z2ui5_cl_ai_xml
-        icon      TYPE string
+        toolbar     TYPE REF TO z2ui5_cl_ai_xml
+        icon        TYPE string
         "! the entry's name - the tooltip opens with it and the popover of an
         "! uninstalled repository is titled after it
-        name      TYPE string
-        descr     TYPE string
-        href      TYPE string
-        class     TYPE string OPTIONAL
+        name        TYPE string
+        descr       TYPE string
+        href        TYPE string
+        class       TYPE string OPTIONAL
         "! the overview app's PREVIOUS name, tried when CLASS is not on the
         "! system: a repository that renamed its overview app is installed
         "! under both names in the wild for a while
-        class_old TYPE string OPTIONAL
-        here      TYPE abap_bool DEFAULT abap_false.
+        class_old   TYPE string OPTIONAL
+        here        TYPE abap_bool DEFAULT abap_false
+        "! this entry opens a new group of the header row, so it carries the
+        "! wider margin that sets the groups apart - see render_header( )
+        group_start TYPE abap_bool DEFAULT abap_false.
 
     "! the press wire of a button whose target is EXTERNAL: a Button carries no
     "! href, and cs_event-open_new_tab is same-origin only, so the new tab is
@@ -356,6 +353,16 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
 
   METHOD render_header.
 
+    " ONLY INLINE CONTROLS BELONG INTO A sap.m.Bar. Its content containers
+    " became flex boxes only after 1.71: on the oldest release abap2UI5
+    " supports, .sapMBarLeft/.sapMBarRight are plain absolutely positioned
+    " blocks that lay their children out in normal flow, so a block-level
+    " child - a ToolbarSpacer or a ToolbarSeparator, both of which render a
+    " <div> - starts a new line, and everything from that line on is cut away
+    " by the overflow:hidden the container carries at the bar's height of
+    " 3rem. This row used to put a ToolbarSeparator between its groups, which
+    " on 1.71 swallowed every icon behind the first one; the gap now rides on
+    " the first icon of each group (group_start).
     DATA(bar) = page->open( `customHeader` )->open( `Bar` ).
 
     " left: what the stock page header would render on its own
@@ -383,15 +390,14 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
         )->a( n = `visible` v = z2ui5_cl_ai_xml=>as_bool( demo_data_installed )
         )->a( n = `press`   v = client->_event( cs_event-regenerate ) ).
 
-    header_separator( right ).
-
     " then the sample repositories of the abap2UI5 family, one icon each ...
-    header_button( toolbar = right
-                   icon    = `sap-icon://lightbulb`
-                   name    = `Samples`
-                   descr   = `binding, events, popups, tables and much more`
-                   class   = cs_overview-samples
-                   href    = cs_url-samples ).
+    header_button( toolbar     = right
+                   icon        = `sap-icon://lightbulb`
+                   name        = `Samples`
+                   descr       = `binding, events, popups, tables and much more`
+                   class       = cs_overview-samples
+                   href        = cs_url-samples
+                   group_start = abap_true ).
 
     header_button( toolbar   = right
                    icon      = `sap-icon://palette`
@@ -409,15 +415,14 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
                    href    = cs_url-stack
                    here    = abap_true ).
 
-    " ... and then, set apart by a separator line, the two entries that leave
-    " the system: the three icons above open an app, these open a site
-    header_separator( right ).
-
-    header_button( toolbar = right
-                   icon    = `sap-icon://learning-assistant`
-                   name    = `Documentation`
-                   descr   = `guides, tutorials and the API reference`
-                   href    = cs_url-docs ).
+    " ... and then, set apart by a wider gap, the two entries that leave the
+    " system: the three icons above open an app, these open a site
+    header_button( toolbar     = right
+                   icon        = `sap-icon://learning-assistant`
+                   name        = `Documentation`
+                   descr       = `guides, tutorials and the API reference`
+                   href        = cs_url-docs
+                   group_start = abap_true ).
 
     " not source-code: in the shared header that icon is reserved for the
     " per-sample source links the overviews render in their lists
@@ -426,14 +431,6 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
                    name    = `GitHub`
                    descr   = `the source code of this repository`
                    href    = cs_url-stack ).
-
-  ENDMETHOD.
-
-
-  METHOD header_separator.
-
-    toolbar->leaf( `ToolbarSeparator`
-        )->a( n = `class` v = `sapUiSmallMarginBegin sapUiSmallMarginEnd` ).
 
   ENDMETHOD.
 
@@ -528,10 +525,16 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
     " one, the overview you are already in. Everything else is active, whether
     " its repository is on this system or not. The class name doubles as the
     " icon id, so install_display( ) can anchor its popover to the icon pressed
+    " the wider begin margin is what sets a new group of the row apart - a
+    " margin rather than a separator control, see render_header( )
+    DATA(css_class) = COND string( WHEN group_start = abap_true
+                                   THEN `sapUiMediumMarginBegin sapUiTinyMarginEnd`
+                                   ELSE `sapUiTinyMarginBeginEnd` ).
+
     toolbar->leaf( n = `Icon` ns = `core`
         )->a( n = `src`     v = icon
         )->a( n = `size`    v = `1.125rem`
-        )->a( n = `class`   v = `sapUiTinyMarginBeginEnd`
+        )->a( n = `class`   v = css_class
         )->a( n = `color`   v = color
         )->a( n = `tooltip` v = hint ).
 
