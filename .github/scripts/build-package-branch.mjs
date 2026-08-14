@@ -27,6 +27,16 @@ const SRC = 'src';
 // the ones this checkout does not carry as "not on this system"
 const SRC_ALWAYS = /^(package\.devc\.xml|z2ui5_cl_smps_app_00\.clas\..*)$/;
 
+// ...and what the overview app NEEDS. src/00 holds one object,
+// z2ui5_cl_smps_context, and the overview calls it for every row it renders
+// (app_get_url). Keeping the app without its helper produced a branch that
+// does not compile - "Class z2ui5_cl_smps_context not found" - on the seven
+// packages that do not list 00 as a shared dependency; only 03-rap and
+// 04-rap-draft happened to carry it, because their SAMPLES need it too.
+// A dependency of an always-kept object is itself always kept, so this does
+// not belong in packages.json: it is not a per-package choice.
+const SRC_ALWAYS_DIRS = ['00'];
+
 const branch = process.argv[2];
 if (!branch) {
   console.error('usage: build-package-branch.mjs <branch>');
@@ -40,7 +50,7 @@ if (!pkg) {
   process.exit(2);
 }
 
-const keep = new Set([pkg.dir, ...pkg.shared]);
+const keep = new Set([pkg.dir, ...pkg.shared, ...SRC_ALWAYS_DIRS]);
 
 // 1. everything in src/ that is not this package, its shared dependencies or
 //    one of the always-kept root entries
