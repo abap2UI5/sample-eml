@@ -3,21 +3,9 @@ CLASS z2ui5_cl_smps_app_313 DEFINITION PUBLIC.
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
 
-    TYPES:
-      BEGIN OF ty_s_row,
-        count      TYPE i,
-        value      TYPE string,
-        descr      TYPE string,
-        icon       TYPE string,
-        info       TYPE string,
-        checkbox   TYPE abap_bool,
-        percentage TYPE p LENGTH 5 DECIMALS 2,
-        valuecolor TYPE string,
-      END OF ty_s_row.
-    DATA t_tab TYPE STANDARD TABLE OF ty_s_row WITH EMPTY KEY.
-
-    DATA check_ui5 TYPE abap_bool.
-    DATA mv_key TYPE string.
+    " No attributes: the two smart controls below are driven by the OData
+    " service, not by a model this class serializes. Everything a PUBLIC
+    " attribute would hold travels to the browser on every roundtrip.
 
   PROTECTED SECTION.
   PRIVATE SECTION.

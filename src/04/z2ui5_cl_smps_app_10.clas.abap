@@ -365,8 +365,9 @@ CLASS z2ui5_cl_smps_app_10 IMPLEMENTATION.
                 )->a( n = `text`  v = `Generate Demo Data`
                 )->a( n = `icon`  v = `sap-icon://add`
             )->tag( `Button`
-                )->a( n = `press` v = client->_event( `REFRESH` )
-                )->a( n = `icon`  v = `sap-icon://refresh` ).
+                )->a( n = `press`   v = client->_event( `REFRESH` )
+                )->a( n = `icon`    v = `sap-icon://refresh`
+                )->a( n = `tooltip` v = `Refresh` ).
 
     table->ele( `columns`
         )->ele( `Column`

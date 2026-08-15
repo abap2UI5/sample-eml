@@ -67,8 +67,9 @@ CLASS z2ui5_cl_smps_app_12 IMPLEMENTATION.
                 )->a( n = `text` v = `Business Events`
             )->tag( `ToolbarSpacer`
             )->tag( `Button`
-                )->a( n = `press` v = client->_event( `REFRESH` )
-                )->a( n = `icon`  v = `sap-icon://refresh` ).
+                )->a( n = `press`   v = client->_event( `REFRESH` )
+                )->a( n = `icon`    v = `sap-icon://refresh`
+                )->a( n = `tooltip` v = `Refresh` ).
 
     table->ele( `columns`
         )->ele( `Column`
