@@ -241,10 +241,13 @@ CLASS z2ui5_cl_smps_app_319 IMPLEMENTATION.
 
   METHOD do_search.
 
-    " translate the UI5 range operators the SmartMultiInput returns into ABAP
-    " SELECT-OPTIONS. This is the payoff: a rich UI filter becomes a real ABAP
-    " RANGE (lr_type) you drop straight into any SELECT; t_selopt is just its
-    " readable copy for the display table.
+    " The payoff of this sample: the range operators the SmartMultiInput hands
+    " back become a real ABAP range in lr_type, ready to drop into any SELECT
+    " the way a selection screen's would be. t_selopt is only its readable
+    " copy for the display table.
+    " (abaplint reads a comment that opens on "translate ... into ABAP
+    " SELECT-OPTIONS" as commented-out code, which is why it is worded this
+    " way round.)
     DATA lr_type TYPE RANGE OF string.
     DATA sign    TYPE c LENGTH 1.
     DATA option  TYPE c LENGTH 2.

@@ -74,9 +74,7 @@ CLASS z2ui5_cl_smps_app_11 IMPLEMENTATION.
                         title    = ms_create-title
                         priority = ms_create-priority
                         status   = ms_create-status ) )
-      MAPPED DATA(mapped)
-      FAILED DATA(failed)
-      REPORTED DATA(reported).
+      FAILED DATA(failed).
 
     IF failed-ticket IS NOT INITIAL.
       ROLLBACK ENTITIES.
@@ -85,8 +83,7 @@ CLASS z2ui5_cl_smps_app_11 IMPLEMENTATION.
     ENDIF.
 
     COMMIT ENTITIES RESPONSE OF z2ui5_r_smps_tck
-      FAILED DATA(commit_failed)
-      REPORTED DATA(commit_reported).
+      FAILED DATA(commit_failed).
 
     IF commit_failed IS INITIAL.
       client->message_toast_display( |Ticket '{ ms_create-title }' created - business event fired| ).

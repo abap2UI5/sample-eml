@@ -42,13 +42,11 @@ CLASS z2ui5_cl_smps_app_490 IMPLEMENTATION.
                         )->a( n = `text`  v = client->_bind( text )
                         )->a( n = `width` v = `20%` ).
             client->view_display( view->stringify( ) ).
-            "client->set_app_state_active( ).
             RETURN.
           ENDIF.
 
           CASE client->get( )-event.
             WHEN `CALL_BOOKING_MASK`.
-              DATA lf_key TYPE n LENGTH 4.
               DATA(lr_view2) = NEW z2ui5_cl_smps_app_490( ).
               lr_view2->view_id = 2.
               lr_view2->varkey = `001`.

@@ -95,8 +95,7 @@ CLASS z2ui5_cl_smps_data_trd IMPLEMENTATION.
       ENTITY travel
         EXECUTE Activate FROM VALUE #( FOR s_new IN s_mapped-travel
                                        ( %key-traveluuid = s_new-traveluuid ) )
-      FAILED DATA(s_failed_act)
-      REPORTED DATA(s_reported_act).
+      FAILED DATA(s_failed_act).
 
     IF s_failed_act-travel IS NOT INITIAL.
       ROLLBACK ENTITIES.
@@ -105,8 +104,7 @@ CLASS z2ui5_cl_smps_data_trd IMPLEMENTATION.
     ENDIF.
 
     COMMIT ENTITIES RESPONSE OF z2ui5_r_smps_trd
-      FAILED DATA(s_failed_commit)
-      REPORTED DATA(s_reported_commit).
+      FAILED DATA(s_failed_commit).
 
     IF s_failed_commit IS NOT INITIAL.
       result = `Demo data rejected by the business object on commit.`.

@@ -147,8 +147,7 @@ CLASS z2ui5_cl_smps_app_07 IMPLEMENTATION.
         FIELDS ( travelid description ) WITH VALUE #( FOR s_row IN t_result
                                                       ( %tky = VALUE #( traveluuid = s_row-traveluuid
                                                                         %is_draft  = if_abap_behv=>mk-on ) ) )
-      RESULT DATA(t_drafts)
-      FAILED DATA(s_failed).
+      RESULT DATA(t_drafts).
 
     t_travels = VALUE #( FOR s_result IN t_result
         ( travel_uuid       = |{ s_result-traveluuid }|

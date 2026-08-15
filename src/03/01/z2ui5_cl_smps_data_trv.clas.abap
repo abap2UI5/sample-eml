@@ -80,8 +80,7 @@ CLASS z2ui5_cl_smps_data_trv IMPLEMENTATION.
                         enddate     = sy-datum + 74
                         bookingfee  = '12.75'
                         description = 'Demo travel - city break' ) )
-      FAILED DATA(s_failed)
-      REPORTED DATA(s_reported).
+      FAILED DATA(s_failed).
 
     IF s_failed-travel IS NOT INITIAL.
 
@@ -92,8 +91,7 @@ CLASS z2ui5_cl_smps_data_trv IMPLEMENTATION.
     ENDIF.
 
     COMMIT ENTITIES RESPONSE OF z2ui5_r_smps_trv
-      FAILED DATA(s_failed_commit)
-      REPORTED DATA(s_reported_commit).
+      FAILED DATA(s_failed_commit).
 
     IF s_failed_commit IS NOT INITIAL.
       result = `Demo data rejected by the business object on commit.`.
