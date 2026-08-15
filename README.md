@@ -107,6 +107,25 @@ Every sample of the abap2UI5 sample scheme is called `Z2UI5_CL_SMPS_APP_<no>`, a
 the tables in the package READMEs give you the number, so sample `487` is
 `?app_start=z2ui5_cl_smps_app_487`.
 
+### Pulling over an older checkout
+
+The packages were renumbered once, so a system that pulled this repository before
+that has objects sitting in packages the folders no longer point at. abapGit moves
+most of them on the next pull, but a MIME object keeps the package it was created
+in, and you get a warning naming the package it came from:
+
+```
+SMIM 027C66AAA6591EDFA9BB6B42F39E45DD exists but package $..._07_01 is missing
+(might have been lost during an upgrade, SAP Note 2478895)
+```
+
+Both of them belong to `08` now, the two sounds sample `487` plays. The quickest
+way out is to delete them and let abapGit put them back where the tree says they
+go: SE80 → MIME Repository → `SAP/PUBLIC/BC/ABAP/mime_demo`, delete
+`z2ui5_smp_error.mp3` and `z2ui5_smp_success.mp3`, then pull again. If the warning
+names other objects too, pull the `DEVC` entries alone first — that recreates
+every package of the current layout — and pull the rest afterwards.
+
 ## The overview app
 
 You do not have to look a number up. `?app_start=z2ui5_cl_smps_app_00` lists
