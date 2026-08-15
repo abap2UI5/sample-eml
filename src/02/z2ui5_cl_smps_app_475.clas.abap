@@ -21,16 +21,18 @@ CLASS z2ui5_cl_smps_app_475 IMPLEMENTATION.
 
     IF client->check_on_init( ).
 
-      DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
-          )->a( n = `displayBlock`     v = `true`
-          )->a( n = `height`           v = `100%`
-          )->a( n = `xmlns`            v = `sap.m`
-          )->a( n = `xmlns:mvc`        v = `sap.ui.core.mvc`
-          )->a( n = `xmlns:core`       v = `sap.ui.core`
-          )->a( n = `xmlns:smartField` v = `sap.ui.comp.smartfield`
-          )->a( n = `xmlns:smartForm`  v = `sap.ui.comp.smartform` ).
+      DATA(view) = z2ui5_cl_ui5_view_builder=>factory(
+          )->ele( n = `View` ns = `mvc`
+              )->a( n = `displayBlock`     v = `true`
+              )->a( n = `height`           v = `100%`
+              )->a( n = `xmlns`            v = `sap.m`
+              )->a( n = `xmlns:mvc`        v = `sap.ui.core.mvc`
+              )->a( n = `xmlns:core`       v = `sap.ui.core`
+              )->a( n = `xmlns:smartField` v = `sap.ui.comp.smartfield`
+              )->a( n = `xmlns:smartForm`  v = `sap.ui.comp.smartform` ).
 
-      DATA(page) = view->ele( `Shell` )->ele( `Page`
+      DATA(page) = view->ele( `Shell`
+          )->ele( `Page`
               )->a( n = `title`          v = `abap2UI5 - Smart Controls - SmartField`
               )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
               )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) ).
@@ -45,14 +47,17 @@ CLASS z2ui5_cl_smps_app_475 IMPLEMENTATION.
           )->a( n = `editable` v = `true`
           )->a( n = `binding`  v = `{/ProductSet('AR-FB-1000')}` ).
 
-      form->ele( n = `layout` ns = `smartForm` )->ele( n = `ColumnLayout` ns = `smartForm`
+      form->ele( n = `layout` ns = `smartForm`
+          )->ele( n = `ColumnLayout` ns = `smartForm`
               )->a( n = `emptyCellsLarge` v = `4`
               )->a( n = `labelCellsLarge` v = `4`
               )->a( n = `columnsM`        v = `1`
               )->a( n = `columnsL`        v = `1`
               )->a( n = `columnsXL`       v = `1` ).
 
-      form->ele( n = `Group` ns = `smartForm` )->ele( n = `GroupElement` ns = `smartForm` )->ele( n = `SmartField` ns = `smartField`
+      form->ele( n = `Group` ns = `smartForm`
+          )->ele( n = `GroupElement` ns = `smartForm`
+              )->ele( n = `SmartField` ns = `smartField`
                   )->a( n = `value` v = `{Price}`
                   )->a( n = `id`    v = `idPrice` ).
 

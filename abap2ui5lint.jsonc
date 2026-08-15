@@ -49,6 +49,20 @@
   // every other package keeps being checked against the OpenUI5 landscape it
   // is meant to run on.
   "rules": {
+    // The house layout of a view-builder chain: one call per line, four
+    // spaces per level of the tree, `end( )` alone in the column of the
+    // `ele( )` it closes. Opt-in by design (OPT_IN in the linter's
+    // findings.mjs), because it encodes ONE style — the one defined in
+    // abap2UI5 (docs/agents/building-apps.md, "Formatting the chain") and
+    // already enabled there, so the samples a reader copies from are laid
+    // out the way the framework's own apps are. `npm run fmt:chains`
+    // applies it; the rewrite is verified whitespace-only, so it can never
+    // change what the view builds.
+    //
+    // It also subsumes chain-element-per-line, which only ever covered the
+    // first of those four rules and stays on underneath as a hint.
+    "chain-house-layout": { "severity": "warning" },
+
     "sapui5-only-control": { "exclude": ["/src/02/"] },
     "unknown-aggregation": { "exclude": ["/src/02/"] },
     // A render error carries no line, so a source directive cannot reach it —

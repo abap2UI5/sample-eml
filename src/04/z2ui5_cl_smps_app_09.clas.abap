@@ -166,13 +166,15 @@ CLASS z2ui5_cl_smps_app_09 IMPLEMENTATION.
 
   METHOD view_display.
 
-    DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
-        )->a( n = `displayBlock` v = `true`
-        )->a( n = `height`       v = `100%`
-        )->a( n = `xmlns`        v = `sap.m`
-        )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
-        )->a( n = `xmlns:core`   v = `sap.ui.core` ).
-    DATA(page) = view->ele( `Shell` )->ele( `Page`
+    DATA(view) = z2ui5_cl_ui5_view_builder=>factory(
+        )->ele( n = `View` ns = `mvc`
+            )->a( n = `displayBlock` v = `true`
+            )->a( n = `height`       v = `100%`
+            )->a( n = `xmlns`        v = `sap.m`
+            )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+            )->a( n = `xmlns:core`   v = `sap.ui.core` ).
+    DATA(page) = view->ele( `Shell`
+        )->ele( `Page`
             )->a( n = `title`          v = `abap2UI5 - EML - 09 Leave Draft Mode`
             )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
             )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) ).
@@ -184,24 +186,41 @@ CLASS z2ui5_cl_smps_app_09 IMPLEMENTATION.
     DATA(table) = page->ele( `Table`
         )->a( n = `items` v = client->_bind( t_drafts ) ).
 
-    table->ele( `headerToolbar` )->ele( `Toolbar` )->tag( `Title`
-            )->a( n = `text` v = `EXECUTE Activate  /  EXECUTE Discard` ).
+    table->ele( `headerToolbar`
+        )->ele( `Toolbar`
+            )->tag( `Title`
+                )->a( n = `text` v = `EXECUTE Activate  /  EXECUTE Discard` ).
 
-    table->ele( `columns` )->ele( `Column` )->tag( `Text`
-            )->a( n = `text` v = `ID` )->end( )->ele( `Column` )->tag( `Text`
-            )->a( n = `text` v = `Description (draft)` )->end( )->ele( `Column` )->tag( `Text`
-            )->a( n = `text` v = `` ).
+    table->ele( `columns`
+        )->ele( `Column`
+            )->tag( `Text`
+                )->a( n = `text` v = `ID`
+        )->end(
+        )->ele( `Column`
+            )->tag( `Text`
+                )->a( n = `text` v = `Description (draft)`
+        )->end(
+        )->ele( `Column`
+            )->tag( `Text`
+                )->a( n = `text` v = `` ).
 
-    table->ele( `items` )->ele( `ColumnListItem` )->ele( `cells` )->tag( `Text`
-                )->a( n = `text` v = `{TRAVEL_ID}` )->tag( `Text`
-                )->a( n = `text` v = `{DESCRIPTION}` )->ele( `HBox` )->tag( `Button`
-                    )->a( n = `press` v = client->_event( val   = `ACTIVATE`
-                                            t_arg = VALUE #( ( `${TRAVEL_UUID}` ) ) )
-                    )->a( n = `text`  v = `Activate`
-                    )->a( n = `type`  v = `Emphasized` )->tag( `Button`
-                    )->a( n = `press` v = client->_event( val   = `DISCARD`
-                                            t_arg = VALUE #( ( `${TRAVEL_UUID}` ) ) )
-                    )->a( n = `text`  v = `Discard` ).
+    table->ele( `items`
+        )->ele( `ColumnListItem`
+            )->ele( `cells`
+                )->tag( `Text`
+                    )->a( n = `text` v = `{TRAVEL_ID}`
+                )->tag( `Text`
+                    )->a( n = `text` v = `{DESCRIPTION}`
+                )->ele( `HBox`
+                    )->tag( `Button`
+                        )->a( n = `press` v = client->_event( val   = `ACTIVATE`
+                                                t_arg = VALUE #( ( `${TRAVEL_UUID}` ) ) )
+                        )->a( n = `text`  v = `Activate`
+                        )->a( n = `type`  v = `Emphasized`
+                    )->tag( `Button`
+                        )->a( n = `press` v = client->_event( val   = `DISCARD`
+                                                t_arg = VALUE #( ( `${TRAVEL_UUID}` ) ) )
+                        )->a( n = `text`  v = `Discard` ).
 
     client->view_display( view->stringify( ) ).
 

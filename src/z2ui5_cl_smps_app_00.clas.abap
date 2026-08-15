@@ -305,8 +305,8 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
         )->a( n = `displayBlock` v = `true`
         )->a( n = `height`       v = `100%`
         )->ele( `Shell`
-        )->ele( `Page`
-            )->a( n = `class` v = `sapUiContentPadding` ).
+            )->ele( `Page`
+                )->a( n = `class` v = `sapUiContentPadding` ).
 
     " title and back button come with the custom header (render_header), not
     " with the page - a Page renders either its own header or a custom one
@@ -384,7 +384,8 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
     " 3rem. This row used to put a ToolbarSeparator between its groups, which
     " on 1.71 swallowed every icon behind the first one; the gap now rides on
     " the first icon of each group (group_start).
-    DATA(bar) = page->ele( `customHeader` )->ele( `Bar` ).
+    DATA(bar) = page->ele( `customHeader`
+        )->ele( `Bar` ).
 
     " left: what the stock page header would render on its own
     DATA(left) = bar->ele( `contentLeft` ).

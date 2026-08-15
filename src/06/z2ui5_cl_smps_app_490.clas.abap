@@ -24,19 +24,23 @@ CLASS z2ui5_cl_smps_app_490 IMPLEMENTATION.
       view_id = 1.
       TRY.
           IF client->check_on_init( ) OR client->check_on_navigated( ).
-            DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
-                )->a( n = `displayBlock` v = `true`
-                )->a( n = `height`       v = `100%`
-                )->a( n = `xmlns`        v = `sap.m`
-                )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
-                )->a( n = `xmlns:core`   v = `sap.ui.core`
-                )->a( n = `xmlns:form`   v = `sap.ui.layout.form` ).
-            DATA(page) = view->ele( `Shell` )->ele( `Page`
-                )->a( n = `title` v = `Startview` ).
-            page->ele( n = `SimpleForm` ns = `form` )->ele( n = `content` ns = `form` )->tag( `Button`
-                                   )->a( n = `press` v = client->_event( `CALL_BOOKING_MASK` )
-                                   )->a( n = `text`  v = client->_bind( text )
-                                   )->a( n = `width` v = `20%` ).
+            DATA(view) = z2ui5_cl_ui5_view_builder=>factory(
+                )->ele( n = `View` ns = `mvc`
+                    )->a( n = `displayBlock` v = `true`
+                    )->a( n = `height`       v = `100%`
+                    )->a( n = `xmlns`        v = `sap.m`
+                    )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+                    )->a( n = `xmlns:core`   v = `sap.ui.core`
+                    )->a( n = `xmlns:form`   v = `sap.ui.layout.form` ).
+            DATA(page) = view->ele( `Shell`
+                )->ele( `Page`
+                    )->a( n = `title` v = `Startview` ).
+            page->ele( n = `SimpleForm` ns = `form`
+                )->ele( n = `content` ns = `form`
+                    )->tag( `Button`
+                        )->a( n = `press` v = client->_event( `CALL_BOOKING_MASK` )
+                        )->a( n = `text`  v = client->_bind( text )
+                        )->a( n = `width` v = `20%` ).
             client->view_display( view->stringify( ) ).
             "client->set_app_state_active( ).
             RETURN.
@@ -121,17 +125,19 @@ CLASS z2ui5_cl_smps_app_490 IMPLEMENTATION.
 
   METHOD initialize_view2.
 
-    DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
-        )->a( n = `displayBlock` v = `true`
-        )->a( n = `height`       v = `100%`
-        )->a( n = `xmlns`        v = `sap.m`
-        )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
-        )->a( n = `xmlns:core`   v = `sap.ui.core`
-        )->a( n = `xmlns:form`   v = `sap.ui.layout.form` ).
-    DATA(page) = view->ele( `Shell` )->ele( `Page`
-        )->a( n = `title`          v = `Stateful Application with lock`
-        )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
-        )->a( n = `navButtonPress` v = client->_event( `BACK` ) ).
+    DATA(view) = z2ui5_cl_ui5_view_builder=>factory(
+        )->ele( n = `View` ns = `mvc`
+            )->a( n = `displayBlock` v = `true`
+            )->a( n = `height`       v = `100%`
+            )->a( n = `xmlns`        v = `sap.m`
+            )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+            )->a( n = `xmlns:core`   v = `sap.ui.core`
+            )->a( n = `xmlns:form`   v = `sap.ui.layout.form` ).
+    DATA(page) = view->ele( `Shell`
+        )->ele( `Page`
+            )->a( n = `title`          v = `Stateful Application with lock`
+            )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
+            )->a( n = `navButtonPress` v = client->_event( `BACK` ) ).
     DATA(vbox) = page->ele( `VBox` ).
     DATA(hbox) = vbox->ele( `HBox`
         )->a( n = `alignItems` v = `Center` ).

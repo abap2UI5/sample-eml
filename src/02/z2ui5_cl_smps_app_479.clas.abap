@@ -25,16 +25,18 @@ CLASS z2ui5_cl_smps_app_479 IMPLEMENTATION.
 
     IF client->check_on_init( ).
 
-      DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
-          )->a( n = `displayBlock`     v = `true`
-          )->a( n = `height`           v = `100%`
-          )->a( n = `xmlns`            v = `sap.m`
-          )->a( n = `xmlns:mvc`        v = `sap.ui.core.mvc`
-          )->a( n = `xmlns:core`       v = `sap.ui.core`
-          )->a( n = `xmlns:navpopover` v = `sap.ui.comp.navpopover`
-          )->a( n = `xmlns:smartChart` v = `sap.ui.comp.smartchart` ).
+      DATA(view) = z2ui5_cl_ui5_view_builder=>factory(
+          )->ele( n = `View` ns = `mvc`
+              )->a( n = `displayBlock`     v = `true`
+              )->a( n = `height`           v = `100%`
+              )->a( n = `xmlns`            v = `sap.m`
+              )->a( n = `xmlns:mvc`        v = `sap.ui.core.mvc`
+              )->a( n = `xmlns:core`       v = `sap.ui.core`
+              )->a( n = `xmlns:navpopover` v = `sap.ui.comp.navpopover`
+              )->a( n = `xmlns:smartChart` v = `sap.ui.comp.smartchart` ).
 
-      DATA(page) = view->ele( `Shell` )->ele( `Page`
+      DATA(page) = view->ele( `Shell`
+          )->ele( `Page`
               )->a( n = `title`          v = `abap2UI5 - Smart Controls - SmartChart`
               )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
               )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) ).
@@ -48,8 +50,9 @@ CLASS z2ui5_cl_smps_app_479 IMPLEMENTATION.
           )->a( n = `useVariantManagement`    v = `true`
           )->a( n = `persistencyKey`          v = `SmartChart_Explored`
           )->a( n = `useChartPersonalisation` v = `true`
-          )->a( n = `header`                  v = `Products` )->ele( n = `semanticObjectController` ns = `smartChart`
-          )->ele( n = `SemanticObjectController` ns = `navpopover`
+          )->a( n = `header`                  v = `Products`
+          )->ele( n = `semanticObjectController` ns = `smartChart`
+              )->ele( n = `SemanticObjectController` ns = `navpopover`
                   )->a( n = `navigationTargetsObtained` v = client->_event( `NAV_TARGETS_OBTAINED` )
                   )->a( n = `navigate`                  v = client->_event( val   = `NAVIGATE`
                                                                                           t_arg = VALUE #( ( `${$parameters>/text}` ) ) ) ).

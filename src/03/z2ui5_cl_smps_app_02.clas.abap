@@ -128,45 +128,67 @@ CLASS z2ui5_cl_smps_app_02 IMPLEMENTATION.
 
   METHOD view_display.
 
-    DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
-        )->a( n = `displayBlock` v = `true`
-        )->a( n = `height`       v = `100%`
-        )->a( n = `xmlns`        v = `sap.m`
-        )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
-        )->a( n = `xmlns:core`   v = `sap.ui.core`
-        )->a( n = `xmlns:form`   v = `sap.ui.layout.form` ).
-    view->ele( `Shell` )->ele( `Page`
+    DATA(view) = z2ui5_cl_ui5_view_builder=>factory(
+        )->ele( n = `View` ns = `mvc`
+            )->a( n = `displayBlock` v = `true`
+            )->a( n = `height`       v = `100%`
+            )->a( n = `xmlns`        v = `sap.m`
+            )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+            )->a( n = `xmlns:core`   v = `sap.ui.core`
+            )->a( n = `xmlns:form`   v = `sap.ui.layout.form` ).
+    view->ele( `Shell`
+        )->ele( `Page`
             )->a( n = `title`          v = `abap2UI5 - EML - 02 Create Travel`
             )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
-            )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) )->ele( n = `SimpleForm` ns = `form`
+            )->a( n = `navButtonPress` v = client->_event_nav_app_leave( )
+            )->ele( n = `SimpleForm` ns = `form`
                 )->a( n = `title`    v = `MODIFY ENTITIES OF Z2UI5_R_SMPS_TRV ... CREATE`
-                )->a( n = `editable` b = abap_true )->ele( n = `content` ns = `form` )->tag( `Label`
-                    )->a( n = `text` v = `Agency ID` )->tag( `Input`
-                    )->a( n = `placeholder` v = `e.g. 070001`
-                    )->a( n = `value`       v = client->_bind( s_travel-agency_id ) )->tag( `Label`
-                    )->a( n = `text` v = `Customer ID` )->tag( `Input`
-                    )->a( n = `placeholder` v = `e.g. 000001`
-                    )->a( n = `value`       v = client->_bind( s_travel-customer_id ) )->tag( `Label`
-                    )->a( n = `text` v = `Begin Date` )->tag( `DatePicker`
-                    )->a( n = `value`       v = client->_bind( s_travel-begin_date )
-                    )->a( n = `valueFormat` v = `yyyyMMdd` )->tag( `Label`
-                    )->a( n = `text` v = `End Date` )->tag( `DatePicker`
-                    )->a( n = `value`       v = client->_bind( s_travel-end_date )
-                    )->a( n = `valueFormat` v = `yyyyMMdd` )->tag( `Label`
-                    )->a( n = `text` v = `Booking Fee` )->tag( `Input`
-                    )->a( n = `placeholder` v = `e.g. 20.00`
-                    )->a( n = `value`       v = client->_bind( s_travel-booking_fee ) )->tag( `Label`
-                    )->a( n = `text` v = `Currency` )->tag( `Input`
-                    )->a( n = `value` v = client->_bind( s_travel-currency ) )->tag( `Label`
-                    )->a( n = `text` v = `Description` )->tag( `Input`
-                    )->a( n = `value` v = client->_bind( s_travel-description ) )->tag( `Label`
-                    )->a( n = `text` v = `` )->tag( `Button`
-                    )->a( n = `press` v = client->_event( `CREATE` )
-                    )->a( n = `text`  v = `Create`
-                    )->a( n = `type`  v = `Emphasized` )->tag( `Label`
-                    )->a( n = `text` v = `Created Travel ID` )->tag( `Input`
-                    )->a( n = `enabled` b = abap_false
-                    )->a( n = `value`   v = client->_bind( created_id ) ).
+                )->a( n = `editable` b = abap_true
+                )->ele( n = `content` ns = `form`
+                    )->tag( `Label`
+                        )->a( n = `text` v = `Agency ID`
+                    )->tag( `Input`
+                        )->a( n = `placeholder` v = `e.g. 070001`
+                        )->a( n = `value`       v = client->_bind( s_travel-agency_id )
+                    )->tag( `Label`
+                        )->a( n = `text` v = `Customer ID`
+                    )->tag( `Input`
+                        )->a( n = `placeholder` v = `e.g. 000001`
+                        )->a( n = `value`       v = client->_bind( s_travel-customer_id )
+                    )->tag( `Label`
+                        )->a( n = `text` v = `Begin Date`
+                    )->tag( `DatePicker`
+                        )->a( n = `value`       v = client->_bind( s_travel-begin_date )
+                        )->a( n = `valueFormat` v = `yyyyMMdd`
+                    )->tag( `Label`
+                        )->a( n = `text` v = `End Date`
+                    )->tag( `DatePicker`
+                        )->a( n = `value`       v = client->_bind( s_travel-end_date )
+                        )->a( n = `valueFormat` v = `yyyyMMdd`
+                    )->tag( `Label`
+                        )->a( n = `text` v = `Booking Fee`
+                    )->tag( `Input`
+                        )->a( n = `placeholder` v = `e.g. 20.00`
+                        )->a( n = `value`       v = client->_bind( s_travel-booking_fee )
+                    )->tag( `Label`
+                        )->a( n = `text` v = `Currency`
+                    )->tag( `Input`
+                        )->a( n = `value` v = client->_bind( s_travel-currency )
+                    )->tag( `Label`
+                        )->a( n = `text` v = `Description`
+                    )->tag( `Input`
+                        )->a( n = `value` v = client->_bind( s_travel-description )
+                    )->tag( `Label`
+                        )->a( n = `text` v = ``
+                    )->tag( `Button`
+                        )->a( n = `press` v = client->_event( `CREATE` )
+                        )->a( n = `text`  v = `Create`
+                        )->a( n = `type`  v = `Emphasized`
+                    )->tag( `Label`
+                        )->a( n = `text` v = `Created Travel ID`
+                    )->tag( `Input`
+                        )->a( n = `enabled` b = abap_false
+                        )->a( n = `value`   v = client->_bind( created_id ) ).
 
     client->view_display( view->stringify( ) ).
 

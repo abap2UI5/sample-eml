@@ -110,19 +110,21 @@ CLASS z2ui5_cl_smps_app_319 IMPLEMENTATION.
     t_result = t_product.
     hint     = `No conditions yet - showing all demo products. Open the value help and add conditions.`.
 
-    DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
-        )->a( n = `displayBlock` v = `true`
-        )->a( n = `height`       v = `100%`
-        )->a( n = `xmlns`        v = `sap.m`
-        )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
-        )->a( n = `xmlns:core`   v = `sap.ui.core`
-        )->a( n = `xmlns:smi`    v = `sap.ui.comp.smartmultiinput`
-        )->a( n = `xmlns:z2ui5`  v = `z2ui5.cc` ).
+    DATA(view) = z2ui5_cl_ui5_view_builder=>factory(
+        )->ele( n = `View` ns = `mvc`
+            )->a( n = `displayBlock` v = `true`
+            )->a( n = `height`       v = `100%`
+            )->a( n = `xmlns`        v = `sap.m`
+            )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+            )->a( n = `xmlns:core`   v = `sap.ui.core`
+            )->a( n = `xmlns:smi`    v = `sap.ui.comp.smartmultiinput`
+            )->a( n = `xmlns:z2ui5`  v = `z2ui5.cc` ).
 
-    DATA(page) = view->ele( `Shell` )->ele( `Page`
-        )->a( n = `title`          v = `SmartMultiInput - conditions to ABAP SELECT-OPTIONS`
-        )->a( n = `showNavButton`  b = m_client->check_app_prev_stack( )
-        )->a( n = `navButtonPress` v = m_client->_event_nav_app_leave( ) ).
+    DATA(page) = view->ele( `Shell`
+        )->ele( `Page`
+            )->a( n = `title`          v = `SmartMultiInput - conditions to ABAP SELECT-OPTIONS`
+            )->a( n = `showNavButton`  b = m_client->check_app_prev_stack( )
+            )->a( n = `navButtonPress` v = m_client->_event_nav_app_leave( ) ).
 
     page->tag( `MessageStrip`
         )->a( n = `text` v = `Open the value help (icon on the right), add one or more conditions on Product Type ` &&
@@ -162,29 +164,59 @@ CLASS z2ui5_cl_smps_app_319 IMPLEMENTATION.
     " derived ABAP SELECT-OPTIONS (r_product_type): SIGN / OPTION / LOW / HIGH
     DATA(sel) = page->ele( `Table`
         )->a( n = `items` v = m_client->_bind( val = t_selopt switch_default_model = abap_true ) ).
-    sel->ele( `headerToolbar` )->ele( `OverflowToolbar` )->tag( `Title`
-        )->a( n = `text` v = `Derived ABAP SELECT-OPTIONS  ( ... WHERE ProductType IN r_product_type )` ).
-    sel->ele( `columns` )->ele( `Column` )->tag( `Text`
-            )->a( n = `text` v = `SIGN` )->end( )->ele( `Column` )->tag( `Text`
-            )->a( n = `text` v = `OPTION` )->end( )->ele( `Column` )->tag( `Text`
-            )->a( n = `text` v = `LOW` )->end( )->ele( `Column` )->tag( `Text`
-            )->a( n = `text` v = `HIGH` ).
-    sel->ele( `items` )->ele( `ColumnListItem` )->ele( `cells` )->tag( `Text`
-                    )->a( n = `text` v = `{http>SIGN}` )->tag( `Text`
-                    )->a( n = `text` v = `{http>OPTION}` )->tag( `Text`
-                    )->a( n = `text` v = `{http>LOW}` )->tag( `Text`
+    sel->ele( `headerToolbar`
+        )->ele( `OverflowToolbar`
+            )->tag( `Title`
+                )->a( n = `text` v = `Derived ABAP SELECT-OPTIONS  ( ... WHERE ProductType IN r_product_type )` ).
+    sel->ele( `columns`
+        )->ele( `Column`
+            )->tag( `Text`
+                )->a( n = `text` v = `SIGN`
+        )->end(
+        )->ele( `Column`
+            )->tag( `Text`
+                )->a( n = `text` v = `OPTION`
+        )->end(
+        )->ele( `Column`
+            )->tag( `Text`
+                )->a( n = `text` v = `LOW`
+        )->end(
+        )->ele( `Column`
+            )->tag( `Text`
+                )->a( n = `text` v = `HIGH` ).
+    sel->ele( `items`
+        )->ele( `ColumnListItem`
+            )->ele( `cells`
+                )->tag( `Text`
+                    )->a( n = `text` v = `{http>SIGN}`
+                )->tag( `Text`
+                    )->a( n = `text` v = `{http>OPTION}`
+                )->tag( `Text`
+                    )->a( n = `text` v = `{http>LOW}`
+                )->tag( `Text`
                     )->a( n = `text` v = `{http>HIGH}` ).
 
     " the rows the range selects out of the demo product list
     DATA(res) = page->ele( `Table`
         )->a( n = `items` v = m_client->_bind( val = t_result switch_default_model = abap_true ) ).
-    res->ele( `headerToolbar` )->ele( `OverflowToolbar` )->tag( `Title`
-        )->a( n = `text` v = `Matching demo products (local sample data)` ).
-    res->ele( `columns` )->ele( `Column` )->tag( `Text`
-            )->a( n = `text` v = `Product Type` )->end( )->ele( `Column` )->tag( `Text`
-            )->a( n = `text` v = `Name` ).
-    res->ele( `items` )->ele( `ColumnListItem` )->ele( `cells` )->tag( `Text`
-                    )->a( n = `text` v = `{http>PRODUCT_TYPE}` )->tag( `Text`
+    res->ele( `headerToolbar`
+        )->ele( `OverflowToolbar`
+            )->tag( `Title`
+                )->a( n = `text` v = `Matching demo products (local sample data)` ).
+    res->ele( `columns`
+        )->ele( `Column`
+            )->tag( `Text`
+                )->a( n = `text` v = `Product Type`
+        )->end(
+        )->ele( `Column`
+            )->tag( `Text`
+                )->a( n = `text` v = `Name` ).
+    res->ele( `items`
+        )->ele( `ColumnListItem`
+            )->ele( `cells`
+                )->tag( `Text`
+                    )->a( n = `text` v = `{http>PRODUCT_TYPE}`
+                )->tag( `Text`
                     )->a( n = `text` v = `{http>NAME}` ).
 
     " OData service block - adjust to your value-list-annotated Gateway service.

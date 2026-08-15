@@ -21,17 +21,19 @@ CLASS z2ui5_cl_smps_app_478 IMPLEMENTATION.
 
     IF client->check_on_init( ).
 
-      DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
-          )->a( n = `displayBlock`                 v = `true`
-          )->a( n = `height`                       v = `100%`
-          )->a( n = `xmlns`                        v = `sap.m`
-          )->a( n = `xmlns:mvc`                    v = `sap.ui.core.mvc`
-          )->a( n = `xmlns:core`                   v = `sap.ui.core`
-          )->a( n = `xmlns:smartFilterBar`         v = `sap.ui.comp.smartfilterbar`
-          )->a( n = `xmlns:smartTable`             v = `sap.ui.comp.smarttable`
-          )->a( n = `xmlns:smartVariantManagement` v = `sap.ui.comp.smartvariants` ).
+      DATA(view) = z2ui5_cl_ui5_view_builder=>factory(
+          )->ele( n = `View` ns = `mvc`
+              )->a( n = `displayBlock`                 v = `true`
+              )->a( n = `height`                       v = `100%`
+              )->a( n = `xmlns`                        v = `sap.m`
+              )->a( n = `xmlns:mvc`                    v = `sap.ui.core.mvc`
+              )->a( n = `xmlns:core`                   v = `sap.ui.core`
+              )->a( n = `xmlns:smartFilterBar`         v = `sap.ui.comp.smartfilterbar`
+              )->a( n = `xmlns:smartTable`             v = `sap.ui.comp.smarttable`
+              )->a( n = `xmlns:smartVariantManagement` v = `sap.ui.comp.smartvariants` ).
 
-      DATA(page) = view->ele( `Shell` )->ele( `Page`
+      DATA(page) = view->ele( `Shell`
+          )->ele( `Page`
               )->a( n = `title`          v = `abap2UI5 - Smart Controls - Page Variant`
               )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
               )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) ).
@@ -40,7 +42,8 @@ CLASS z2ui5_cl_smps_app_478 IMPLEMENTATION.
       " persistency (PageVariantPKey) and both smart controls register with it
       " through their smartvariant association, each contributing its own
       " persistencykey. Everything below is metadata-driven - no model data.
-      page->ele( `HBox` )->tag( n = `SmartVariantManagement` ns = `smartVariantManagement`
+      page->ele( `HBox`
+          )->tag( n = `SmartVariantManagement` ns = `smartVariantManagement`
               )->a( n = `id`             v = `pageVariantId`
               )->a( n = `persistencyKey` v = `PageVariantPKey` ).
 
@@ -56,8 +59,9 @@ CLASS z2ui5_cl_smps_app_478 IMPLEMENTATION.
           )->a( n = `smartVariant`           v = `pageVariantId`
           )->a( n = `assignedFiltersChanged` v = client->follow_up_action(
               val   = client->cs_event-control_global
-              t_arg = VALUE #( ( `MESSAGE_TOAST` ) ( `show` ) ( `Assigned filters changed` ) ) ) )->ele( n = `controlConfiguration` ns = `smartFilterBar`
-                  )->tag( n = `ControlConfiguration` ns = `smartFilterBar`
+              t_arg = VALUE #( ( `MESSAGE_TOAST` ) ( `show` ) ( `Assigned filters changed` ) ) )
+          )->ele( n = `controlConfiguration` ns = `smartFilterBar`
+              )->tag( n = `ControlConfiguration` ns = `smartFilterBar`
                   )->a( n = `key`                                      v = `Category`
                   )->a( n = `visibleInAdvancedArea`                    v = `true`
                   )->a( n = `preventInitialDataFetchInValueHelpDialog` v = `false` ).
