@@ -683,16 +683,23 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
     " same url parameters as the running overview, only app_start exchanged
     DATA(s_config) = client->get( )-s_config.
 
+    " built with the FRAMEWORK's helper, not with this repository's
+    " z2ui5_cl_smps_context. The overview ships on every generated package
+    " branch, but src/00 only travels with the two packages that name it in
+    " .github/packages.json - a static reference into it left the other seven
+    " branches with an overview that does not activate. abap2UI5 itself is the
+    " one dependency every branch does have, and its start page builds the very
+    " same url the very same way (z2ui5_cl_ui5_app_start=>get_app_url).
     result = VALUE #( no        = no
                       title     = title
                       detail    = detail
                       classname = to_upper( classname )
                       installed = class_check_installed( classname )
-                      url       = z2ui5_cl_smps_context=>app_get_url( classname = classname
-                                                                      origin    = s_config-origin
-                                                                      pathname  = s_config-pathname
-                                                                      search    = s_config-search
-                                                                      hash      = s_config-hash ) ).
+                      url       = z2ui5_cl_ui5_util_context=>app_get_url( classname = classname
+                                                                          origin    = s_config-origin
+                                                                          pathname  = s_config-pathname
+                                                                          search    = s_config-search
+                                                                          hash      = s_config-hash ) ).
 
     " an enum typed property rejects the empty string, so the rows that are
     " fine say None rather than nothing

@@ -14,8 +14,8 @@
 // DESTRUCTIVE - it rewrites the working tree in place. Run it on a throwaway
 // CI checkout, never on a tree you still want.
 
-import { readFileSync, writeFileSync, readdirSync, rmSync } from 'node:fs';
-import { join } from 'node:path';
+import { readFileSync, writeFileSync, readdirSync, rmSync, statSync } from 'node:fs';
+import { basename, join } from 'node:path';
 
 const REPO = 'abap2UI5/samples-stack';
 const MAIN = `https://github.com/${REPO}/blob/main`;
@@ -23,8 +23,9 @@ const SRC = 'src';
 
 // what every branch keeps out of src/, on top of its own package: the root
 // package.devc.xml (abapGit needs the parent package) and the overview app,
-// which is the entry point on every branch - it lists all 30 samples and marks
-// the ones this checkout does not carry as "not on this system"
+// which is the entry point on every branch - it lists every sample of the
+// repository and marks the ones this checkout does not carry as "not on this
+// system"
 const SRC_ALWAYS = /^(package\.devc\.xml|z2ui5_cl_smps_app_00\.clas\..*)$/;
 
 const branch = process.argv[2];
@@ -41,6 +42,21 @@ if (!pkg) {
 }
 
 const keep = new Set([pkg.dir, ...pkg.shared]);
+
+// counted here, on the full tree, before step 1 takes the other packages out -
+// the README below states it, and a number written by hand drifts the moment a
+// sample is added. Same definition as check-overview.mjs: a class implementing
+// z2ui5_if_app, which leaves out the APC handler and the overview itself
+const walk = (dir) =>
+  readdirSync(dir).flatMap((entry) => {
+    const path = join(dir, entry);
+    return statSync(path).isDirectory() ? walk(path) : [path];
+  });
+
+const samples = walk(SRC)
+  .filter((path) => /^z2ui5_cl_smps_app_.*\.clas\.abap$/.test(basename(path)))
+  .filter((path) => basename(path) !== 'z2ui5_cl_smps_app_00.clas.abap')
+  .filter((path) => /INTERFACES\s+z2ui5_if_app\s*\./i.test(readFileSync(path, 'utf8'))).length;
 
 // 1. everything in src/ that is not this package, its shared dependencies or
 //    one of the always-kept root entries
@@ -118,7 +134,7 @@ ${pkg.note ? `\n${wrap(pkg.note)}\n` : ''}
 4. Start a sample with \`?app_start=<class name>\`, or start the overview with
    \`?app_start=z2ui5_cl_smps_app_00\`.
 
-The overview app ships on every branch and lists **all 30 samples** of the
+The overview app ships on every branch and lists **all ${samples} samples** of the
 repository, not just this package's. The ones that are not on this branch are
 shown with their Open button disabled — so it doubles as the catalogue of what
 the other branches hold.
