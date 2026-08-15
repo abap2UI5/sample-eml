@@ -14,6 +14,23 @@
   "ui5": "1.71",
   "distribution": "openui5",
 
+  // The two README badges. Every run rewrites these shields.io endpoint
+  // files, and they are two because they say two different things:
+  //
+  //   abap2UI5       | 32 apps - 37 views - 828 controls   what is here
+  //   check-abap2UI5 | 84 rules passed                     what CI made of it
+  //
+  // check-abap2UI5 commits them onto the pull request branch, so the badges
+  // on main update when the pull request that changed the corpus merges.
+  // Together they say something a workflow badge cannot: a green workflow
+  // means "the job exited zero", which is also true of a run that found
+  // nothing checkable at all - and that run prints "nothing checkable", grey,
+  // on both. Same setup as abap2UI5/samples.
+  "badge": [
+    { "kind": "corpus", "file": ".github/badges/abap2ui5.json" },
+    { "kind": "checks", "file": ".github/badges/check-abap2ui5.json" }
+  ],
+
   // src/02 is the Smart Controls package, and its README says so: sap.ui.comp
   // driven by OData metadata, SAPUI5 + an activated Gateway service. Those
   // samples exist to show a SAPUI5-only technology, so on the OpenUI5 setting
