@@ -10,7 +10,7 @@
 "! server response would be swallowed by the popup blocker.
 "!
 "! Every sample is referenced BY NAME and looked up at runtime, never with a
-"! NEW z2ui5_cl_smps_app_<no>( ). A static reference would compile the whole
+"! NEW z2ui5_cl_smps_app_&lt;no&gt;( ). A static reference would compile the whole
 "! repository into this one class, and this class has to survive the two
 "! cases where that is exactly what must not happen:
 "!

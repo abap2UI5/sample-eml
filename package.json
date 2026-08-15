@@ -1,8 +1,8 @@
 {
-  "name": "abap2UI5-sample-eml",
+  "name": "abap2ui5-samples-stack",
   "private": true,
   "version": "1.0.0",
-  "description": "Consume a RAP Business Object with the EML inside abap2UI5.",
+  "description": "Learn how abap2UI5 plays with your stack - OData, Smart Controls, RAP (with draft), business events, stateful sessions and locks, AMC/APC, MIME and the Fiori Launchpad.",
   "scripts": {
     "lint": "abaplint ./abaplint.jsonc",
     "check:abap2ui5": "abap2ui5lint",
@@ -10,13 +10,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/abap2UI5/sample-eml.git"
+    "url": "git+https://github.com/abap2UI5/samples-stack.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/abap2UI5/sample-eml/issues"
+    "url": "https://github.com/abap2UI5/samples-stack/issues"
   },
-  "homepage": "https://github.com/abap2UI5/sample-eml#readme",
+  "homepage": "https://github.com/abap2UI5/samples-stack#readme",
   "devDependencies": {
     "@abap2ui5/linter": "github:abap2UI5/linter#f2f0f9c",
     "@abaplint/cli": "^2.119.66"
