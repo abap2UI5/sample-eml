@@ -48,7 +48,7 @@ CLASS z2ui5_cl_smps_app_479 IMPLEMENTATION.
           )->a( n = `useVariantManagement`    v = `true`
           )->a( n = `persistencyKey`          v = `SmartChart_Explored`
           )->a( n = `useChartPersonalisation` v = `true`
-          )->a( n = `header`                  v = `Products` )->ele( n = `semanticObjectController` ns = `smartChart` 
+          )->a( n = `header`                  v = `Products` )->ele( n = `semanticObjectController` ns = `smartChart`
           )->ele( n = `SemanticObjectController` ns = `navpopover`
                   )->a( n = `navigationTargetsObtained` v = client->_event( `NAV_TARGETS_OBTAINED` )
                   )->a( n = `navigate`                  v = client->_event( val   = `NAVIGATE`
