@@ -24,8 +24,10 @@ on:
   push:
     branches: [main]
 
+# contents: write is for the badge commit at the end of the job, and for
+# nothing else.
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: check-abap2UI5-${{ github.ref }}
@@ -37,6 +39,10 @@ jobs:
     timeout-minutes: 15
     steps:
     - uses: actions/checkout@v7
+      with:
+        # check out the branch, not the merge commit, so the badge can go back
+        ref: ${{ github.event.pull_request.head.ref || github.ref }}
+        repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
     - uses: actions/setup-node@v6
       with:
         node-version: '22'
@@ -45,3 +51,37 @@ jobs:
     # the render gate drives a headless browser
     - run: npx playwright install chromium --with-deps
     - run: npx abap2ui5lint
+
+    # abap2ui5lint.jsonc points "badge" at .github/badges/abap2ui5.json (what
+    # the corpus is) and .github/badges/check-abap2ui5.json (what this gate
+    # made of it), so the step above already rewrote both with what the corpus
+    # now is. The default branch is protected and github-actions[bot] can
+    # never be added to a bypass list, so they are committed onto the PULL
+    # REQUEST branch - the pull request that changes the corpus is what
+    # changes the badges, and main picks them up when that pull request
+    # merges. On a ref that cannot be pushed to the stale badge is REPORTED,
+    # never silently accepted. Only after a green gate: a red pull request
+    # cannot merge, so its badges would never reach main anyway - and a badge
+    # commit on top of a failing run reads as if something had been fixed
+    - name: Publish the badges
+      if: success()
+      env:
+        # only a same-repository pull request can be pushed to with
+        # GITHUB_TOKEN; on main and from a fork the badge is only reported
+        PUSHABLE: ${{ github.event_name == 'pull_request'
+                      && github.event.pull_request.head.repo.full_name == github.repository }}
+      run: |
+        if git diff --quiet -- .github/badges; then
+          echo "The linter badges are up to date."
+          exit 0
+        fi
+        git diff -- .github/badges
+        if [ "$PUSHABLE" != "true" ]; then
+          echo "::warning::The linter badges are out of date and this ref cannot be pushed to. Run 'npm run check:abap2ui5' and commit .github/badges/."
+          exit 0
+        fi
+        git config user.name 'github-actions[bot]'
+        git config user.email 'github-actions[bot]@users.noreply.github.com'
+        git commit -qm 'Refresh the abap2UI5-linter badges' -- .github/badges
+        git push
+        echo "Badges refreshed and pushed onto the pull request branch."

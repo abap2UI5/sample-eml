@@ -1,10 +1,11 @@
 [![abap version](https://img.shields.io/badge/abap%20version-standard%20%28%E2%89%A5%201909%29-blue)](#setup)
 [![namespace](https://img.shields.io/badge/namespace-z2ui5__cl__smps-blue)](abaplint.jsonc)
 [![dependency](https://img.shields.io/badge/dependency-abap2UI5-blue)](https://github.com/abap2UI5/abap2UI5)
+[![abap2UI5](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fabap2UI5%2Fsamples-stack%2Fmain%2F.github%2Fbadges%2Fabap2ui5.json)](#what-is-in-here)
 <br>
 <br>
 [![abap-standard](https://github.com/abap2UI5/samples-stack/actions/workflows/abap-standard.yaml/badge.svg)](https://github.com/abap2UI5/samples-stack/actions/workflows/abap-standard.yaml)
-[![check-abap2UI5](https://github.com/abap2UI5/samples-stack/actions/workflows/check-abap2UI5.yaml/badge.svg)](https://github.com/abap2UI5/samples-stack/actions/workflows/check-abap2UI5.yaml)
+[![check-abap2UI5](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fabap2UI5%2Fsamples-stack%2Fmain%2F.github%2Fbadges%2Fcheck-abap2ui5.json)](https://github.com/abap2UI5/samples-stack/actions/workflows/check-abap2UI5.yaml)
 
 # abap2UI5 — samples-stack
 
@@ -209,7 +210,7 @@ They carry the older `SMP` token (`Z2UI5_AMC_SMP_2`, `Z2UI5_APC_SMP_2`,
 | Workflow | What it does |
 |---|---|
 | `abap-standard` | `abaplint ./abaplint.jsonc` — syntax `v757`, the on-premise release |
-| `check-abap2UI5` | [`abap2ui5lint`](https://github.com/abap2UI5/linter) — the app class and the view it produces, together |
+| `check-abap2UI5` | [`abap2ui5lint`](https://github.com/abap2UI5/linter) — the app class and the view it produces, together; also writes the two badges above |
 | `check-overview` | the two hand-kept indexes: every sample is listed in the overview app, and the package table matches `.github/packages.json` |
 | `create-package-branches` | rebuilds the nine per-package branches, each verified with abaplint at its own release before it is pushed |
 
