@@ -14,6 +14,13 @@
   "ui5": "1.71",
   "distribution": "openui5",
 
+  // The render gate is REQUIRED here, not merely left on. It is on by default,
+  // and a default-on gate whose runtime is missing steps aside for the property
+  // gate and the run stays green - a corpus that claims every view loads should
+  // not be able to pass without having loaded them. Saying so makes a missing
+  // @abap2ui5/render-runtime an error instead.
+  "render": true,
+
   // The two README badges. Every run rewrites these shields.io endpoint
   // files, and they are two because they say two different things:
   //
