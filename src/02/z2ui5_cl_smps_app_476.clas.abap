@@ -23,16 +23,18 @@ CLASS z2ui5_cl_smps_app_476 IMPLEMENTATION.
 
     IF client->check_on_init( ).
 
-      DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
-          )->a( n = `displayBlock`     v = `true`
-          )->a( n = `height`           v = `100%`
-          )->a( n = `xmlns`            v = `sap.m`
-          )->a( n = `xmlns:mvc`        v = `sap.ui.core.mvc`
-          )->a( n = `xmlns:core`       v = `sap.ui.core`
-          )->a( n = `xmlns:smartField` v = `sap.ui.comp.smartfield`
-          )->a( n = `xmlns:smartForm`  v = `sap.ui.comp.smartform` ).
+      DATA(view) = z2ui5_cl_ui5_view_builder=>factory(
+          )->ele( n = `View` ns = `mvc`
+              )->a( n = `displayBlock`     v = `true`
+              )->a( n = `height`           v = `100%`
+              )->a( n = `xmlns`            v = `sap.m`
+              )->a( n = `xmlns:mvc`        v = `sap.ui.core.mvc`
+              )->a( n = `xmlns:core`       v = `sap.ui.core`
+              )->a( n = `xmlns:smartField` v = `sap.ui.comp.smartfield`
+              )->a( n = `xmlns:smartForm`  v = `sap.ui.comp.smartform` ).
 
-      DATA(page) = view->ele( `Shell` )->ele( `Page`
+      DATA(page) = view->ele( `Shell`
+          )->ele( `Page`
               )->a( n = `title`          v = `abap2UI5 - Smart Controls - SmartForm`
               )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
               )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) ).
@@ -51,24 +53,32 @@ CLASS z2ui5_cl_smps_app_476 IMPLEMENTATION.
       DATA(group) = form->ele( n = `Group` ns = `smartForm`
           )->a( n = `label` v = `Product` ).
 
-      group->ele( n = `GroupElement` ns = `smartForm` )->ele( n = `SmartField` ns = `smartField`
+      group->ele( n = `GroupElement` ns = `smartForm`
+          )->ele( n = `SmartField` ns = `smartField`
               )->a( n = `value` v = `{ProductID}` ).
 
-      group->ele( n = `GroupElement` ns = `smartForm` )->ele( n = `SmartField` ns = `smartField`
+      group->ele( n = `GroupElement` ns = `smartForm`
+          )->ele( n = `SmartField` ns = `smartField`
               )->a( n = `value` v = `{Name}` ).
 
       " elementForLabel picks the second field of the group element as the one the
       " group label belongs to (0-based, so Description)
       group->ele( n = `GroupElement` ns = `smartForm`
-          )->a( n = `elementForLabel` v = `1` )->ele( n = `SmartField` ns = `smartField`
-              )->a( n = `value` v = `{Category}` )->end( )->ele( n = `SmartField` ns = `smartField`
+          )->a( n = `elementForLabel` v = `1`
+          )->ele( n = `SmartField` ns = `smartField`
+              )->a( n = `value` v = `{Category}`
+          )->end(
+          )->ele( n = `SmartField` ns = `smartField`
               )->a( n = `value` v = `{Description}` ).
 
-      group->ele( n = `GroupElement` ns = `smartForm` )->ele( n = `SmartField` ns = `smartField`
+      group->ele( n = `GroupElement` ns = `smartForm`
+          )->ele( n = `SmartField` ns = `smartField`
               )->a( n = `value` v = `{Price}` ).
 
       form->ele( n = `Group` ns = `smartForm`
-          )->a( n = `label` v = `Supplier` )->ele( n = `GroupElement` ns = `smartForm` )->ele( n = `SmartField` ns = `smartField`
+          )->a( n = `label` v = `Supplier`
+          )->ele( n = `GroupElement` ns = `smartForm`
+              )->ele( n = `SmartField` ns = `smartField`
                   )->a( n = `value` v = `{SupplierName}` ).
 
       client->view_display( val                       = view->stringify( )

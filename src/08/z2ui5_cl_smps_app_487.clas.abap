@@ -36,13 +36,14 @@ CLASS z2ui5_cl_smps_app_487 IMPLEMENTATION.
 
   METHOD view_display.
 
-    DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
-        )->a( n = `displayBlock` v = `true`
-        )->a( n = `height`       v = `100%`
-        )->a( n = `xmlns`        v = `sap.m`
-        )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
-        )->a( n = `xmlns:core`   v = `sap.ui.core`
-        )->a( n = `xmlns:z2ui5`  v = `z2ui5.cc` ).
+    DATA(view) = z2ui5_cl_ui5_view_builder=>factory(
+        )->ele( n = `View` ns = `mvc`
+            )->a( n = `displayBlock` v = `true`
+            )->a( n = `height`       v = `100%`
+            )->a( n = `xmlns`        v = `sap.m`
+            )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+            )->a( n = `xmlns:core`   v = `sap.ui.core`
+            )->a( n = `xmlns:z2ui5`  v = `z2ui5.cc` ).
 
     SELECT
       SINGLE FROM icfservloc
@@ -53,8 +54,9 @@ CLASS z2ui5_cl_smps_app_487 IMPLEMENTATION.
     " Note, these are demo sounds and are part of the abap2UI5 sample repo.
     " They are NOT meant to use in production.
     DATA(vbox) = view->ele( `Page`
-        )->a( n = `title` v = `Play success and error sounds` )->ele( `VBox`
-        )->a( n = `class` v = `sapUiSmallMargin` ).
+        )->a( n = `title` v = `Play success and error sounds`
+        )->ele( `VBox`
+            )->a( n = `class` v = `sapUiSmallMargin` ).
 
     IF icfactive = abap_false.
       vbox->tag( `MessageStrip`

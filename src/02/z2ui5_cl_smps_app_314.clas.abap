@@ -39,13 +39,15 @@ CLASS z2ui5_cl_smps_app_314 IMPLEMENTATION.
         INSERT ls_row INTO TABLE t_tab.
       ENDDO.
 
-      DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
-          )->a( n = `displayBlock` v = `true`
-          )->a( n = `height`       v = `100%`
-          )->a( n = `xmlns`        v = `sap.m`
-          )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
-          )->a( n = `xmlns:core`   v = `sap.ui.core` ).
-      DATA(page) = view->ele( `Shell` )->ele( `Page`
+      DATA(view) = z2ui5_cl_ui5_view_builder=>factory(
+          )->ele( n = `View` ns = `mvc`
+              )->a( n = `displayBlock` v = `true`
+              )->a( n = `height`       v = `100%`
+              )->a( n = `xmlns`        v = `sap.m`
+              )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+              )->a( n = `xmlns:core`   v = `sap.ui.core` ).
+      DATA(page) = view->ele( `Shell`
+          )->ele( `Page`
               )->a( n = `title`          v = `abap2UI5 - Device Model, HTTP Model, OData Model`
               )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
               )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) ).
@@ -64,36 +66,68 @@ CLASS z2ui5_cl_smps_app_314 IMPLEMENTATION.
           )->a( n = `items` v = client->_bind( val                  = t_tab
                                                    switch_default_model = abap_true ) ).
 
-      tab->ele( `headerToolbar` )->ele( `Toolbar` )->tag( `Title`
+      tab->ele( `headerToolbar`
+          )->ele( `Toolbar`
+              )->tag( `Title`
                   )->a( n = `text` v = `table with http model (framework default)` ).
 
-      tab->ele( `columns` )->ele( `Column` )->tag( `Text`
-                  )->a( n = `text` v = `Value` )->end( )->ele( `Column` )->tag( `Text`
-                  )->a( n = `text` v = `Info` )->end( )->ele( `Column` )->tag( `Text`
-                  )->a( n = `text` v = `Description` )->end( ).
+      tab->ele( `columns`
+          )->ele( `Column`
+              )->tag( `Text`
+                  )->a( n = `text` v = `Value`
+          )->end(
+          )->ele( `Column`
+              )->tag( `Text`
+                  )->a( n = `text` v = `Info`
+          )->end(
+          )->ele( `Column`
+              )->tag( `Text`
+                  )->a( n = `text` v = `Description`
+          )->end( ).
 
-      tab->ele( `items` )->ele( `ColumnListItem` )->ele( `cells` )->tag( `Text`
-             )->a( n = `text` v = `{http>VALUE}` )->tag( `Text`
-             )->a( n = `text` v = `{http>INFO}` )->tag( `Text`
-             )->a( n = `text` v = `{http>DESCR}` ).
+      tab->ele( `items`
+          )->ele( `ColumnListItem`
+              )->ele( `cells`
+                  )->tag( `Text`
+                      )->a( n = `text` v = `{http>VALUE}`
+                  )->tag( `Text`
+                      )->a( n = `text` v = `{http>INFO}`
+                  )->tag( `Text`
+                      )->a( n = `text` v = `{http>DESCR}` ).
 
       tab = page->ele( `Table`
           " abap2ui5lint-disable-next-line unknown-binding-path hardcoded-binding-path -- the default model IS the OData service here (switch_default_model_path), so the entity set is an absolute service path with no ABAP variable to derive it from
           )->a( n = `items`   v = `{/BusinessPartnerSet}`
           )->a( n = `growing` b = abap_true ).
 
-      tab->ele( `headerToolbar` )->ele( `Toolbar` )->tag( `Title`
-            )->a( n = `text` v = `table with odata model` ).
+      tab->ele( `headerToolbar`
+          )->ele( `Toolbar`
+              )->tag( `Title`
+                  )->a( n = `text` v = `table with odata model` ).
 
-      tab->ele( `columns` )->ele( `Column` )->tag( `Text`
-              )->a( n = `text` v = `BusinessPartnerID` )->end( )->ele( `Column` )->tag( `Text`
-              )->a( n = `text` v = `CompanyName` )->end( )->ele( `Column` )->tag( `Text`
-              )->a( n = `text` v = `WebAddress` )->end( ).
+      tab->ele( `columns`
+          )->ele( `Column`
+              )->tag( `Text`
+                  )->a( n = `text` v = `BusinessPartnerID`
+          )->end(
+          )->ele( `Column`
+              )->tag( `Text`
+                  )->a( n = `text` v = `CompanyName`
+          )->end(
+          )->ele( `Column`
+              )->tag( `Text`
+                  )->a( n = `text` v = `WebAddress`
+          )->end( ).
 
-      tab->ele( `items` )->ele( `ColumnListItem` )->ele( `cells` )->tag( `Text`
-             )->a( n = `text` v = `{BusinessPartnerID}` )->tag( `Text`
-             )->a( n = `text` v = `{CompanyName}` )->tag( `Text`
-             )->a( n = `text` v = `{WebAddress}` ).
+      tab->ele( `items`
+          )->ele( `ColumnListItem`
+              )->ele( `cells`
+                  )->tag( `Text`
+                      )->a( n = `text` v = `{BusinessPartnerID}`
+                  )->tag( `Text`
+                      )->a( n = `text` v = `{CompanyName}`
+                  )->tag( `Text`
+                      )->a( n = `text` v = `{WebAddress}` ).
 *             )->tag( `Text` )->a( n = `text` v = `{SupplementID}`
 *             )->tag( `Text` )->a( n = `text` v = `{SupplementText}`
 *             )->tag( `Text` )->a( n = `text` v = `{Price}`

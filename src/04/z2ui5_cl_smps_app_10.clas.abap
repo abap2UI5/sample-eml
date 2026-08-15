@@ -339,51 +339,94 @@ CLASS z2ui5_cl_smps_app_10 IMPLEMENTATION.
 
   METHOD view_display.
 
-    DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
-        )->a( n = `displayBlock` v = `true`
-        )->a( n = `height`       v = `100%`
-        )->a( n = `xmlns`        v = `sap.m`
-        )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
-        )->a( n = `xmlns:core`   v = `sap.ui.core`
-        )->a( n = `xmlns:form`   v = `sap.ui.layout.form` ).
-    DATA(page) = view->ele( `Shell` )->ele( `Page`
+    DATA(view) = z2ui5_cl_ui5_view_builder=>factory(
+        )->ele( n = `View` ns = `mvc`
+            )->a( n = `displayBlock` v = `true`
+            )->a( n = `height`       v = `100%`
+            )->a( n = `xmlns`        v = `sap.m`
+            )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+            )->a( n = `xmlns:core`   v = `sap.ui.core`
+            )->a( n = `xmlns:form`   v = `sap.ui.layout.form` ).
+    DATA(page) = view->ele( `Shell`
+        )->ele( `Page`
             )->a( n = `title`          v = `abap2UI5 - EML - 10 Travels with Draft Handling`
             )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
             )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) ).
 
     DATA(table) = page->ele( `Table`
         )->a( n = `items` v = client->_bind( t_travels ) ).
-    table->ele( `headerToolbar` )->ele( `Toolbar` )->tag( `Title`
-                )->a( n = `text` v = `Travels (Z2UI5_R_SMPS_TRD)` )->tag( `ToolbarSpacer` )->tag( `Button`
+    table->ele( `headerToolbar`
+        )->ele( `Toolbar`
+            )->tag( `Title`
+                )->a( n = `text` v = `Travels (Z2UI5_R_SMPS_TRD)`
+            )->tag( `ToolbarSpacer`
+            )->tag( `Button`
                 )->a( n = `press` v = client->_event( `GENERATE` )
                 )->a( n = `text`  v = `Generate Demo Data`
-                )->a( n = `icon`  v = `sap-icon://add` )->tag( `Button`
-                )->a( n = `press` v = client->_event( `REFRESH` )
-                )->a( n = `icon`  v = `sap-icon://refresh` ).
+                )->a( n = `icon`  v = `sap-icon://add`
+            )->tag( `Button`
+                )->a( n = `press`   v = client->_event( `REFRESH` )
+                )->a( n = `icon`    v = `sap-icon://refresh`
+                )->a( n = `tooltip` v = `Refresh` ).
 
-    table->ele( `columns` )->ele( `Column` )->tag( `Text`
-            )->a( n = `text` v = `ID` )->end( )->ele( `Column` )->tag( `Text`
-            )->a( n = `text` v = `Customer` )->end( )->ele( `Column` )->tag( `Text`
-            )->a( n = `text` v = `Begin Date` )->end( )->ele( `Column` )->tag( `Text`
-            )->a( n = `text` v = `End Date` )->end( )->ele( `Column` )->tag( `Text`
-            )->a( n = `text` v = `Total Price` )->end( )->ele( `Column` )->tag( `Text`
-            )->a( n = `text` v = `Status` )->end( )->ele( `Column` )->tag( `Text`
-            )->a( n = `text` v = `Draft` )->end( )->ele( `Column` )->tag( `Text`
-            )->a( n = `text` v = `Actions` ).
+    table->ele( `columns`
+        )->ele( `Column`
+            )->tag( `Text`
+                )->a( n = `text` v = `ID`
+        )->end(
+        )->ele( `Column`
+            )->tag( `Text`
+                )->a( n = `text` v = `Customer`
+        )->end(
+        )->ele( `Column`
+            )->tag( `Text`
+                )->a( n = `text` v = `Begin Date`
+        )->end(
+        )->ele( `Column`
+            )->tag( `Text`
+                )->a( n = `text` v = `End Date`
+        )->end(
+        )->ele( `Column`
+            )->tag( `Text`
+                )->a( n = `text` v = `Total Price`
+        )->end(
+        )->ele( `Column`
+            )->tag( `Text`
+                )->a( n = `text` v = `Status`
+        )->end(
+        )->ele( `Column`
+            )->tag( `Text`
+                )->a( n = `text` v = `Draft`
+        )->end(
+        )->ele( `Column`
+            )->tag( `Text`
+                )->a( n = `text` v = `Actions` ).
 
-    table->ele( `items` )->ele( `ColumnListItem` )->ele( `cells` )->tag( `Text`
-                )->a( n = `text` v = `{TRAVEL_ID}` )->tag( `Text`
-                )->a( n = `text` v = `{CUSTOMER_ID}` )->tag( `Text`
-                )->a( n = `text` v = `{BEGIN_DATE}` )->tag( `Text`
-                )->a( n = `text` v = `{END_DATE}` )->tag( `Text`
-                )->a( n = `text` v = `{TOTAL_PRICE}` )->ele( `ObjectStatus`
-                )->a( n = `state` v = `{STATUS_STATE}`
-                )->a( n = `text`  v = `{OVERALL_STATUS}` )->end( )->ele( `ObjectStatus`
-                )->a( n = `state` v = `Warning`
-                )->a( n = `text`  v = `{DRAFT_TEXT}` )->end( )->tag( `Button`
-                )->a( n = `press`   v = client->_event( val = `EDIT` t_arg = VALUE #( ( `${TRAVEL_UUID}` ) ) )
-                )->a( n = `icon`    v = `sap-icon://edit`
-                )->a( n = `tooltip` v = `Edit Travel` ).
+    table->ele( `items`
+        )->ele( `ColumnListItem`
+            )->ele( `cells`
+                )->tag( `Text`
+                    )->a( n = `text` v = `{TRAVEL_ID}`
+                )->tag( `Text`
+                    )->a( n = `text` v = `{CUSTOMER_ID}`
+                )->tag( `Text`
+                    )->a( n = `text` v = `{BEGIN_DATE}`
+                )->tag( `Text`
+                    )->a( n = `text` v = `{END_DATE}`
+                )->tag( `Text`
+                    )->a( n = `text` v = `{TOTAL_PRICE}`
+                )->ele( `ObjectStatus`
+                    )->a( n = `state` v = `{STATUS_STATE}`
+                    )->a( n = `text`  v = `{OVERALL_STATUS}`
+                )->end(
+                )->ele( `ObjectStatus`
+                    )->a( n = `state` v = `Warning`
+                    )->a( n = `text`  v = `{DRAFT_TEXT}`
+                )->end(
+                )->tag( `Button`
+                    )->a( n = `press`   v = client->_event( val = `EDIT` t_arg = VALUE #( ( `${TRAVEL_UUID}` ) ) )
+                    )->a( n = `icon`    v = `sap-icon://edit`
+                    )->a( n = `tooltip` v = `Edit Travel` ).
 
     client->view_display( view->stringify( ) ).
 
@@ -392,42 +435,62 @@ CLASS z2ui5_cl_smps_app_10 IMPLEMENTATION.
 
   METHOD popup_edit_display.
 
-    DATA(popup) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `FragmentDefinition` ns = `core`
-        )->a( n = `xmlns`      v = `sap.m`
-        )->a( n = `xmlns:core` v = `sap.ui.core`
-        )->a( n = `xmlns:form` v = `sap.ui.layout.form` ).
+    DATA(popup) = z2ui5_cl_ui5_view_builder=>factory(
+        )->ele( n = `FragmentDefinition` ns = `core`
+            )->a( n = `xmlns`      v = `sap.m`
+            )->a( n = `xmlns:core` v = `sap.ui.core`
+            )->a( n = `xmlns:form` v = `sap.ui.layout.form` ).
     DATA(dialog) = popup->ele( `Dialog`
         )->a( n = `title`        v = |Edit Travel { s_draft-travel_id } (Draft)|
         )->a( n = `contentWidth` v = `30rem` ).
 
     dialog->ele( n = `SimpleForm` ns = `form`
-        )->a( n = `editable` b = abap_true )->ele( n = `content` ns = `form` )->tag( `Label`
-            )->a( n = `text` v = `Agency ID` )->tag( `Input`
-            )->a( n = `value` v = client->_bind( s_draft-agency_id ) )->tag( `Label`
-            )->a( n = `text` v = `Customer ID` )->tag( `Input`
-            )->a( n = `value` v = client->_bind( s_draft-customer_id ) )->tag( `Label`
-            )->a( n = `text` v = `Begin Date` )->tag( `DatePicker`
-            )->a( n = `value`       v = client->_bind( s_draft-begin_date )
-            )->a( n = `valueFormat` v = `yyyyMMdd` )->tag( `Label`
-            )->a( n = `text` v = `End Date` )->tag( `DatePicker`
-            )->a( n = `value`       v = client->_bind( s_draft-end_date )
-            )->a( n = `valueFormat` v = `yyyyMMdd` )->tag( `Label`
-            )->a( n = `text` v = `Booking Fee` )->tag( `Input`
-            )->a( n = `value` v = client->_bind( s_draft-booking_fee ) )->tag( `Label`
-            )->a( n = `text` v = `Currency` )->tag( `Input`
-            )->a( n = `value` v = client->_bind( s_draft-currency ) )->tag( `Label`
-            )->a( n = `text` v = `Description` )->tag( `Input`
-            )->a( n = `value` v = client->_bind( s_draft-description ) ).
+        )->a( n = `editable` b = abap_true
+        )->ele( n = `content` ns = `form`
+            )->tag( `Label`
+                )->a( n = `text` v = `Agency ID`
+            )->tag( `Input`
+                )->a( n = `value` v = client->_bind( s_draft-agency_id )
+            )->tag( `Label`
+                )->a( n = `text` v = `Customer ID`
+            )->tag( `Input`
+                )->a( n = `value` v = client->_bind( s_draft-customer_id )
+            )->tag( `Label`
+                )->a( n = `text` v = `Begin Date`
+            )->tag( `DatePicker`
+                )->a( n = `value`       v = client->_bind( s_draft-begin_date )
+                )->a( n = `valueFormat` v = `yyyyMMdd`
+            )->tag( `Label`
+                )->a( n = `text` v = `End Date`
+            )->tag( `DatePicker`
+                )->a( n = `value`       v = client->_bind( s_draft-end_date )
+                )->a( n = `valueFormat` v = `yyyyMMdd`
+            )->tag( `Label`
+                )->a( n = `text` v = `Booking Fee`
+            )->tag( `Input`
+                )->a( n = `value` v = client->_bind( s_draft-booking_fee )
+            )->tag( `Label`
+                )->a( n = `text` v = `Currency`
+            )->tag( `Input`
+                )->a( n = `value` v = client->_bind( s_draft-currency )
+            )->tag( `Label`
+                )->a( n = `text` v = `Description`
+            )->tag( `Input`
+                )->a( n = `value` v = client->_bind( s_draft-description ) ).
 
-    dialog->ele( `buttons` )->tag( `Button`
+    dialog->ele( `buttons`
+        )->tag( `Button`
             )->a( n = `press` v = client->_event( `ACTIVATE` )
             )->a( n = `text`  v = `Activate`
-            )->a( n = `type`  v = `Emphasized` )->tag( `Button`
+            )->a( n = `type`  v = `Emphasized`
+        )->tag( `Button`
             )->a( n = `press` v = client->_event( `SAVE_DRAFT` )
-            )->a( n = `text`  v = `Save Draft` )->tag( `Button`
+            )->a( n = `text`  v = `Save Draft`
+        )->tag( `Button`
             )->a( n = `press` v = client->_event( `DISCARD` )
             )->a( n = `text`  v = `Discard Draft`
-            )->a( n = `type`  v = `Reject` )->tag( `Button`
+            )->a( n = `type`  v = `Reject`
+        )->tag( `Button`
             )->a( n = `press` v = client->_event( `POPUP_CLOSE` )
             )->a( n = `text`  v = `Close` ).
 

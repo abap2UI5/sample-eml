@@ -20,15 +20,17 @@ CLASS z2ui5_cl_smps_app_482 IMPLEMENTATION.
         client->message_box_display( `No Launchpad Active, Sample not working!` ).
       ENDIF.
 
-      DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
-          )->a( n = `displayBlock` v = `true`
-          )->a( n = `height`       v = `100%`
-          )->a( n = `xmlns`        v = `sap.m`
-          )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
-          )->a( n = `xmlns:core`   v = `sap.ui.core`
-          )->a( n = `xmlns:form`   v = `sap.ui.layout.form` ).
-      DATA(page) = view->ele( `Shell` )->ele( `Page`
-          )->a( n = `showHeader` b = abap_false ).
+      DATA(view) = z2ui5_cl_ui5_view_builder=>factory(
+          )->ele( n = `View` ns = `mvc`
+              )->a( n = `displayBlock` v = `true`
+              )->a( n = `height`       v = `100%`
+              )->a( n = `xmlns`        v = `sap.m`
+              )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+              )->a( n = `xmlns:core`   v = `sap.ui.core`
+              )->a( n = `xmlns:form`   v = `sap.ui.layout.form` ).
+      DATA(page) = view->ele( `Shell`
+          )->ele( `Page`
+              )->a( n = `showHeader` b = abap_false ).
 
       page->tag( `MessageStrip`
           )->a( n = `text`     v = `Sets the launchpad shell title from the backend via follow_up_action( ` &&
@@ -40,14 +42,20 @@ CLASS z2ui5_cl_smps_app_482 IMPLEMENTATION.
 
       page->ele( n = `SimpleForm` ns = `form`
           )->a( n = `title`    v = `Set Shell Title`
-          )->a( n = `editable` b = abap_true )->ele( n = `content` ns = `form` )->tag( `Label`
-              )->a( n = `text` v = `` )->tag( `Input`
-              )->a( n = `value` v = client->_bind( title ) )->tag( `Label`
-              )->a( n = `text` v = `` )->tag( `Button`
-              )->a( n = `press` v = client->_event( `SET_TITLE` )
-              )->a( n = `text`  v = `Set Title` )->tag( `Button`
-              )->a( n = `press` v = client->_event_nav_app_leave( )
-              )->a( n = `text`  v = `Go Back` ).
+          )->a( n = `editable` b = abap_true
+          )->ele( n = `content` ns = `form`
+              )->tag( `Label`
+                  )->a( n = `text` v = ``
+              )->tag( `Input`
+                  )->a( n = `value` v = client->_bind( title )
+              )->tag( `Label`
+                  )->a( n = `text` v = ``
+              )->tag( `Button`
+                  )->a( n = `press` v = client->_event( `SET_TITLE` )
+                  )->a( n = `text`  v = `Set Title`
+              )->tag( `Button`
+                  )->a( n = `press` v = client->_event_nav_app_leave( )
+                  )->a( n = `text`  v = `Go Back` ).
 
       client->view_display( view->stringify( ) ).
 

@@ -181,25 +181,28 @@ CLASS z2ui5_cl_smps_app_489 IMPLEMENTATION.
       WHERE icf_name = `Z2UI5_APC_SMP_2`
       INTO @DATA(icfactive).
 
-    DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `View` ns = `mvc`
-        )->a( n = `displayBlock` v = `true`
-        )->a( n = `height`       v = `100%`
-        )->a( n = `xmlns`        v = `sap.m`
-        )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
-        )->a( n = `xmlns:core`   v = `sap.ui.core`
-        )->a( n = `xmlns:form`   v = `sap.ui.layout.form`
-        )->a( n = `xmlns:tnt`    v = `sap.tnt`
-        )->a( n = `xmlns:z2ui5`  v = `z2ui5.cc` ).
-    DATA(page) = view->ele( `Shell` )->ele( `Page`
-                        )->a( n = `title`          v = `abap2UI5 - Sample: News Feed over WebSocket`
-                        )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
-                        )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) ).
+    DATA(view) = z2ui5_cl_ui5_view_builder=>factory(
+        )->ele( n = `View` ns = `mvc`
+            )->a( n = `displayBlock` v = `true`
+            )->a( n = `height`       v = `100%`
+            )->a( n = `xmlns`        v = `sap.m`
+            )->a( n = `xmlns:mvc`    v = `sap.ui.core.mvc`
+            )->a( n = `xmlns:core`   v = `sap.ui.core`
+            )->a( n = `xmlns:form`   v = `sap.ui.layout.form`
+            )->a( n = `xmlns:tnt`    v = `sap.tnt`
+            )->a( n = `xmlns:z2ui5`  v = `z2ui5.cc` ).
+    DATA(page) = view->ele( `Shell`
+        )->ele( `Page`
+            )->a( n = `title`          v = `abap2UI5 - Sample: News Feed over WebSocket`
+            )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
+            )->a( n = `navButtonPress` v = client->_event_nav_app_leave( ) ).
 
-    page->ele( `headerContent` )->tag( `Button`
-           )->a( n = `press`   v = client->_event( `CLICK_HINT_ICON` )
-           )->a( n = `icon`    v = `sap-icon://hint`
-           )->a( n = `id`      v = `button_hint_id`
-           )->a( n = `tooltip` v = `Sample information` ).
+    page->ele( `headerContent`
+        )->tag( `Button`
+            )->a( n = `press`   v = client->_event( `CLICK_HINT_ICON` )
+            )->a( n = `icon`    v = `sap-icon://hint`
+            )->a( n = `id`      v = `button_hint_id`
+            )->a( n = `tooltip` v = `Sample information` ).
 
     page->tag( `MessageStrip`
         )->a( n = `text` v = `This sample consumes an ABAP Push Channel without a line of JavaScript: the z2ui5:Websocket ` &&
@@ -234,7 +237,8 @@ CLASS z2ui5_cl_smps_app_489 IMPLEMENTATION.
     DATA(form) = page->ele( n = `SimpleForm` ns = `form`
         )->a( n = `title`    v = `Publish news`
         )->a( n = `class`    v = `sapUiTinyMarginBottom`
-        )->a( n = `editable` b = abap_true )->ele( n = `content` ns = `form` ).
+        )->a( n = `editable` b = abap_true
+        )->ele( n = `content` ns = `form` ).
 
     " Publishing while disconnected would work - it goes into the channel
     " from ABAP - but the app would not see its own news come back.
@@ -244,16 +248,18 @@ CLASS z2ui5_cl_smps_app_489 IMPLEMENTATION.
         )->a( n = `post`    v = client->_event( `POST` ) ).
 
     form->tag( `Label`
-        )->a( n = `text` v = `Author` )->tag( `Input`
-           )->a( n = `placeholder` v = `Anonymous`
-           )->a( n = `value`       v = client->_bind( author_input ) ).
+        )->a( n = `text` v = `Author`
+        )->tag( `Input`
+            )->a( n = `placeholder` v = `Anonymous`
+            )->a( n = `value`       v = client->_bind( author_input ) ).
 
     page->ele( `List`
         )->a( n = `headerText` v = `News`
-        )->a( n = `items`      v = client->_bind( t_news ) )->ele( `FeedListItem`
-             )->a( n = `sender`   v = `{AUTHOR}`
-             )->a( n = `showIcon` b = abap_false
-             )->a( n = `text`     v = `{TEXT}` ).
+        )->a( n = `items`      v = client->_bind( t_news )
+        )->ele( `FeedListItem`
+            )->a( n = `sender`   v = `{AUTHOR}`
+            )->a( n = `showIcon` b = abap_false
+            )->a( n = `text`     v = `{TEXT}` ).
 
     DATA(footer) = page->ele( `footer` )->ele( `OverflowToolbar` ).
     footer->ele( n = `InfoLabel` ns = `tnt`
@@ -275,10 +281,11 @@ CLASS z2ui5_cl_smps_app_489 IMPLEMENTATION.
     " after 1.71, so on the oldest release abap2UI5 supports the button
     " renders with no icon at all - UI5 says nothing about a name it does
     " not know, it simply draws nothing
-    footer->tag( `ToolbarSpacer` )->tag( `Button`
-        )->a( n = `press` v = client->_event( `CLEAR` )
-        )->a( n = `text`  v = `Clear`
-        )->a( n = `icon`  v = `sap-icon://eraser` ).
+    footer->tag( `ToolbarSpacer`
+        )->tag( `Button`
+            )->a( n = `press` v = client->_event( `CLEAR` )
+            )->a( n = `text`  v = `Clear`
+            )->a( n = `icon`  v = `sap-icon://eraser` ).
 
     client->view_display( view->stringify( ) ).
 
@@ -287,17 +294,19 @@ CLASS z2ui5_cl_smps_app_489 IMPLEMENTATION.
 
   METHOD popover_display.
 
-    DATA(view) = z2ui5_cl_ui5_view_builder=>factory( )->ele( n = `FragmentDefinition` ns = `core`
-        )->a( n = `xmlns`      v = `sap.m`
-        )->a( n = `xmlns:core` v = `sap.ui.core`
-        )->a( n = `xmlns:form` v = `sap.ui.layout.form`
-        )->a( n = `xmlns:tnt`  v = `sap.tnt` ).
+    DATA(view) = z2ui5_cl_ui5_view_builder=>factory(
+        )->ele( n = `FragmentDefinition` ns = `core`
+            )->a( n = `xmlns`      v = `sap.m`
+            )->a( n = `xmlns:core` v = `sap.ui.core`
+            )->a( n = `xmlns:form` v = `sap.ui.layout.form`
+            )->a( n = `xmlns:tnt`  v = `sap.tnt` ).
     view->ele( `QuickView`
         )->a( n = `placement` v = `Bottom`
-        )->a( n = `width`     v = `auto` )->ele( `QuickViewPage`
-                  )->a( n = `description` v = `This sample shows how to consume APC messages over websocket. Open the app multiple times and post something.`
-                  )->a( n = `header`      v = `Sample information`
-                  )->a( n = `pageId`      v = `sampleInformationId` ).
+        )->a( n = `width`     v = `auto`
+        )->ele( `QuickViewPage`
+            )->a( n = `description` v = `This sample shows how to consume APC messages over websocket. Open the app multiple times and post something.`
+            )->a( n = `header`      v = `Sample information`
+            )->a( n = `pageId`      v = `sampleInformationId` ).
 
     client->popover_display(
       xml   = view->stringify( )
