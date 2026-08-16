@@ -27,7 +27,7 @@ CLASS z2ui5_cl_smps_app_490 IMPLEMENTATION.
     IF view_id IS INITIAL OR view_id = 1.
       view_id = 1.
       TRY.
-          IF client->check_on_init( ) OR client->check_on_navigated( ).
+          IF client->check_on_navigated( ).
             DATA(view) = z2ui5_cl_ui5_view_builder=>factory(
                 )->ele( n = `View` ns = `mvc`
                     )->a( n = `displayBlock` v = `true`
