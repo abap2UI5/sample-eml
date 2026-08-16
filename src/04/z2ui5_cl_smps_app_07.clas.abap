@@ -1,3 +1,4 @@
+" @keywords eml rap draft edit enter lock mode
 "! <p class="shorttext synchronized">abap2UI5 - EML sample 07 - enter draft mode</p>
 "! Edit copies the active instance into a new draft, Resume picks up a draft
 "! that already exists.

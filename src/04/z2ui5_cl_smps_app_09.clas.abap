@@ -1,3 +1,4 @@
+" @keywords eml rap draft discard resume leave mode
 "! <p class="shorttext synchronized">abap2UI5 - EML sample 09 - leave draft mode</p>
 "! Activate turns the draft into the active instance, Discard throws it away.
 "!

@@ -1,3 +1,4 @@
+" @keywords switch_default_model_path odata model default binding smart controls
 CLASS z2ui5_cl_smps_app_314 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

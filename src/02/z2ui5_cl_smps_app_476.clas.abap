@@ -1,3 +1,4 @@
+" @keywords smartform smartfield editable toggle edit mode
 CLASS z2ui5_cl_smps_app_476 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

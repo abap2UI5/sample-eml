@@ -1,3 +1,4 @@
+" @keywords smartfilterbar smarttable filter search annotations controlconfiguration
 CLASS z2ui5_cl_smps_app_477 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

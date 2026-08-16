@@ -1,3 +1,4 @@
+" @keywords launchpad fiori flp startup parameters intent
 CLASS z2ui5_cl_smps_app_481 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

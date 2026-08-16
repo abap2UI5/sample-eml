@@ -1,3 +1,4 @@
+" @keywords launchpad fiori flp shell title follow_up_action
 CLASS z2ui5_cl_smps_app_482 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

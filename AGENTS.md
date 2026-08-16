@@ -163,6 +163,41 @@ gone.
   "validations run at COMMIT" would otherwise surprise a reader.
 - The class description in `.clas.xml` (`<DESCRIPT>`) is what the overview app
   shows. Keep it in Title Case and specific.
+- **Every app carries a `" @keywords` line as the first line of its
+  `.clas.abap`** — checked by `npm run check:keywords`:
+
+  ```abap
+  " @keywords stateful session lock navigation nav_app_call check_on_navigated
+  CLASS z2ui5_cl_smps_app_490 DEFINITION PUBLIC.
+  ```
+
+  A plain `"` comment and not `"!`, because an unknown `"! @tag` is reported by
+  the extended check (SLIN/ATC). Lowercase, space separated, four to eight
+  terms. The convention is [abap2UI5/samples](https://github.com/abap2UI5/samples)'
+  (its AGENTS.md §4), unchanged on purpose so one reader can read both
+  repositories.
+
+  Put in what a newcomer would **type** and the class name cannot hold:
+  synonyms (`flp` for launchpad, `eml` for the RAP entity API), the controls
+  the sample actually builds (`smartfilterbar`, `feedlistitem`) and the
+  abap2UI5 API it demonstrates (`set_session_stateful`, `nav_app_call`). Leave
+  out the scaffolding — `check_on_init`, `view_display` and `_bind` are in all
+  32 apps and therefore separate none of them.
+
+  Why it is gated: nothing about a missing line is broken. The app compiles,
+  runs, and appears in the overview. The only symptom is that nobody looking
+  for it arrives — the overview's search box, `Ctrl+F` over a catalogue, and an
+  agent asking "is there already a sample for WebSockets" all come up empty in
+  the same silent way. This repository ran that way for its whole life.
+
+  A class that does **not** implement `z2ui5_if_app` is a helper — a behavior
+  pool, demo data, an event consumer, the generated APC protocol class — and is
+  exempt, because a helper is reached *by* a sample rather than looked up. That
+  is decided from the source, not from a list somebody has to maintain.
+
+  `" @docs` (the link back to a documentation chapter) is **not** added here by
+  hand: the pairing is declared on the documentation side, in the page's
+  `samples:` frontmatter, and generated back.
 
 ## 7. When you add a sample
 
@@ -172,5 +207,7 @@ gone.
    package.
 3. Add it to the overview app's catalogue in `z2ui5_cl_smps_app_00` — by name,
    never with a static reference.
-4. Say what it needs in the package README if it needs anything new.
-5. `npm run check`.
+4. Give it a `" @keywords` line as its first line (§6) — what somebody would
+   type who does not know your sample exists.
+5. Say what it needs in the package README if it needs anything new.
+6. `npm run check`.

@@ -1,3 +1,4 @@
+" @keywords eml rap draft list objectstatus which travels
 "! <p class="shorttext synchronized">abap2UI5 - EML sample 06 - which travels have a draft</p>
 "! A draft and its active instance share the key - only %is_draft separates
 "! them. So reading the keys with %is_draft = mk-on answers the question "which

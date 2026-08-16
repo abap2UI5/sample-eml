@@ -1,3 +1,4 @@
+" @keywords mime audio sound play_audio wav follow_up_action
 CLASS z2ui5_cl_smps_app_487 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

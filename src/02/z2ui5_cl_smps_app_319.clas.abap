@@ -1,3 +1,4 @@
+" @keywords smartmultiinput multi input tokens smart controls odata
 "! SmartMultiInput (sap.ui.comp) - the strength of one control: it gives the user
 "! a full SELECT-OPTIONS experience (value help from OData, multiple conditions,
 "! operators like contains / between / greater-than, and include/exclude) and

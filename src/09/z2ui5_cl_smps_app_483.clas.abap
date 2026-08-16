@@ -1,3 +1,4 @@
+" @keywords launchpad fiori flp cross app navigation sender intent
 CLASS z2ui5_cl_smps_app_483 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

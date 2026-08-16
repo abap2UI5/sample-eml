@@ -1,3 +1,4 @@
+" @keywords eml rap read travel select entity behavior
 "! <p class="shorttext synchronized">abap2UI5 - EML sample 01 - read travel</p>
 "! Reads one instance by its key.
 "!

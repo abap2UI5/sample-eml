@@ -1,3 +1,4 @@
+" @keywords rap business events ticket raise publish
 CLASS z2ui5_cl_smps_app_11 DEFINITION PUBLIC CREATE PUBLIC.
 
   PUBLIC SECTION.

@@ -1,3 +1,4 @@
+" @keywords eml rap crud travel manage popup objectstatus
 "! <p class="shorttext synchronized">abap2UI5 - EML sample 05 - manage travels</p>
 "! A WHOLE APP, not a single snippet. Read, create, update, delete and both
 "! actions of the business object in one screen, with the message handling and

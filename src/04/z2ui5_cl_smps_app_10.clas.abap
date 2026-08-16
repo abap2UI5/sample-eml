@@ -1,3 +1,4 @@
+" @keywords eml rap draft handling crud popup complete
 "! <p class="shorttext synchronized">abap2UI5 - EML sample 10 - draft handling</p>
 "! A WHOLE APP, not a single snippet. The complete draft lifecycle in one
 "! screen: list, Edit, Resume, change, Activate, Discard - roughly three times

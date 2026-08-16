@@ -1,3 +1,4 @@
+" @keywords rap business events log consumer subscribe
 CLASS z2ui5_cl_smps_app_12 DEFINITION PUBLIC CREATE PUBLIC.
 
   PUBLIC SECTION.

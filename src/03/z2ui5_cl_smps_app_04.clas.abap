@@ -1,3 +1,4 @@
+" @keywords eml rap delete travel remove commit table
 "! <p class="shorttext synchronized">abap2UI5 - EML sample 04 - delete travel</p>
 "! Deletes one instance.
 "!

@@ -1,3 +1,4 @@
+" @keywords filterbar filtergroupitem smartvariantmanagement classic filter variant
 CLASS z2ui5_cl_smps_app_493 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

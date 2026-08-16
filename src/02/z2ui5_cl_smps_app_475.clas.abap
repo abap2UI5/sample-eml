@@ -1,3 +1,4 @@
+" @keywords smartform smartfield group groupelement columnlayout annotations
 CLASS z2ui5_cl_smps_app_475 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
