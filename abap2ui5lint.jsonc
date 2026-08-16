@@ -49,14 +49,11 @@
   //     and is attributed to the nearest control that IS known (sap.m.Page).
   //     The chains themselves are correct — controlConfiguration really does
   //     sit under SmartFilterBar.
-  //     This one has an expiry: it was a linter defect, not a fact about the
-  //     snapshot, and it is fixed — an unresolvable control now makes the owner
-  //     opaque instead of handing its children to a grandparent, so the eight
-  //     findings this line hides disappear on their own. VERIFIED 2026-08-15
-  //     against the linter's main branch: with the line removed this repo
-  //     reports no findings at all. DELETE THE LINE when the
-  //     @abap2ui5/linter pin reaches 0.2.0 and re-run; the other two
-  //     exclusions below stay, they are facts about SAPUI5
+  //     DELETED on the 0.2.0 bump, as its expiry said. Re-measured first: with
+  //     the pin at 0.2.0 and the line gone, this repository reports ZERO
+  //     unknown-aggregation findings. The line was hiding a linter defect, and
+  //     the defect is fixed. The other two exclusions stay, they are facts
+  //     about SAPUI5
   //   * render-error         — the render gate serves the OpenUI5 runtime,
   //     which has no sap/ui/comp/... modules to load
   //
@@ -79,7 +76,6 @@
     "chain-house-layout": { "severity": "warning" },
 
     "sapui5-only-control": { "exclude": ["/src/02/"] },
-    "unknown-aggregation": { "exclude": ["/src/02/"] },
     // A render error carries no line, so a source directive cannot reach it —
     // the config is the only instrument. Two shapes here, both about what the
     // static harness can serve rather than about the app:
@@ -99,7 +95,23 @@
         "/src/07/z2ui5_cl_smps_app_489\\.",
         "/src/08/z2ui5_cl_smps_app_487\\."
       ]
-    }
+    },
+
+    /* 0.2.0 brought `missing-on-navigated-branch`, and it is RIGHT: 27 of the
+     * 32 apps here dispatch on check_on_init( ) alone, so nothing re-displays
+     * when a popup hands control back or a bookmarked state is restored.
+     * abap2UI5/samples-controls made the branch part of its port recipe on the
+     * same day ("NOT optional and stays even in a static app").
+     *
+     * Not excluded and not baselined — demoted, so every finding stays on the
+     * report where somebody has to look at it, and CI is not red about work
+     * that has not been scheduled. The fix is not a one-liner: these apps build
+     * the whole view INLINE inside the IF branch, so each one needs its view
+     * extracted into a method before an ELSEIF can call it. 27 apps.
+     *
+     * RAISE THIS BACK to warning as the apps are converted — the last one to
+     * be converted should delete the line. */
+    "missing-on-navigated-branch": "hint"
   },
 
   "failOn": "warning"
