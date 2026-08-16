@@ -163,13 +163,25 @@ gone.
   "validations run at COMMIT" would otherwise surprise a reader.
 - The class description in `.clas.xml` (`<DESCRIPT>`) is what the overview app
   shows. Keep it in Title Case and specific.
-- **Every app carries a `" @keywords` line as the first line of its
-  `.clas.abap`** — checked by `npm run check:keywords`:
+- **Every app carries three lines about itself, and they are the only place
+  each fact lives** — checked by `npm run check:keywords`:
 
   ```abap
-  " @keywords stateful session lock navigation nav_app_call check_on_navigated
-  CLASS z2ui5_cl_smps_app_490 DEFINITION PUBLIC.
+  " @keywords stateful session basics state roundtrip set_session_stateful
+  " @summary a counter in a static container - counts up while the session is stateful, starts over once it is not
+  CLASS z2ui5_cl_smps_app_486 DEFINITION PUBLIC.
   ```
+  with `DESCRIPT` = `Stateful Sessions - Basics`.
+
+  | | what it carries | limit |
+  |---|---|---|
+  | `DESCRIPT` | `Titel - Kurzbeschreibung` | **60 characters**, hard |
+  | `" @summary` | the sentence a catalogue puts under the title | none |
+  | `" @keywords` | what somebody would type who does not know it exists | none |
+
+  `@summary` exists because of that 60-character cap: of the 31 curated
+  descriptions this repository already had, only **13 fit in 60** and the
+  longest was **114**. Without it a catalogue row is a title and nothing else.
 
   A plain `"` comment and not `"!`, because an unknown `"! @tag` is reported by
   the extended check (SLIN/ATC). Lowercase, space separated, four to eight
@@ -204,7 +216,13 @@ gone.
   binding and the packages are on a system; before that it answers nothing, and
   this page does.
 
-  **Its source is the overview app's own catalogue**, not the class `DESCRIPT`.
+  **Its source is the class**, all three levels of it: title and short
+  description from `DESCRIPT`, the line under them from `@summary`, the small
+  type from `@keywords`. It read the overview app's catalogue for one commit,
+  which was better than DESCRIPT alone and still one step short: a sample'''s
+  description sat in a DIFFERENT class from the sample.
+
+  The old note, kept because the numbers are the argument for `@summary`:
   Both exist and they disagree — app 315's DESCRIPT reads *"Model - Use OData
   models"* while the overview says *"Two OData models in one view"* with *"one
   table bound to each, column headers from the metadata"* under it. The second

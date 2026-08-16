@@ -30,83 +30,83 @@ type who does not know it exists. `Ctrl+F` on this page uses them.
 
 | Sample | Class |
 |---|---|
-| **abap2UI5 samples-stack 00** — overview<br><sub>overview launchpad index start nav_app_call popover all samples</sub> | [`Z2UI5_CL_SMPS_APP_00`](src/z2ui5_cl_smps_app_00.clas.abap) |
+| **Overview** — All Samples in This Repository<br>every sample in this repository, grouped by what it needs from the system<br><sub>overview launchpad index start nav_app_call popover all samples</sub> | [`Z2UI5_CL_SMPS_APP_00`](src/z2ui5_cl_smps_app_00.clas.abap) |
 
 ### OData — `src/01`
 
 | Sample | Class |
 |---|---|
-| **Two OData models in one view** — one table bound to each, column headers from the metadata<br><sub>odata model service entityset switch_default_model_path external binding</sub> | [`Z2UI5_CL_SMPS_APP_315`](src/01/z2ui5_cl_smps_app_315.clas.abap) |
+| Two Models in One View<br>one table bound to each, column headers from the metadata<br><sub>odata model service entityset switch_default_model_path external binding</sub> | [`Z2UI5_CL_SMPS_APP_315`](src/01/z2ui5_cl_smps_app_315.clas.abap) |
 
 ### Smart Controls — `src/02`
 
 | Sample | Class |
 |---|---|
-| **SmartFilterBar and SmartTable** — with variant management - UI_PRODUCTLIST<br><sub>smarttable smartfilterbar variant management annotations controlconfiguration odata</sub> | [`Z2UI5_CL_SMPS_APP_313`](src/02/z2ui5_cl_smps_app_313.clas.abap) |
-| **Switch the default model** — device, HTTP and OData model side by side - GWSAMPLE_BASIC<br><sub>switch_default_model_path odata model default binding smart controls</sub> | [`Z2UI5_CL_SMPS_APP_314`](src/02/z2ui5_cl_smps_app_314.clas.abap) |
-| **SmartMultiInput to SELECT-OPTIONS** — UI conditions mapped 1:1 onto an ABAP range table<br><sub>smartmultiinput multi input tokens smart controls odata</sub> | [`Z2UI5_CL_SMPS_APP_319`](src/02/z2ui5_cl_smps_app_319.clas.abap) |
-| **SmartField inside a SmartForm** — GWSAMPLE_BASIC<br><sub>smartform smartfield group groupelement columnlayout annotations</sub> | [`Z2UI5_CL_SMPS_APP_475`](src/02/z2ui5_cl_smps_app_475.clas.abap) |
-| **SmartForm, display/edit toggle** — GWSAMPLE_BASIC<br><sub>smartform smartfield editable toggle edit mode</sub> | [`Z2UI5_CL_SMPS_APP_476`](src/02/z2ui5_cl_smps_app_476.clas.abap) |
-| **SmartFilterBar driving a SmartTable** — GWSAMPLE_BASIC<br><sub>smartfilterbar smarttable filter search annotations controlconfiguration</sub> | [`Z2UI5_CL_SMPS_APP_477`](src/02/z2ui5_cl_smps_app_477.clas.abap) |
-| **Page variant management** — GWSAMPLE_BASIC<br><sub>smartvariantmanagement page variant save smarttable smartfilterbar filter</sub> | [`Z2UI5_CL_SMPS_APP_478`](src/02/z2ui5_cl_smps_app_478.clas.abap) |
-| **SmartChart with NavigationPopover** — an analytical service - you supply the path<br><sub>smartchart navpopover semanticobjectcontroller chart semantic object navigation</sub> | [`Z2UI5_CL_SMPS_APP_479`](src/02/z2ui5_cl_smps_app_479.clas.abap) |
-| **Classic FilterBar with variant management** — no service needed - the data is ABAP<br><sub>filterbar filtergroupitem smartvariantmanagement classic filter variant</sub> | [`Z2UI5_CL_SMPS_APP_493`](src/02/z2ui5_cl_smps_app_493.clas.abap) |
+| Smart Table and Variants<br>with variant management - UI_PRODUCTLIST<br><sub>smarttable smartfilterbar variant management annotations controlconfiguration odata</sub> | [`Z2UI5_CL_SMPS_APP_313`](src/02/z2ui5_cl_smps_app_313.clas.abap) |
+| Switch Default Model<br>device, HTTP and OData model side by side - GWSAMPLE_BASIC<br><sub>switch_default_model_path odata model default binding smart controls</sub> | [`Z2UI5_CL_SMPS_APP_314`](src/02/z2ui5_cl_smps_app_314.clas.abap) |
+| Smart Multi Input<br>UI conditions mapped 1:1 onto an ABAP range table<br><sub>smartmultiinput multi input tokens smart controls odata</sub> | [`Z2UI5_CL_SMPS_APP_319`](src/02/z2ui5_cl_smps_app_319.clas.abap) |
+| SmartField in a SmartForm<br>needs the GWSAMPLE_BASIC OData service<br><sub>smartform smartfield group groupelement columnlayout annotations</sub> | [`Z2UI5_CL_SMPS_APP_475`](src/02/z2ui5_cl_smps_app_475.clas.abap) |
+| SmartForm, editable toggle<br>needs the GWSAMPLE_BASIC OData service<br><sub>smartform smartfield editable toggle edit mode</sub> | [`Z2UI5_CL_SMPS_APP_476`](src/02/z2ui5_cl_smps_app_476.clas.abap) |
+| SmartFilterBar and SmartTable<br>needs the GWSAMPLE_BASIC OData service<br><sub>smartfilterbar smarttable filter search annotations controlconfiguration</sub> | [`Z2UI5_CL_SMPS_APP_477`](src/02/z2ui5_cl_smps_app_477.clas.abap) |
+| Page Variant Management<br>needs the GWSAMPLE_BASIC OData service<br><sub>smartvariantmanagement page variant save smarttable smartfilterbar filter</sub> | [`Z2UI5_CL_SMPS_APP_478`](src/02/z2ui5_cl_smps_app_478.clas.abap) |
+| SmartChart with NavPopover<br>an analytical service - you supply the path<br><sub>smartchart navpopover semanticobjectcontroller chart semantic object navigation</sub> | [`Z2UI5_CL_SMPS_APP_479`](src/02/z2ui5_cl_smps_app_479.clas.abap) |
+| classic FilterBar variants<br>no service needed - the data is ABAP<br><sub>filterbar filtergroupitem smartvariantmanagement classic filter variant</sub> | [`Z2UI5_CL_SMPS_APP_493`](src/02/z2ui5_cl_smps_app_493.clas.abap) |
 
 ### RAP — `src/03`
 
 | Sample | Class |
 |---|---|
-| **Read a travel** — READ ENTITIES<br><sub>eml rap read travel select entity behavior</sub> | [`Z2UI5_CL_SMPS_APP_01`](src/03/z2ui5_cl_smps_app_01.clas.abap) |
-| **Create a travel** — MODIFY ... CREATE, key from MAPPED<br><sub>eml rap create travel insert commit datepicker</sub> | [`Z2UI5_CL_SMPS_APP_02`](src/03/z2ui5_cl_smps_app_02.clas.abap) |
-| **Update a travel** — MODIFY ... UPDATE FIELDS<br><sub>eml rap update travel modify commit table</sub> | [`Z2UI5_CL_SMPS_APP_03`](src/03/z2ui5_cl_smps_app_03.clas.abap) |
-| **Delete a travel** — MODIFY ... DELETE FROM<br><sub>eml rap delete travel remove commit table</sub> | [`Z2UI5_CL_SMPS_APP_04`](src/03/z2ui5_cl_smps_app_04.clas.abap) |
-| **Manage travels - the complete app** — 01-04 plus EXECUTE and COMMIT ENTITIES RESPONSE OF<br><sub>eml rap crud travel manage popup objectstatus</sub> | [`Z2UI5_CL_SMPS_APP_05`](src/03/z2ui5_cl_smps_app_05.clas.abap) |
+| Read a Travel<br>reads one instance by its key - a missing key comes back in FAILED, not as an exception<br><sub>eml rap read travel select entity behavior</sub> | [`Z2UI5_CL_SMPS_APP_01`](src/03/z2ui5_cl_smps_app_01.clas.abap) |
+| Create a Travel<br>MODIFY ... CREATE, key from MAPPED<br><sub>eml rap create travel insert commit datepicker</sub> | [`Z2UI5_CL_SMPS_APP_02`](src/03/z2ui5_cl_smps_app_02.clas.abap) |
+| Update a Travel<br>changes single fields of one instance - UPDATE FIELDS names what may be touched<br><sub>eml rap update travel modify commit table</sub> | [`Z2UI5_CL_SMPS_APP_03`](src/03/z2ui5_cl_smps_app_03.clas.abap) |
+| Delete a Travel<br>deletes one instance - MODIFY ... DELETE FROM<br><sub>eml rap delete travel remove commit table</sub> | [`Z2UI5_CL_SMPS_APP_04`](src/03/z2ui5_cl_smps_app_04.clas.abap) |
+| Manage Travels, the Complete App<br>01-04 plus EXECUTE and COMMIT ENTITIES RESPONSE OF<br><sub>eml rap crud travel manage popup objectstatus</sub> | [`Z2UI5_CL_SMPS_APP_05`](src/03/z2ui5_cl_smps_app_05.clas.abap) |
 
 ### RAP with Draft — `src/04`
 
 | Sample | Class |
 |---|---|
-| **Which travels have a draft?** — READ ... %is_draft = mk-on<br><sub>eml rap draft list objectstatus which travels</sub> | [`Z2UI5_CL_SMPS_APP_06`](src/04/z2ui5_cl_smps_app_06.clas.abap) |
-| **Enter draft mode** — EXECUTE Edit / Resume<br><sub>eml rap draft edit enter lock mode</sub> | [`Z2UI5_CL_SMPS_APP_07`](src/04/z2ui5_cl_smps_app_07.clas.abap) |
-| **Change and save a draft** — UPDATE ... %is_draft = mk-on<br><sub>eml rap draft change save modify</sub> | [`Z2UI5_CL_SMPS_APP_08`](src/04/z2ui5_cl_smps_app_08.clas.abap) |
-| **Leave draft mode** — EXECUTE Activate / Discard<br><sub>eml rap draft discard resume leave mode</sub> | [`Z2UI5_CL_SMPS_APP_09`](src/04/z2ui5_cl_smps_app_09.clas.abap) |
-| **Manage travels with draft - the complete app** — 06-09 in one screen<br><sub>eml rap draft handling crud popup complete</sub> | [`Z2UI5_CL_SMPS_APP_10`](src/04/z2ui5_cl_smps_app_10.clas.abap) |
+| Which Travels Have One<br>READ ... %is_draft = mk-on<br><sub>eml rap draft list objectstatus which travels</sub> | [`Z2UI5_CL_SMPS_APP_06`](src/04/z2ui5_cl_smps_app_06.clas.abap) |
+| Enter Draft Mode<br>Edit copies the active instance into a new draft, Resume picks up an existing one<br><sub>eml rap draft edit enter lock mode</sub> | [`Z2UI5_CL_SMPS_APP_07`](src/04/z2ui5_cl_smps_app_07.clas.abap) |
+| Change and Save a Draft<br>UPDATE ... %is_draft = mk-on<br><sub>eml rap draft change save modify</sub> | [`Z2UI5_CL_SMPS_APP_08`](src/04/z2ui5_cl_smps_app_08.clas.abap) |
+| Leave Draft Mode<br>EXECUTE Activate / Discard<br><sub>eml rap draft discard resume leave mode</sub> | [`Z2UI5_CL_SMPS_APP_09`](src/04/z2ui5_cl_smps_app_09.clas.abap) |
+| Complete Draft Handling<br>a whole app, not a snippet - the complete draft lifecycle in one screen<br><sub>eml rap draft handling crud popup complete</sub> | [`Z2UI5_CL_SMPS_APP_10`](src/04/z2ui5_cl_smps_app_10.clas.abap) |
 
 ### Business Events — `src/05`
 
 | Sample | Class |
 |---|---|
-| **Create tickets through the BO** — every create and update raises an entity event<br><sub>rap business events ticket raise publish</sub> | [`Z2UI5_CL_SMPS_APP_11`](src/05/z2ui5_cl_smps_app_11.clas.abap) |
-| **The event log** — what the handler wrote, newest first<br><sub>rap business events log consumer subscribe</sub> | [`Z2UI5_CL_SMPS_APP_12`](src/05/z2ui5_cl_smps_app_12.clas.abap) |
+| Ticket App<br>every create and update raises an entity event<br><sub>rap business events ticket raise publish</sub> | [`Z2UI5_CL_SMPS_APP_11`](src/05/z2ui5_cl_smps_app_11.clas.abap) |
+| Event Log App<br>what the handler wrote, newest first<br><sub>rap business events log consumer subscribe</sub> | [`Z2UI5_CL_SMPS_APP_12`](src/05/z2ui5_cl_smps_app_12.clas.abap) |
 
 ### Stateful Sessions / Locks — `src/06`
 
 | Sample | Class |
 |---|---|
-| **Set and read an ENQUEUE lock** — ENQUEUE_E_TABLE and ENQUEUE_READ, end and restart the session<br><sub>stateful session lock enqueue dequeue set_session_stateful</sub> | [`Z2UI5_CL_SMPS_APP_485`](src/06/z2ui5_cl_smps_app_485.clas.abap) |
-| **The basics - a counter in a static container** — counts up while the session is stateful, starts over once it is not<br><sub>stateful session basics state roundtrip set_session_stateful</sub> | [`Z2UI5_CL_SMPS_APP_486`](src/06/z2ui5_cl_smps_app_486.clas.abap) |
-| **One lock per screen** — every Next Lock View takes the next VARKEY, going back releases it<br><sub>stateful session lock navigation nav_app_call check_on_navigated</sub> | [`Z2UI5_CL_SMPS_APP_490`](src/06/z2ui5_cl_smps_app_490.clas.abap) |
+| **Stateful Sessions** — Locks<br>ENQUEUE_E_TABLE and ENQUEUE_READ, end and restart the session<br><sub>stateful session lock enqueue dequeue set_session_stateful</sub> | [`Z2UI5_CL_SMPS_APP_485`](src/06/z2ui5_cl_smps_app_485.clas.abap) |
+| **Stateful Sessions** — Basics<br>counts up while the session is stateful, starts over once it is not<br><sub>stateful session basics state roundtrip set_session_stateful</sub> | [`Z2UI5_CL_SMPS_APP_486`](src/06/z2ui5_cl_smps_app_486.clas.abap) |
+| **Stateful Sessions** — Navigation and Locks<br>every Next Lock View takes the next VARKEY, going back releases it<br><sub>stateful session lock navigation nav_app_call check_on_navigated</sub> | [`Z2UI5_CL_SMPS_APP_490`](src/06/z2ui5_cl_smps_app_490.clas.abap) |
 
 ### AMC/APC — `src/07`
 
 | Sample | Class |
 |---|---|
-| **A news feed over WebSocket** — connect, publish, list the active connections - no JavaScript<br><sub>websocket apc amc push channel feedlistitem news popover</sub> | [`Z2UI5_CL_SMPS_APP_489`](src/07/z2ui5_cl_smps_app_489.clas.abap) |
+| **Websocket** — News Feed<br>connect, publish, list the active connections - no JavaScript<br><sub>websocket apc amc push channel feedlistitem news popover</sub> | [`Z2UI5_CL_SMPS_APP_489`](src/07/z2ui5_cl_smps_app_489.clas.abap) |
 
 ### MIME Play Audio — `src/08`
 
 | Sample | Class |
 |---|---|
-| **Play a sound from the MIME repository** — a success and an error tone, addressed by their ICF path<br><sub>mime audio sound play_audio wav follow_up_action</sub> | [`Z2UI5_CL_SMPS_APP_487`](src/08/z2ui5_cl_smps_app_487.clas.abap) |
+| **MIME** — Audio and Play Sound<br>a success and an error tone, addressed by their ICF path<br><sub>mime audio sound play_audio wav follow_up_action</sub> | [`Z2UI5_CL_SMPS_APP_487`](src/08/z2ui5_cl_smps_app_487.clas.abap) |
 
 ### Launchpad — `src/09`
 
 | Sample | Class |
 |---|---|
-| **Read the startup parameters** — what the tile passed in - client->get( )-t_comp_params<br><sub>launchpad fiori flp startup parameters intent</sub> | [`Z2UI5_CL_SMPS_APP_481`](src/09/z2ui5_cl_smps_app_481.clas.abap) |
-| **Set the shell title** — follow_up_action( cs_event-set_title_launchpad )<br><sub>launchpad fiori flp shell title follow_up_action</sub> | [`Z2UI5_CL_SMPS_APP_482`](src/09/z2ui5_cl_smps_app_482.clas.abap) |
-| **Cross-app navigation - sender** — hands two values over to another tile<br><sub>launchpad fiori flp cross app navigation sender intent</sub> | [`Z2UI5_CL_SMPS_APP_483`](src/09/z2ui5_cl_smps_app_483.clas.abap) |
-| **Cross-app navigation - receiver** — reads them back out of its startup parameters<br><sub>launchpad fiori flp cross app navigation receiver intent</sub> | [`Z2UI5_CL_SMPS_APP_484`](src/09/z2ui5_cl_smps_app_484.clas.abap) |
+| Read Startup Parameters<br>what the tile passed in - client->get( )-t_comp_params<br><sub>launchpad fiori flp startup parameters intent</sub> | [`Z2UI5_CL_SMPS_APP_481`](src/09/z2ui5_cl_smps_app_481.clas.abap) |
+| Set Shell Title<br>follow_up_action( cs_event-set_title_launchpad )<br><sub>launchpad fiori flp shell title follow_up_action</sub> | [`Z2UI5_CL_SMPS_APP_482`](src/09/z2ui5_cl_smps_app_482.clas.abap) |
+| Cross-App Navigation Sender<br>hands two values over to another tile<br><sub>launchpad fiori flp cross app navigation sender intent</sub> | [`Z2UI5_CL_SMPS_APP_483`](src/09/z2ui5_cl_smps_app_483.clas.abap) |
+| Cross-App Navigation Receiver<br>reads them back out of its startup parameters<br><sub>launchpad fiori flp cross app navigation receiver intent</sub> | [`Z2UI5_CL_SMPS_APP_484`](src/09/z2ui5_cl_smps_app_484.clas.abap) |
 
 ---
 

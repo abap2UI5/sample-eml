@@ -1,5 +1,6 @@
 " @keywords eml rap draft handling crud popup complete
-"! <p class="shorttext synchronized">abap2UI5 - EML sample 10 - draft handling</p>
+" @summary a whole app, not a snippet - the complete draft lifecycle in one screen
+"! <p class="shorttext synchronized">RAP with Draft - Complete Draft Handling</p>
 "! A WHOLE APP, not a single snippet. The complete draft lifecycle in one
 "! screen: list, Edit, Resume, change, Activate, Discard - roughly three times
 "! the size of samples 06-09.

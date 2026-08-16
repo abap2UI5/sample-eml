@@ -1,4 +1,5 @@
 " @keywords switch_default_model_path odata model default binding smart controls
+" @summary device, HTTP and OData model side by side - GWSAMPLE_BASIC
 CLASS z2ui5_cl_smps_app_314 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

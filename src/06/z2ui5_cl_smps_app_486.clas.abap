@@ -1,4 +1,5 @@
 " @keywords stateful session basics state roundtrip set_session_stateful
+" @summary counts up while the session is stateful, starts over once it is not
 CLASS z2ui5_cl_smps_app_486 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

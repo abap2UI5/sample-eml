@@ -2,6 +2,10 @@
 /*
  * check-keywords — every sample app says what it is about.
  *
+ * Two lines, both plain `"` comments above the CLASS statement: `@keywords`
+ * (what somebody would type) and `@summary` (one sentence, the line a catalogue
+ * puts under the title).
+ *
  * A sample nobody can find is a sample nobody has. This repository had 40
  * classes and not one `" @keywords` line, so an app here was reachable by its
  * class name and by nothing else: not by the search box of an overview, not by
@@ -85,6 +89,15 @@ for (const file of walk(SRC)) {
           + '    add one as the FIRST line: synonyms, the controls it builds, the API it shows',
     );
     continue;
+  }
+
+  /* @summary is the line a catalogue puts under the title. It exists because
+   * DESCRIPT is capped at 60 characters and the useful sentence is usually
+   * longer — of the 31 curated descriptions this repository already had, only
+   * 13 fit in 60 and the longest was 114. Without it a catalogue row is a
+   * title and nothing else. */
+  if (!/^" @summary \S/m.test(text)) {
+    problems.push(`${rel}: no \`" @summary\` line — one sentence saying what the sample shows`);
   }
 
   const words = m[1].trim().split(/\s+/);

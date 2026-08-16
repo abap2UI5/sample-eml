@@ -1,4 +1,5 @@
 " @keywords smarttable smartfilterbar variant management annotations controlconfiguration odata
+" @summary with variant management - UI_PRODUCTLIST
 CLASS z2ui5_cl_smps_app_313 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

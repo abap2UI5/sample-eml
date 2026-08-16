@@ -1,5 +1,6 @@
 " @keywords overview launchpad index start nav_app_call popover all samples
-"! <p class="shorttext synchronized">abap2UI5 samples-stack 00 - overview</p>
+" @summary every sample in this repository, grouped by what it needs from the system
+"! <p class="shorttext synchronized">Overview - All Samples in This Repository</p>
 "! The entry point of this repository: every sample of every package in one
 "! list, one press away. Start it with ?app_start=z2ui5_cl_smps_app_00.
 "!

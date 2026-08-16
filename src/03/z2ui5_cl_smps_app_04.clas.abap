@@ -1,5 +1,6 @@
 " @keywords eml rap delete travel remove commit table
-"! <p class="shorttext synchronized">abap2UI5 - EML sample 04 - delete travel</p>
+" @summary deletes one instance - MODIFY ... DELETE FROM
+"! <p class="shorttext synchronized">RAP - Delete a Travel</p>
 "! Deletes one instance.
 "!
 "!     MODIFY ENTITIES OF z2ui5_r_smps_trv

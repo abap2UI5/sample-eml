@@ -96,6 +96,7 @@ export function scanSamples(root) {
       header,
       sub,
       keywords: (source.match(/^" @keywords (.+?)\r?$/m) || [, ''])[1].trim(),
+      summary: (source.match(/^" @summary (.+?)\r?$/m) || [, ''])[1].trim(),
       section: packageText(dir, cache),
       // `src/` for the overview app, `01`, `03/01`, … for everything else, so
       // a nested subpackage sorts directly after its parent
@@ -107,27 +108,23 @@ export function scanSamples(root) {
 }
 
 /*
- * The overview app's own catalogue — and the reason the page is generated from
- * it rather than from the class DESCRIPT.
+ * The overview app's own catalogue, read back out — for the COMPLETENESS check
+ * only, no longer as a source of text.
  *
- * Both exist, and they disagree. For app 315 the DESCRIPT reads
- * "Model - Use OData models"; the overview app says "Two OData models in one
- * view", with "one table bound to each, column headers from the metadata"
- * under it. The second is the curated text — it is what somebody actually sees
- * when they run the overview — and the first is an abapGit short text, capped
- * at 60 characters and written for ADT's object list.
+ * It used to be the source. The overview carried a curated title and detail per
+ * sample, better than the DESCRIPTs and disagreeing with them, so rendering the
+ * page from it beat rendering from DESCRIPT. It was still one step short of
+ * right: a sample's description sat in a DIFFERENT class from the sample. Those
+ * strings have since moved onto their classes as `" @summary`, which is where
+ * generate-samples-md.mjs reads them now.
  *
- * Rendering the page from DESCRIPT would have produced a THIRD description of
- * every sample, disagreeing with the app that this page claims to be a reading
- * copy of. So the app's catalogue is the source: one place, already curated,
- * already checked by check-overview.mjs for naming a class that exists. This
- * function reads it back out, and generate-samples-md.mjs closes the loop the
- * other way — every app in the tree has to appear in it.
+ * What stays is the check: every app in the tree has to appear in this
+ * catalogue, or it is invisible in the overview app. check-overview.mjs checks
+ * the other direction — an entry naming a class that does not exist.
  *
  * Parsed with a regex over ABAP source, which is only tolerable because the
- * shape is regular and machine-written-looking, and because a miss is loud:
- * an entry that stops matching fails the completeness check rather than
- * quietly dropping a row.
+ * shape is regular and because a miss is loud: an entry that stops matching
+ * fails the completeness check rather than quietly dropping a row.
  */
 const ENTRY = /sample\(\s*no\s*=\s*`([^`]*)`[\s\S]*?title\s*=\s*`([^`]*)`[\s\S]*?detail\s*=\s*`([^`]*)`[\s\S]*?classname\s*=\s*`([^`]*)`/g;
 

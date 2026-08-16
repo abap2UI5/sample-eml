@@ -1,4 +1,5 @@
 " @keywords stateful session lock enqueue dequeue set_session_stateful
+" @summary ENQUEUE_E_TABLE and ENQUEUE_READ, end and restart the session
 CLASS z2ui5_cl_smps_app_485 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

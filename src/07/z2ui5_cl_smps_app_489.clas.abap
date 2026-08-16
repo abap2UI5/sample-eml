@@ -1,4 +1,5 @@
 " @keywords websocket apc amc push channel feedlistitem news popover
+" @summary connect, publish, list the active connections - no JavaScript
 CLASS z2ui5_cl_smps_app_489 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
