@@ -42,6 +42,8 @@ CLASS z2ui5_cl_smps_app_04 IMPLEMENTATION.
     IF client->check_on_init( ).
       data_read( ).
       view_display( ).
+    ELSEIF client->check_on_navigated( ).
+      view_display( ).
     ELSEIF client->check_on_event( `DELETE` ).
       data_delete( ).
     ENDIF.

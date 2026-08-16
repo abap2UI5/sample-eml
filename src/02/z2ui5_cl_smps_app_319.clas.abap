@@ -68,6 +68,7 @@ CLASS z2ui5_cl_smps_app_319 DEFINITION PUBLIC.
     DATA m_client TYPE REF TO z2ui5_if_client.
 
     METHODS on_init.
+    METHODS view_display.
     METHODS on_event.
     METHODS do_search.
 
@@ -83,6 +84,9 @@ CLASS z2ui5_cl_smps_app_319 IMPLEMENTATION.
 
     IF m_client->check_on_init( ).
       on_init( ).
+      RETURN.
+    ELSEIF m_client->check_on_navigated( ).
+      view_display( ).
       RETURN.
     ENDIF.
 
@@ -109,6 +113,13 @@ CLASS z2ui5_cl_smps_app_319 IMPLEMENTATION.
       ( product_type = `SEMIFIN`  name = `Semi-finished Part` ) ).
     t_result = t_product.
     hint     = `No conditions yet - showing all demo products. Open the value help and add conditions.`.
+
+    view_display( ).
+
+  ENDMETHOD.
+
+
+  METHOD view_display.
 
     DATA(view) = z2ui5_cl_ui5_view_builder=>factory(
         )->ele( n = `View` ns = `mvc`

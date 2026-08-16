@@ -33,6 +33,8 @@ CLASS z2ui5_cl_smps_app_486 IMPLEMENTATION.
 
         IF client->check_on_init( ).
           initialize_view( client ).
+        ELSEIF client->check_on_navigated( ).
+          initialize_view( client ).
         ENDIF.
 
         on_event( client ).

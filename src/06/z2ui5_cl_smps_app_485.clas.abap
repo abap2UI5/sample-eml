@@ -155,6 +155,8 @@ CLASS z2ui5_cl_smps_app_485 IMPLEMENTATION.
         IF client->check_on_init( ).
           update_lock_counter( ).
           initialize_view( client ).
+        ELSEIF client->check_on_navigated( ).
+          initialize_view( client ).
         ENDIF.
 
         TRY.

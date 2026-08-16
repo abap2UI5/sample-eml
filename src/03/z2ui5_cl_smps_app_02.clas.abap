@@ -70,6 +70,8 @@ CLASS z2ui5_cl_smps_app_02 IMPLEMENTATION.
                           currency    = `EUR`
                           description = `New travel created from sample 02` ).
       view_display( ).
+    ELSEIF client->check_on_navigated( ).
+      view_display( ).
     ELSEIF client->check_on_event( `CREATE` ).
       data_create( ).
     ENDIF.
