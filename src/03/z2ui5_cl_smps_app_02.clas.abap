@@ -1,4 +1,6 @@
-"! <p class="shorttext synchronized">abap2UI5 - EML sample 02 - create travel</p>
+" @keywords eml rap create travel insert commit datepicker
+" @summary MODIFY ... CREATE, key from MAPPED
+"! <p class="shorttext synchronized">RAP - Create a Travel</p>
 "! Creates one instance. The %cid is a temporary id you invent: the business
 "! object does not know the key yet, so it reports the new one back under that
 "! %cid in MAPPED.

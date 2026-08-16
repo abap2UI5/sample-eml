@@ -1,3 +1,5 @@
+" @keywords launchpad fiori flp cross app navigation sender intent
+" @summary hands two values over to another tile
 CLASS z2ui5_cl_smps_app_483 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

@@ -1,4 +1,6 @@
-"! <p class="shorttext synchronized">abap2UI5 - EML sample 09 - leave draft mode</p>
+" @keywords eml rap draft discard resume leave mode
+" @summary EXECUTE Activate / Discard
+"! <p class="shorttext synchronized">RAP with Draft - Leave Draft Mode</p>
 "! Activate turns the draft into the active instance, Discard throws it away.
 "!
 "!     MODIFY ENTITIES OF z2ui5_r_smps_trd

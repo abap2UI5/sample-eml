@@ -5,7 +5,7 @@
    <VSEOCLASS>
     <CLSNAME>Z2UI5_CL_SMPS_APP_315</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>Model - Use OData models</DESCRIPT>
+    <DESCRIPT>OData - Two Models in One View</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

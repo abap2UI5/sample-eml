@@ -1,4 +1,6 @@
-"! <p class="shorttext synchronized">abap2UI5 - EML sample 03 - update travel</p>
+" @keywords eml rap update travel modify commit table
+" @summary changes single fields of one instance - UPDATE FIELDS names what may be touched
+"! <p class="shorttext synchronized">RAP - Update a Travel</p>
 "! Changes single fields of one instance. UPDATE FIELDS names what may be
 "! written, everything else stays untouched.
 "!

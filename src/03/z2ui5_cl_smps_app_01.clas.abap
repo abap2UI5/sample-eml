@@ -1,4 +1,6 @@
-"! <p class="shorttext synchronized">abap2UI5 - EML sample 01 - read travel</p>
+" @keywords eml rap read travel select entity behavior
+" @summary reads one instance by its key - a missing key comes back in FAILED, not as an exception
+"! <p class="shorttext synchronized">RAP - Read a Travel</p>
 "! Reads one instance by its key.
 "!
 "!     READ ENTITIES OF z2ui5_r_smps_trv

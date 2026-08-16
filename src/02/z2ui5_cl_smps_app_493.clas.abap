@@ -1,3 +1,5 @@
+" @keywords filterbar filtergroupitem smartvariantmanagement classic filter variant
+" @summary no service needed - the data is ABAP
 CLASS z2ui5_cl_smps_app_493 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

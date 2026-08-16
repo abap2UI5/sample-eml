@@ -1,3 +1,5 @@
+" @keywords launchpad fiori flp cross app navigation receiver intent
+" @summary reads them back out of its startup parameters
 CLASS z2ui5_cl_smps_app_484 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

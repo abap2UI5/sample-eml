@@ -1,4 +1,6 @@
-"! <p class="shorttext synchronized">abap2UI5 - EML sample 06 - which travels have a draft</p>
+" @keywords eml rap draft list objectstatus which travels
+" @summary READ ... %is_draft = mk-on
+"! <p class="shorttext synchronized">RAP with Draft - Which Travels Have One</p>
 "! A draft and its active instance share the key - only %is_draft separates
 "! them. So reading the keys with %is_draft = mk-on answers the question "which
 "! travels have a draft?": everything that comes back in RESULT has one,

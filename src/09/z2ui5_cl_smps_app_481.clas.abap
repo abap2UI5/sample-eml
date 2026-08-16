@@ -1,3 +1,5 @@
+" @keywords launchpad fiori flp startup parameters intent
+" @summary what the tile passed in - client->get( )-t_comp_params
 CLASS z2ui5_cl_smps_app_481 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

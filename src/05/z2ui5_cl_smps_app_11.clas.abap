@@ -1,3 +1,5 @@
+" @keywords rap business events ticket raise publish
+" @summary every create and update raises an entity event
 CLASS z2ui5_cl_smps_app_11 DEFINITION PUBLIC CREATE PUBLIC.
 
   PUBLIC SECTION.

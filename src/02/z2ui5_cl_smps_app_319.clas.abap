@@ -1,3 +1,5 @@
+" @keywords smartmultiinput multi input tokens smart controls odata
+" @summary UI conditions mapped 1:1 onto an ABAP range table
 "! SmartMultiInput (sap.ui.comp) - the strength of one control: it gives the user
 "! a full SELECT-OPTIONS experience (value help from OData, multiple conditions,
 "! operators like contains / between / greater-than, and include/exclude) and

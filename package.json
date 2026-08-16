@@ -8,7 +8,11 @@
     "check:abap2ui5": "abap2ui5lint",
     "fmt:chains": "abap2ui5lint --fix",
     "check:overview": "node .github/scripts/check-overview.mjs",
-    "check": "npm run lint && npm run check:abap2ui5 && npm run check:overview"
+    "check": "npm run lint && npm run check:abap2ui5 && npm run check:overview && npm run check:keywords && npm run check:samples-md && npm run check:rule-block",
+    "check:keywords": "node .github/scripts/check-keywords.mjs",
+    "samples:md": "node .github/scripts/generate-samples-md.mjs",
+    "check:samples-md": "node .github/scripts/generate-samples-md.mjs --check",
+    "check:rule-block": "node .github/scripts/check-rule-block.mjs"
   },
   "repository": {
     "type": "git",

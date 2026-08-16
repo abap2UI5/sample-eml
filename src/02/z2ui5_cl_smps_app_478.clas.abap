@@ -1,3 +1,5 @@
+" @keywords smartvariantmanagement page variant save smarttable smartfilterbar filter
+" @summary needs the GWSAMPLE_BASIC OData service
 CLASS z2ui5_cl_smps_app_478 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

@@ -1,4 +1,6 @@
-"! <p class="shorttext synchronized">abap2UI5 - EML sample 05 - manage travels</p>
+" @keywords eml rap crud travel manage popup objectstatus
+" @summary 01-04 plus EXECUTE and COMMIT ENTITIES RESPONSE OF
+"! <p class="shorttext synchronized">RAP - Manage Travels, the Complete App</p>
 "! A WHOLE APP, not a single snippet. Read, create, update, delete and both
 "! actions of the business object in one screen, with the message handling and
 "! the create popup a real app needs - roughly three times the size of samples

@@ -1,3 +1,5 @@
+" @keywords odata model service entityset switch_default_model_path external binding
+" @summary one table bound to each, column headers from the metadata
 CLASS z2ui5_cl_smps_app_315 DEFINITION PUBLIC.
 
   PUBLIC SECTION.

@@ -1,4 +1,6 @@
-"! <p class="shorttext synchronized">abap2UI5 - EML sample 08 - change and save a draft</p>
+" @keywords eml rap draft change save modify
+" @summary UPDATE ... %is_draft = mk-on
+"! <p class="shorttext synchronized">RAP with Draft - Change and Save a Draft</p>
 "! An ordinary UPDATE. The only thing that makes it a draft update is
 "! %is_draft = mk-on in the key.
 "!

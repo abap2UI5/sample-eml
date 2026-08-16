@@ -1,3 +1,5 @@
+" @keywords stateful session lock navigation nav_app_call check_on_navigated
+" @summary every Next Lock View takes the next VARKEY, going back releases it
 CLASS z2ui5_cl_smps_app_490 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
