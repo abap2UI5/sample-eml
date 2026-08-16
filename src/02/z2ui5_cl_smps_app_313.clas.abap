@@ -18,7 +18,7 @@ CLASS z2ui5_cl_smps_app_313 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
-    IF client->check_on_init( ) OR client->check_on_navigated( ).
+    IF client->check_on_navigated( ).
 
       " An earlier revision of this app ran the same two smart controls against
       " the BookingSupplement entity of /sap/opu/odata/DMO/API_TRAVEL_U_V2/. It

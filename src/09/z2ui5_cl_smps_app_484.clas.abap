@@ -28,7 +28,7 @@ CLASS z2ui5_cl_smps_app_484 IMPLEMENTATION.
       CATCH cx_root.
     ENDTRY.
 
-    IF client->check_on_init( ) OR client->check_on_navigated( ).
+    IF client->check_on_navigated( ).
 
       DATA(view) = z2ui5_cl_ui5_view_builder=>factory(
           )->ele( n = `View` ns = `mvc`
