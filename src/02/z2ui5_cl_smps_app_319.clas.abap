@@ -22,7 +22,7 @@ CLASS z2ui5_cl_smps_app_319 DEFINITION PUBLIC.
         key  TYPE string,
         text TYPE string,
       END OF ty_s_token,
-      t_tokens TYPE STANDARD TABLE OF ty_s_token WITH EMPTY KEY.
+      ty_t_token TYPE STANDARD TABLE OF ty_s_token WITH EMPTY KEY.
     TYPES:
       BEGIN OF ty_s_range,
         exclude      TYPE abap_bool,
@@ -33,7 +33,7 @@ CLASS z2ui5_cl_smps_app_319 DEFINITION PUBLIC.
         tokentext    TYPE string,
         tokenlongkey TYPE string,
       END OF ty_s_range,
-      t_ranges TYPE STANDARD TABLE OF ty_s_range WITH EMPTY KEY.
+      ty_t_range TYPE STANDARD TABLE OF ty_s_range WITH EMPTY KEY.
     TYPES:
       BEGIN OF ty_s_product,
         product_type TYPE string,
@@ -52,9 +52,9 @@ CLASS z2ui5_cl_smps_app_319 DEFINITION PUBLIC.
     DATA:
       BEGIN OF m_selection,
         BEGIN OF product_type,
-          tokens_added   TYPE t_tokens,
-          tokens_removed TYPE t_tokens,
-          ranges         TYPE t_ranges,
+          tokens_added   TYPE ty_t_token,
+          tokens_removed TYPE ty_t_token,
+          ranges         TYPE ty_t_range,
         END OF product_type,
       END OF m_selection.
 
@@ -68,6 +68,7 @@ CLASS z2ui5_cl_smps_app_319 DEFINITION PUBLIC.
     DATA m_client TYPE REF TO z2ui5_if_client.
 
     METHODS on_init.
+    METHODS view_display.
     METHODS on_event.
     METHODS do_search.
 
@@ -83,6 +84,9 @@ CLASS z2ui5_cl_smps_app_319 IMPLEMENTATION.
 
     IF m_client->check_on_init( ).
       on_init( ).
+      RETURN.
+    ELSEIF m_client->check_on_navigated( ).
+      view_display( ).
       RETURN.
     ENDIF.
 
@@ -109,6 +113,13 @@ CLASS z2ui5_cl_smps_app_319 IMPLEMENTATION.
       ( product_type = `SEMIFIN`  name = `Semi-finished Part` ) ).
     t_result = t_product.
     hint     = `No conditions yet - showing all demo products. Open the value help and add conditions.`.
+
+    view_display( ).
+
+  ENDMETHOD.
+
+
+  METHOD view_display.
 
     DATA(view) = z2ui5_cl_ui5_view_builder=>factory(
         )->ele( n = `View` ns = `mvc`
@@ -231,7 +242,7 @@ CLASS z2ui5_cl_smps_app_319 IMPLEMENTATION.
 
   METHOD on_event.
 
-    CASE m_client->get( )-event.
+    CASE m_client->get_event( ).
       WHEN `PRODTYPE_CHANGED` OR `SEARCH`.
         do_search( ).
     ENDCASE.

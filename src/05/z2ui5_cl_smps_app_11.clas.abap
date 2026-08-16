@@ -40,6 +40,8 @@ CLASS z2ui5_cl_smps_app_11 IMPLEMENTATION.
     IF client->check_on_init( ).
       ms_create = VALUE #( priority = `M` status = `NEW` ).
       on_init( ).
+    ELSEIF client->check_on_navigated( ).
+      view_display( ).
     ELSEIF client->check_on_event( ).
       on_event( ).
     ENDIF.
@@ -51,7 +53,7 @@ CLASS z2ui5_cl_smps_app_11 IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD on_event.
-    CASE client->get( )-event.
+    CASE client->get_event( ).
       WHEN `CREATE`.
         on_event_create( ).
       WHEN `REFRESH`.

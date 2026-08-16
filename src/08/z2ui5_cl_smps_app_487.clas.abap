@@ -27,6 +27,8 @@ CLASS z2ui5_cl_smps_app_487 IMPLEMENTATION.
 
     IF client->check_on_init( ).
       view_display( ).
+    ELSEIF client->check_on_navigated( ).
+      view_display( ).
     ENDIF.
 
     on_event( ).
@@ -90,7 +92,7 @@ CLASS z2ui5_cl_smps_app_487 IMPLEMENTATION.
 
   METHOD on_event.
 
-    IF client->get( )-event = `enter`.
+    IF client->get_event( ) = `enter`.
 
       IF magic_key = `abap2UI5`.
         client->follow_up_action(

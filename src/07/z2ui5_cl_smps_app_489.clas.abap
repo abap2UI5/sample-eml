@@ -8,7 +8,7 @@ CLASS z2ui5_cl_smps_app_489 DEFINITION PUBLIC.
         text   TYPE string,
         author TYPE string,
       END OF ty_s_news.
-    TYPES ty_t_news TYPE STANDARD TABLE OF ty_s_news WITH NON-UNIQUE DEFAULT KEY.
+    TYPES ty_t_news TYPE STANDARD TABLE OF ty_s_news WITH EMPTY KEY.
 
     DATA news_input TYPE string.
     DATA author_input TYPE string.
@@ -40,6 +40,8 @@ CLASS z2ui5_cl_smps_app_489 IMPLEMENTATION.
     me->client = client.
     IF client->check_on_init( ).
       on_init( ).
+    ELSEIF client->check_on_navigated( ).
+      view_display( ).
     ELSEIF client->check_on_event( ).
       on_event( ).
     ENDIF.
@@ -62,7 +64,7 @@ CLASS z2ui5_cl_smps_app_489 IMPLEMENTATION.
 
   METHOD on_event.
 
-    CASE client->get( )-event.
+    CASE client->get_event( ).
       WHEN `POST`.
         on_event_post( ).
       WHEN `WS_RECEIVED`.

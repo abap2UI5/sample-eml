@@ -120,6 +120,7 @@ CLASS z2ui5_cl_smps_data_trd IMPLEMENTATION.
 
     SELECT FROM z2ui5_r_smps_trd
       FIELDS TravelUuid
+      ORDER BY TravelUuid
       INTO TABLE @DATA(t_keys).
 
     IF t_keys IS INITIAL.

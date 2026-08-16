@@ -224,8 +224,8 @@ CLASS z2ui5_cl_smps_context DEFINITION PUBLIC FINAL CREATE PRIVATE.
 
     CLASS-METHODS msg_get_t
       IMPORTING
-        VALUE(val)    TYPE any
-        VALUE(val2)   TYPE any OPTIONAL
+        val           TYPE any
+        val2          TYPE any OPTIONAL
       RETURNING
         VALUE(result) TYPE ty_t_msg.
 
@@ -251,7 +251,7 @@ CLASS z2ui5_cl_smps_context DEFINITION PUBLIC FINAL CREATE PRIVATE.
 
     CLASS-METHODS rtti_get_t_attri_by_include
       IMPORTING
-        !type         TYPE REF TO cl_abap_datadescr
+        type          TYPE REF TO cl_abap_datadescr
       RETURNING
         VALUE(result) TYPE abap_component_tab.
 
@@ -433,6 +433,9 @@ CLASS z2ui5_cl_smps_context IMPLEMENTATION.
 
   METHOD msg_get_by_oref.
 
+    DATA obj    TYPE REF TO object.
+    DATA lr_tab TYPE REF TO data.
+
     FIELD-SYMBOLS <comp> TYPE any.
 
     TRY.
@@ -451,12 +454,10 @@ CLASS z2ui5_cl_smps_context IMPLEMENTATION.
         INSERT ls_result INTO TABLE result.
       CATCH cx_root.
 
-        DATA obj TYPE REF TO object.
         obj = val.
 
         TRY.
 
-            DATA lr_tab TYPE REF TO data.
             CREATE DATA lr_tab TYPE (`if_bali_log=>ty_item_table`).
             ASSIGN lr_tab->* TO FIELD-SYMBOL(<tab2>).
 
@@ -503,11 +504,12 @@ CLASS z2ui5_cl_smps_context IMPLEMENTATION.
 
   METHOD msg_get_internal.
 
+    FIELD-SYMBOLS <tab> TYPE ANY TABLE.
+
     DATA(lv_kind) = rtti_get_type_kind( val ).
     CASE lv_kind.
 
       WHEN cl_abap_datadescr=>typekind_table.
-        FIELD-SYMBOLS <tab> TYPE ANY TABLE.
         ASSIGN val TO <tab>.
         LOOP AT <tab> ASSIGNING FIELD-SYMBOL(<row>).
           DATA(lt_tab) = msg_get_internal( <row> ).
@@ -565,6 +567,8 @@ CLASS z2ui5_cl_smps_context IMPLEMENTATION.
 
   METHOD msg_get_rap.
 
+    FIELD-SYMBOLS <ftab> TYPE ANY TABLE.
+
     DATA(lv_kind) = rtti_get_type_kind( val ).
     IF lv_kind <> cl_abap_datadescr=>typekind_struct1
        AND lv_kind <> cl_abap_datadescr=>typekind_struct2.
@@ -585,7 +589,6 @@ CLASS z2ui5_cl_smps_context IMPLEMENTATION.
       CHECK sy-subrc = 0.
       CHECK rtti_get_type_kind( <tab> ) = cl_abap_datadescr=>typekind_table.
 
-      FIELD-SYMBOLS <ftab> TYPE ANY TABLE.
       ASSIGN <tab> TO <ftab>.
 
       LOOP AT <ftab> ASSIGNING FIELD-SYMBOL(<row>).
@@ -669,6 +672,8 @@ CLASS z2ui5_cl_smps_context IMPLEMENTATION.
 
   METHOD msg_get_rap_flatten.
 
+    DATA lv_str TYPE string.
+
     DATA(lv_kind) = rtti_get_type_kind( val ).
     IF lv_kind <> cl_abap_datadescr=>typekind_struct1
        AND lv_kind <> cl_abap_datadescr=>typekind_struct2.
@@ -692,7 +697,6 @@ CLASS z2ui5_cl_smps_context IMPLEMENTATION.
         ENDIF.
       ELSEIF <comp> IS NOT INITIAL.
         TRY.
-            DATA lv_str TYPE string.
             lv_str = <comp>.
             IF result IS NOT INITIAL.
               result = |{ result }, |.
@@ -752,6 +756,8 @@ CLASS z2ui5_cl_smps_context IMPLEMENTATION.
 
   METHOD msg_get_rap_row.
 
+    DATA lv_cause TYPE i.
+
     CLEAR messages.
     is_row = abap_false.
 
@@ -777,7 +783,6 @@ CLASS z2ui5_cl_smps_context IMPLEMENTATION.
       is_row = abap_true.
       ASSIGN COMPONENT `CAUSE` OF STRUCTURE <fail> TO FIELD-SYMBOL(<cause>).
       IF sy-subrc = 0.
-        DATA lv_cause TYPE i.
         lv_cause = <cause>.
         DATA(lv_text) = msg_get_rap_fail_text( lv_cause ).
         IF entity_name IS NOT INITIAL.
