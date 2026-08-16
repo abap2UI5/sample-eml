@@ -91,21 +91,66 @@ where a statement ends, so run `npm run lint` first if a chain is mid-edit.
 
 ## 5. Conventions that are checked here
 
-`abaplint.jsonc` runs the rule set `samples-controls` holds itself to, minus
-two that fight RAP rather than finding anything:
+**The rule block in `abaplint.jsonc` is byte-identical in three
+repositories** — this one, [samples](https://github.com/abap2UI5/samples) and
+[samples-controls](https://github.com/abap2UI5/samples-controls) — the same way
+`scripts/chain-format.mjs` is shared between the other two. abaplint has no
+`extends`, so the copy is the mechanism, and the block carries a header saying
+so. **Change it here and copy it to the other two**, then re-run their gates:
+what is checked is a joint decision of the three corpora, not a local
+preference.
 
-- `keyword_case` is **off** — CDS entities, actions and fields are CamelCase by
-  definition (`Ticket`, `TravelUuid`, `Activate`), and the rule reads every one
-  as a violation.
-- `max_one_statement` is **off** — the operator mapping in app 319 is a table
-  written as a `CASE`, one `WHEN` per line, and splitting it loses the shape.
-- `unused_variables` and `unused_methods` **exclude the `bp_` behavior pools**:
-  a handler's parameters are fixed by its signature, the runtime is what calls
+Only `global`, `dependencies` and `syntax` are per repository (this one runs
+at `v757` against the full steampunk API, and silences the RAP event handler
+abaplint cannot parse) — plus exactly **one** rule: `object_naming`, which
+carries the `SMPS` token. It sits last in the file behind a marker that says
+so; everything above that marker must stay identical.
+
+All 188 rules abaplint ships are named: 171 on, 17 off, each with its reason
+in a comment. **A rule is never left out of the file** — when an upgrade adds
+one, add the key in all three: on if all three corpora pass, off with the
+reason if they do not.
+
+RAP is what makes this corpus different from the other two, and the shared
+block carries **scoped excludes** for it rather than turning rules off for
+everybody. Each pattern matches nothing under the other two `src/` trees:
+
+- `keyword_case` excludes `z2ui5_cl_smps_*` — CDS entities, actions and fields
+  are CamelCase by definition (`Ticket`, `TravelUuid`, `Activate`), and the
+  rule reads every one as a violation (31 findings, all correct ABAP).
+- `unused_variables` / `unused_methods` exclude the `bp_` behavior pools: a
+  handler's parameters are fixed by its signature, the runtime is what calls
   it, and abaplint has no grammar for `RAISE ENTITY EVENT`.
+- `local_class_naming` excludes them too — `lhc_<entity>` is the name RAP
+  mandates. `check_abstract` likewise: a behavior pool is `ABSTRACT FINAL` by
+  definition.
+- `select_single_full_key` excludes them: their `SELECT SINGLE` is an
+  aggregate (`MAX( travel_id )`), which returns exactly one row by definition.
+- `unused_ddic` excludes the persistent and draft tables — they are referenced
+  from the CDS and behavior definitions, which abaplint does not trace into.
+- `fully_type_constants` excludes apps 07 and 10: `TYPE RESPONSE FOR FAILED /
+  REPORTED EARLY` is fully typed RAP syntax abaplint reads as implicit.
+- `max_one_statement` excludes app 319 — its operator mapping is a table
+  written as a `CASE`, one `WHEN` per line, and splitting it loses the shape.
+- `check_syntax` / `superclass_final` exclude app 489: ABAP Push Channels are
+  on-premise only and absent from the steampunk dependency.
+- `cds_naming` takes the `Z2UI5_` namespace instead of SAP's per-category
+  `ZI_` / `ZC_` / `ZR_` prefixes — the root view entities here are
+  `Z2UI5_R_SMPS_<object>`.
+- `smim_consistency` is off outright: the two `.mp3` SMIM objects in `08/01`
+  have a parent MIME folder that lives on the system, not in the repository.
 
 Everything else applies, including `commented_code`, `unused_variables`,
 `whitespace_end` and `7bit_ascii`. An EML result clause you do not read
 (`MAPPED`/`REPORTED`/`FAILED`) is an unused variable — leave the clause out.
+Local type names follow `^TY_` like the other two repositories (`ty_s_` for a
+structure, `ty_t_` for its table) — the looser `t_` this repository used is
+gone.
+
+> **Write a configured rule's flags out in full.** abaplint replaces the whole
+> options object, so a partial one silently turns every flag it omits *off* —
+> `"check_subrc": { "selectTable": false }` disables the rule entirely instead
+> of narrowing it.
 
 ## 6. Documentation that travels with a sample
 
