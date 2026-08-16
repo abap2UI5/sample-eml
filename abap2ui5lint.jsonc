@@ -14,6 +14,13 @@
   "ui5": "1.71",
   "distribution": "openui5",
 
+  // The render gate is REQUIRED here, not merely left on. It is on by default,
+  // and a default-on gate whose runtime is missing steps aside for the property
+  // gate and the run stays green - a corpus that claims every view loads should
+  // not be able to pass without having loaded them. Saying so makes a missing
+  // @abap2ui5/render-runtime an error instead.
+  "render": true,
+
   // The two README badges. Every run rewrites these shields.io endpoint
   // files, and they are two because they say two different things:
   //
@@ -41,7 +48,15 @@
   //     snapshot, so an aggregation under a smart control cannot be resolved
   //     and is attributed to the nearest control that IS known (sap.m.Page).
   //     The chains themselves are correct — controlConfiguration really does
-  //     sit under SmartFilterBar
+  //     sit under SmartFilterBar.
+  //     This one has an expiry: it was a linter defect, not a fact about the
+  //     snapshot, and it is fixed — an unresolvable control now makes the owner
+  //     opaque instead of handing its children to a grandparent, so the eight
+  //     findings this line hides disappear on their own. VERIFIED 2026-08-15
+  //     against the linter's main branch: with the line removed this repo
+  //     reports no findings at all. DELETE THE LINE when the
+  //     @abap2ui5/linter pin reaches 0.2.0 and re-run; the other two
+  //     exclusions below stay, they are facts about SAPUI5
   //   * render-error         — the render gate serves the OpenUI5 runtime,
   //     which has no sap/ui/comp/... modules to load
   //

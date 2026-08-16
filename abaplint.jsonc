@@ -90,6 +90,62 @@
       "exclude": ["z2ui5_cl_smps_app_489_ws\\.clas\\."]
     },
     "unknown_types": true,
-    "xml_consistency": true
+    "xml_consistency": true,
+
+    // --- raised to the level abap2UI5/samples-controls holds itself to ---
+    // This repository ships code meant to be copied, and it was checked by 17
+    // rules where the control corpus is checked by 45. The gap was visible in
+    // the corpus: commented-out lines shipped in two samples, three public
+    // attributes nobody read. Both are below, both are now errors.
+    "commented_code": true,
+    "unused_variables": {
+      // same pools, same reason as unused_methods below: a handler's IMPORTING
+      // parameters are fixed by its signature, and abaplint has no grammar for
+      // RAISE ENTITY EVENT - so a variable the event consumes reads as unused
+      "exclude": ["z2ui5_cl_smps_bp_[a-z]+\\.clas\\.locals_imp\\."]
+    },
+    "unused_types": true,
+    "unreachable_code": true,
+    "empty_statement": true,
+    "ambiguous_statement": true,
+    "identical_conditions": true,
+    "identical_contents": true,
+    "when_others_last": true,
+    "constructor_visibility_public": true,
+    "no_chained_assignment": true,
+    "names_no_dash": true,
+    "functional_writing": true,
+    "preferred_compare_operator": true,
+    "use_line_exists": true,
+    "prefer_is_not": true,
+    "obsolete_statement": true,
+    "colon_missing_space": true,
+    "contains_tab": true,
+    // the ABAP editor strips a trailing blank when it saves, so a line that
+    // ends in one comes back changed on the next pull - for everyone
+    "whitespace_end": true,
+    "7bit_ascii": true,
+    "sequential_blank": {
+      "lines": 3
+    },
+    // NOT enabled here, unlike in samples-controls, and both for the same
+    // reason - this repository has RAP and that one does not:
+    //   keyword_case      CDS entities, actions and fields are CamelCase by
+    //                     definition (Ticket, TravelUuid, Activate), and the
+    //                     rule reads every one of them as a lower-case
+    //                     violation. 31 findings, all of them correct ABAP.
+    //   max_one_statement the operator mapping in app 319 is a table written
+    //                     as a CASE, one WHEN per line. Splitting it costs
+    //                     the shape that makes it readable.
+    "unused_methods": {
+      // a RAP behavior implementation is called by the runtime, never from
+      // ABAP - every handler method in a bp_ pool reads as unused
+      "exclude": ["z2ui5_cl_smps_bp_[a-z]+\\.clas\\.locals_imp\\."]
+    },
+    "types_naming": {
+      // ty_s_ for a structure, t_ for its table - the scheme this repository
+      // uses, which is not samples-controls' ty_t_
+      "pattern": "^(TY_|T_)"
+    }
   }
 }

@@ -206,6 +206,18 @@ They carry the older `SMP` token (`Z2UI5_AMC_SMP_2`, `Z2UI5_APC_SMP_2`,
 
 ## Checks
 
+Locally, the same three CI runs, in one command:
+
+```sh
+npm ci
+npm run check
+```
+
+Individually: `npm run lint` (abaplint), `npm run check:abap2ui5` (the app class
+and the view it builds, with a headless render of every view) and `npm run
+check:overview`. `npm run fmt:chains` applies the house chain layout.
+[`AGENTS.md`](AGENTS.md) has the conventions those checks enforce.
+
 | Workflow | What it does |
 |---|---|
 | `abap-standard` | `abaplint ./abaplint.jsonc` — syntax `v757`, the on-premise release |

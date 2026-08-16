@@ -223,6 +223,47 @@ CLASS z2ui5_cl_smps_app_00 DEFINITION PUBLIC.
         VALUE(result) TYPE string.
 
   PRIVATE SECTION.
+
+    " The url of a sample, built here rather than borrowed. The overview ships
+    " on every generated package branch while src/00 travels only with the two
+    " packages that name it in .github/packages.json, so calling
+    " z2ui5_cl_smps_context left seven of the nine branches with an overview
+    " that does not activate. The framework has the same helper, but in its
+    " vendored utility package (src/00/03) - not released API, "renamed and
+    " restructured without notice", and the linter says so. Which leaves
+    " carrying it: forty lines, and the class owes nothing to anyone.
+    TYPES:
+      BEGIN OF ty_s_param,
+        n TYPE string,
+        v TYPE string,
+      END OF ty_s_param.
+    TYPES ty_t_param TYPE STANDARD TABLE OF ty_s_param WITH EMPTY KEY.
+
+    "! the address of a sample: the url of the running overview with app_start
+    "! exchanged, so the tab that opens lands on the same ICF node with the
+    "! same parameters
+    METHODS app_get_url
+      IMPORTING
+        classname     TYPE clike
+        origin        TYPE clike
+        pathname      TYPE clike
+        search        TYPE clike
+        hash          TYPE clike OPTIONAL
+      RETURNING
+        VALUE(result) TYPE string.
+
+    METHODS url_param_get_tab
+      IMPORTING
+        val              TYPE clike
+      RETURNING
+        VALUE(rt_params) TYPE ty_t_param.
+
+    METHODS url_param_create_url
+      IMPORTING
+        t_params      TYPE ty_t_param
+      RETURNING
+        VALUE(result) TYPE string.
+
 ENDCLASS.
 
 
@@ -688,11 +729,11 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
                       detail    = detail
                       classname = to_upper( classname )
                       installed = class_check_installed( classname )
-                      url       = z2ui5_cl_smps_context=>app_get_url( classname = classname
-                                                                      origin    = s_config-origin
-                                                                      pathname  = s_config-pathname
-                                                                      search    = s_config-search
-                                                                      hash      = s_config-hash ) ).
+                      url       = app_get_url( classname = classname
+                                               origin    = s_config-origin
+                                               pathname  = s_config-pathname
+                                               search    = s_config-search
+                                               hash      = s_config-hash ) ).
 
     " an enum typed property rejects the empty string, so the rows that are
     " fine say None rather than nothing
@@ -904,6 +945,111 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
                 title     = `Cross-app navigation - receiver`
                 detail    = `reads them back out of its startup parameters`
                 classname = `Z2UI5_CL_SMPS_APP_484` ) ) ).
+
+  ENDMETHOD.
+
+
+  METHOD app_get_url.
+
+    DATA(lt_param) = url_param_get_tab( search ).
+    DELETE lt_param WHERE n = `app_start`.
+    INSERT VALUE #( n = `app_start`
+                    v = to_lower( classname ) ) INTO TABLE lt_param.
+
+    " keep only the launchpad shell part of the hash: the app-owned part
+    " (leading `/` standalone, or everything after `&/` inside the FLP)
+    " carries THIS app's route/app-state, which the backend prefers over
+    " app_start - appending it verbatim would re-open the overview instead of
+    " the sample that was asked for
+    DATA(lv_hash) = CONV string( hash ).
+    IF lv_hash IS NOT INITIAL.
+      DATA(lv_content) = lv_hash.
+      IF lv_content(1) = `#`.
+        lv_content = substring( val = lv_content
+                                off = 1 ).
+      ENDIF.
+      IF lv_content IS INITIAL OR lv_content(1) = `/`.
+        " pure app hash (route or app-state) - drop it entirely
+        lv_hash = ``.
+      ELSE.
+        " inside the FLP keep the shell part, cut the app part after `&/`
+        DATA(lv_off) = find( val = lv_content
+                             sub = `&/` ).
+        IF lv_off = 0.
+          lv_hash = ``.
+        ELSEIF lv_off > 0.
+          lv_hash = |#{ lv_content(lv_off) }|.
+        ELSE.
+          lv_hash = |#{ lv_content }|.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+
+    result = |{ origin }{ pathname }?| && url_param_create_url( lt_param ) && lv_hash.
+
+  ENDMETHOD.
+
+
+  METHOD url_param_get_tab.
+
+    DATA(lv_search) = replace( val  = val
+                               sub  = `%3D`
+                               with = `=`
+                               occ  = 0 ).
+
+    " RFC 3986 allows lowercase hex digits in percent-encodings, so decode
+    " %3d the same way as %3D (%26 contains no letters and needs no twin)
+    lv_search = replace( val  = lv_search
+                         sub  = `%3d`
+                         with = `=`
+                         occ  = 0 ).
+
+    lv_search = replace( val  = lv_search
+                         sub  = `%26`
+                         with = `&`
+                         occ  = 0 ).
+
+    lv_search = shift_left( val = lv_search
+                            sub = `?` ).
+
+    " prepend & before searching so sap-startup-params is also unwrapped
+    " when it is the first/only query parameter (typical FLP target mapping)
+    DATA(lv_search2) = substring_after( val = |&{ lv_search }|
+                                        sub = `&sap-startup-params=` ).
+    lv_search = COND #( WHEN lv_search2 IS NOT INITIAL THEN lv_search2 ELSE lv_search ).
+
+    lv_search2 = substring_after( val = lv_search
+                                  sub = `?` ).
+    IF lv_search2 IS NOT INITIAL.
+      lv_search = lv_search2.
+    ENDIF.
+
+    SPLIT lv_search AT `&` INTO TABLE DATA(lt_param).
+
+    LOOP AT lt_param REFERENCE INTO DATA(lr_param).
+      SPLIT lr_param->* AT `=` INTO DATA(lv_name) DATA(lv_value).
+      " an empty segment (empty search string, trailing &) would otherwise
+      " produce a phantom nameless parameter that url_param_create_url
+      " writes back out as a stray `=&`
+      IF lv_name IS INITIAL.
+        CONTINUE.
+      ENDIF.
+      " normalize the name so the app_start lookup is case-insensitive on
+      " every input shape - the value keeps its original case
+      INSERT VALUE #( n = to_lower( condense( lv_name ) )
+                      v = lv_value ) INTO TABLE rt_params.
+    ENDLOOP.
+
+  ENDMETHOD.
+
+
+  METHOD url_param_create_url.
+
+    LOOP AT t_params INTO DATA(ls_param).
+      result = |{ result }{ ls_param-n }={ ls_param-v }&|.
+    ENDLOOP.
+    result = shift_right( val = result
+                          sub = `&` ).
 
   ENDMETHOD.
 
