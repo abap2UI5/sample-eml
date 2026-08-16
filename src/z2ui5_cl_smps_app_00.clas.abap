@@ -828,19 +828,19 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
                 classname = `Z2UI5_CL_SMPS_APP_319` ) )
       ( sample( no        = `475`
                 title     = `SmartField inside a SmartForm`
-                detail    = `GWSAMPLE_BASIC`
+                detail    = `needs the GWSAMPLE_BASIC OData service`
                 classname = `Z2UI5_CL_SMPS_APP_475` ) )
       ( sample( no        = `476`
                 title     = `SmartForm, display/edit toggle`
-                detail    = `GWSAMPLE_BASIC`
+                detail    = `needs the GWSAMPLE_BASIC OData service`
                 classname = `Z2UI5_CL_SMPS_APP_476` ) )
       ( sample( no        = `477`
                 title     = `SmartFilterBar driving a SmartTable`
-                detail    = `GWSAMPLE_BASIC`
+                detail    = `needs the GWSAMPLE_BASIC OData service`
                 classname = `Z2UI5_CL_SMPS_APP_477` ) )
       ( sample( no        = `478`
                 title     = `Page variant management`
-                detail    = `GWSAMPLE_BASIC`
+                detail    = `needs the GWSAMPLE_BASIC OData service`
                 classname = `Z2UI5_CL_SMPS_APP_478` ) )
       ( sample( no        = `479`
                 title     = `SmartChart with NavigationPopover`
@@ -854,7 +854,7 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
     t_rap = VALUE #(
       ( sample( no        = `01`
                 title     = `Read a travel`
-                detail    = `READ ENTITIES`
+                detail    = `reads one instance by its key - a missing key comes back in FAILED, not as an exception`
                 classname = `Z2UI5_CL_SMPS_APP_01` ) )
       ( sample( no        = `02`
                 title     = `Create a travel`
@@ -862,11 +862,11 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
                 classname = `Z2UI5_CL_SMPS_APP_02` ) )
       ( sample( no        = `03`
                 title     = `Update a travel`
-                detail    = `MODIFY ... UPDATE FIELDS`
+                detail    = `changes single fields of one instance - UPDATE FIELDS names what may be touched`
                 classname = `Z2UI5_CL_SMPS_APP_03` ) )
       ( sample( no        = `04`
                 title     = `Delete a travel`
-                detail    = `MODIFY ... DELETE FROM`
+                detail    = `deletes one instance - MODIFY ... DELETE FROM`
                 classname = `Z2UI5_CL_SMPS_APP_04` ) )
       ( sample( no        = `05`
                 title     = `Manage travels - the complete app`
@@ -880,7 +880,7 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
                 classname = `Z2UI5_CL_SMPS_APP_06` ) )
       ( sample( no        = `07`
                 title     = `Enter draft mode`
-                detail    = `EXECUTE Edit / Resume`
+                detail    = `Edit copies the active instance into a new draft, Resume picks up an existing one`
                 classname = `Z2UI5_CL_SMPS_APP_07` ) )
       ( sample( no        = `08`
                 title     = `Change and save a draft`
@@ -892,7 +892,7 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
                 classname = `Z2UI5_CL_SMPS_APP_09` ) )
       ( sample( no        = `10`
                 title     = `Manage travels with draft - the complete app`
-                detail    = `06-09 in one screen`
+                detail    = `a whole app, not a snippet - the complete draft lifecycle in one screen`
                 classname = `Z2UI5_CL_SMPS_APP_10` ) ) ).
 
     t_events = VALUE #(

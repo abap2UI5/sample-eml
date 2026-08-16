@@ -40,6 +40,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { scanSamples, scanOverview } from './lib/scan-samples.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const SRC = path.join(ROOT, 'src');
@@ -111,9 +112,35 @@ for (const file of walk(SRC)) {
   }
 }
 
+/* The overview app carries a `detail` string per sample, and that string is
+ * the class's `" @summary`. Two copies of one sentence, in two files.
+ *
+ * They had already drifted before this check existed: the summaries moved onto
+ * the classes and nine of them were improved there the same afternoon, so nine
+ * samples described themselves one way in the catalogue page and another way in
+ * the app - within hours, with every gate green. That is what a second copy
+ * does, and it is why this is checked rather than asked for.
+ *
+ * Only `detail` is held to the class. The app's `title` is deliberately its
+ * own: DESCRIPT is capped at 60 characters and reads `Titel - Kurzbeschreibung`
+ * for ADT's object list, while the tile wants a headline. Two different jobs,
+ * two different strings, and no pretence that they are one. */
+const catalogue = scanOverview(ROOT);
+for (const s of scanSamples(ROOT).filter((x) => x.isApp)) {
+  const entry = catalogue.get(s.cls.toLowerCase());
+  if (!entry || entry.detail === s.summary) continue;
+  problems.push(
+    `${s.cls}: the overview app and the class disagree about what it shows\n`
+    + `    app:   ${entry.detail}\n`
+    + `    class: ${s.summary}\n`
+    + '    the class is the source - copy @summary into the sample( ) entry',
+  );
+}
+
 console.log(
   `check-keywords: ${apps} app(s), ${helpers} helper(s) exempt; `
-  + `${terms.size} distinct search terms`,
+  + `${terms.size} distinct search terms; `
+  + `${catalogue.size} overview entries agree with their class`,
 );
 
 if (problems.length) {
