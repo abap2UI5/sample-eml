@@ -107,7 +107,7 @@ CLASS z2ui5_cl_smps_app_485 IMPLEMENTATION.
 
   METHOD on_event.
 
-    CASE client->get( )-event.
+    CASE client->get_event( ).
       WHEN `BACK`.
         set_session_stateful( client   = client
                               stateful = abap_false ).

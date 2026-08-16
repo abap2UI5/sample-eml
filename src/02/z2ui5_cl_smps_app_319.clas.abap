@@ -231,7 +231,7 @@ CLASS z2ui5_cl_smps_app_319 IMPLEMENTATION.
 
   METHOD on_event.
 
-    CASE m_client->get( )-event.
+    CASE m_client->get_event( ).
       WHEN `PRODTYPE_CHANGED` OR `SEARCH`.
         do_search( ).
     ENDCASE.

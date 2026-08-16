@@ -29,7 +29,7 @@ CLASS z2ui5_cl_smps_app_12 IMPLEMENTATION.
       data_read( ).
       view_display( ).
     ELSEIF client->check_on_event( ).
-      IF client->get( )-event = `REFRESH`.
+      IF client->get_event( ) = `REFRESH`.
         data_read( ).
         view_display( ).
       ENDIF.

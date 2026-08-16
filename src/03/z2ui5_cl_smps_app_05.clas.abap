@@ -92,7 +92,7 @@ CLASS z2ui5_cl_smps_app_05 IMPLEMENTATION.
 
   METHOD on_event.
 
-    CASE client->get( )-event.
+    CASE client->get_event( ).
       WHEN `REFRESH`.
         data_read( ).
       WHEN `GENERATE`.

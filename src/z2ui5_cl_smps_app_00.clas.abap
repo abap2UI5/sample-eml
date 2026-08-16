@@ -290,7 +290,7 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
 
     DATA li_app TYPE REF TO z2ui5_if_app.
 
-    CASE client->get( )-event.
+    CASE client->get_event( ).
 
       WHEN cs_event-regenerate.
 

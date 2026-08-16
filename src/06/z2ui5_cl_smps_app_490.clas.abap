@@ -47,7 +47,7 @@ CLASS z2ui5_cl_smps_app_490 IMPLEMENTATION.
             RETURN.
           ENDIF.
 
-          CASE client->get( )-event.
+          CASE client->get_event( ).
             WHEN `CALL_BOOKING_MASK`.
               DATA(lr_view2) = NEW z2ui5_cl_smps_app_490( ).
               lr_view2->view_id = 2.
@@ -98,7 +98,7 @@ CLASS z2ui5_cl_smps_app_490 IMPLEMENTATION.
             ENDTRY.
           ENDIF.
 
-          CASE client->get( )-event.
+          CASE client->get_event( ).
             WHEN `NEXT_LOCK`.
               client->set_session_stateful( abap_false ).
               lr_view2 = NEW z2ui5_cl_smps_app_490( ).

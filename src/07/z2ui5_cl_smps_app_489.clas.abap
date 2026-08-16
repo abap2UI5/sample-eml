@@ -62,7 +62,7 @@ CLASS z2ui5_cl_smps_app_489 IMPLEMENTATION.
 
   METHOD on_event.
 
-    CASE client->get( )-event.
+    CASE client->get_event( ).
       WHEN `POST`.
         on_event_post( ).
       WHEN `WS_RECEIVED`.

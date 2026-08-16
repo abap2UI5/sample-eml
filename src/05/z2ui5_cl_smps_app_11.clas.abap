@@ -51,7 +51,7 @@ CLASS z2ui5_cl_smps_app_11 IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD on_event.
-    CASE client->get( )-event.
+    CASE client->get_event( ).
       WHEN `CREATE`.
         on_event_create( ).
       WHEN `REFRESH`.
