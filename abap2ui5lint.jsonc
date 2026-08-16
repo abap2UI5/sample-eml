@@ -95,23 +95,7 @@
         "/src/07/z2ui5_cl_smps_app_489\\.",
         "/src/08/z2ui5_cl_smps_app_487\\."
       ]
-    },
-
-    /* 0.2.0 brought `missing-on-navigated-branch`, and it is RIGHT: 27 of the
-     * 32 apps here dispatch on check_on_init( ) alone, so nothing re-displays
-     * when a popup hands control back or a bookmarked state is restored.
-     * abap2UI5/samples-controls made the branch part of its port recipe on the
-     * same day ("NOT optional and stays even in a static app").
-     *
-     * Not excluded and not baselined — demoted, so every finding stays on the
-     * report where somebody has to look at it, and CI is not red about work
-     * that has not been scheduled. The fix is not a one-liner: these apps build
-     * the whole view INLINE inside the IF branch, so each one needs its view
-     * extracted into a method before an ELSEIF can call it. 27 apps.
-     *
-     * RAISE THIS BACK to warning as the apps are converted — the last one to
-     * be converted should delete the line. */
-    "missing-on-navigated-branch": "hint"
+    }
   },
 
   "failOn": "warning"
