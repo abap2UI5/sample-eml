@@ -22,7 +22,7 @@ CLASS z2ui5_cl_smps_app_319 DEFINITION PUBLIC.
         key  TYPE string,
         text TYPE string,
       END OF ty_s_token,
-      t_tokens TYPE STANDARD TABLE OF ty_s_token WITH EMPTY KEY.
+      ty_t_token TYPE STANDARD TABLE OF ty_s_token WITH EMPTY KEY.
     TYPES:
       BEGIN OF ty_s_range,
         exclude      TYPE abap_bool,
@@ -33,7 +33,7 @@ CLASS z2ui5_cl_smps_app_319 DEFINITION PUBLIC.
         tokentext    TYPE string,
         tokenlongkey TYPE string,
       END OF ty_s_range,
-      t_ranges TYPE STANDARD TABLE OF ty_s_range WITH EMPTY KEY.
+      ty_t_range TYPE STANDARD TABLE OF ty_s_range WITH EMPTY KEY.
     TYPES:
       BEGIN OF ty_s_product,
         product_type TYPE string,
@@ -52,9 +52,9 @@ CLASS z2ui5_cl_smps_app_319 DEFINITION PUBLIC.
     DATA:
       BEGIN OF m_selection,
         BEGIN OF product_type,
-          tokens_added   TYPE t_tokens,
-          tokens_removed TYPE t_tokens,
-          ranges         TYPE t_ranges,
+          tokens_added   TYPE ty_t_token,
+          tokens_removed TYPE ty_t_token,
+          ranges         TYPE ty_t_range,
         END OF product_type,
       END OF m_selection.
 

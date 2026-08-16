@@ -167,11 +167,10 @@ CLASS z2ui5_cl_smps_app_493 IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    CASE client->get_event( ).
-      WHEN `SEARCH`.
-        search( ).
-        client->message_toast_display( |{ lines( mt_result ) } products| ).
-    ENDCASE.
+    IF client->get_event( ) = `SEARCH`.
+      search( ).
+      client->message_toast_display( |{ lines( mt_result ) } products| ).
+    ENDIF.
 
   ENDMETHOD.
 

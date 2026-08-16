@@ -27,10 +27,11 @@ CLASS z2ui5_cl_smps_app_314 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
+    DATA ls_row TYPE ty_s_row.
+
     IF client->check_on_init( ).
 
       DO 10 TIMES.
-        DATA ls_row TYPE ty_s_row.
         ls_row-count = sy-index.
         ls_row-value = `red`.
         ls_row-descr = `this is a description`.

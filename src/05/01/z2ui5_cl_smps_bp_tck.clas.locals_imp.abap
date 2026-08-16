@@ -17,12 +17,13 @@ CLASS lhc_ticket IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD manageadmin.
+
+    DATA lv_now TYPE timestampl.
     READ ENTITIES OF z2ui5_r_smps_tck IN LOCAL MODE
       ENTITY Ticket
         FIELDS ( CreatedAt ) WITH CORRESPONDING #( keys )
         RESULT DATA(lt_tickets).
 
-    DATA lv_now TYPE timestampl.
     GET TIME STAMP FIELD lv_now.
     DATA(lv_user) = cl_abap_context_info=>get_user_technical_name( ).
 

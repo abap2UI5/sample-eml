@@ -40,7 +40,7 @@ CLASS z2ui5_cl_smps_app_483 IMPLEMENTATION.
               )->a( n = `title`          v = `abap2UI5 - Launchpad - Cross-App Navigation (Sender)`
               )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
               )->a( n = `navButtonPress` v = client->_event_nav_app_leave( )
-              )->a( n = `showHeader`     b = xsdbool( abap_false = client->get( )-check_launchpad_active ) ).
+              )->a( n = `showHeader`     b = xsdbool( client->get( )-check_launchpad_active = abap_false ) ).
 
       page->tag( `MessageStrip`
           )->a( n = `text`     v = `SENDER side of launchpad cross-app navigation: the button navigates to ` &&

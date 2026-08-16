@@ -288,6 +288,8 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
 
   METHOD on_event.
 
+    DATA li_app TYPE REF TO z2ui5_if_app.
+
     CASE client->get( )-event.
 
       WHEN cs_event-regenerate.
@@ -317,7 +319,6 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
         " same reason the samples are (see the class documentation)
         TRY.
             DATA(classname) = to_upper( client->get_event_arg( ) ).
-            DATA li_app TYPE REF TO z2ui5_if_app.
             CREATE OBJECT li_app TYPE (classname).
             client->nav_app_call( li_app ).
 
@@ -801,8 +802,8 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
 
   METHOD model_init.
 
-    demo_data_installed = boolc( class_check_installed( cs_class-data_trv ) = abap_true
-                              OR class_check_installed( cs_class-data_trd ) = abap_true ).
+    demo_data_installed = xsdbool( class_check_installed( cs_class-data_trv ) = abap_true
+                                OR class_check_installed( cs_class-data_trd ) = abap_true ).
 
     t_odata = VALUE #(
       ( sample( no        = `315`

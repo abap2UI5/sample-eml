@@ -10,7 +10,7 @@ CLASS z2ui5_cl_smps_app_489_ws DEFINITION PUBLIC
         __closed__         TYPE string VALUE `__CLOSED__` ##NO_TEXT,
       END OF c_msg.
 
-    CLASS-METHODS: get_active_connections
+    CLASS-METHODS get_active_connections
       RETURNING
         VALUE(result) TYPE i.
 

@@ -20,6 +20,8 @@ CLASS z2ui5_cl_smps_app_490 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
+    DATA lf_new_varkey TYPE n LENGTH 4.
+
     IF view_id IS INITIAL OR view_id = 1.
       view_id = 1.
       TRY.
@@ -101,7 +103,6 @@ CLASS z2ui5_cl_smps_app_490 IMPLEMENTATION.
               client->set_session_stateful( abap_false ).
               lr_view2 = NEW z2ui5_cl_smps_app_490( ).
               lr_view2->view_id = 2.
-              DATA lf_new_varkey TYPE n LENGTH 4.
               lf_new_varkey = varkey+0(4).
               lf_new_varkey = lf_new_varkey + 1.
               lr_view2->varkey = lf_new_varkey+0(4).
