@@ -39,7 +39,7 @@ written in — what they need is the service, not the platform.
 | [`493`](z2ui5_cl_smps_app_493.clas.abap) | classic FilterBar wired to variant management | none — the data is ABAP |
 
 Start any of them with `?app_start=z2ui5_cl_smps_app_<no>`, or from the overview
-app `?app_start=z2ui5_cl_smps_app_00`, which lists every sample of this repository.
+app `?app_start=z2ui5_cl_smps_app_000`, which lists every sample of this repository.
 
 ## Two worth a closer look
 

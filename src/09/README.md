@@ -45,7 +45,7 @@ message box when it was started standalone — where it then has no shell to tal
 
 Start any of them with `?app_start=z2ui5_cl_smps_app_<no>` — from a tile, that is
 what the target mapping's URL carries. The overview app
-`?app_start=z2ui5_cl_smps_app_00` lists them too, but its Open button starts them
+`?app_start=z2ui5_cl_smps_app_000` lists them too, but its Open button starts them
 standalone, and standalone is exactly the case where they have no shell to talk to
 and say so in a message box.
 

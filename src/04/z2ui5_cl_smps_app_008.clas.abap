@@ -17,7 +17,7 @@
 "! and the active instance stays untouched until someone activates the draft
 "! (sample 09). Validations do not run yet either - a draft may be
 "! incomplete.
-CLASS z2ui5_cl_smps_app_08 DEFINITION PUBLIC.
+CLASS z2ui5_cl_smps_app_008 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -41,7 +41,7 @@ CLASS z2ui5_cl_smps_app_08 DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smps_app_08 IMPLEMENTATION.
+CLASS z2ui5_cl_smps_app_008 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 

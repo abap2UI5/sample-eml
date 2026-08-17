@@ -4,7 +4,7 @@
 # The sample catalogue
 
 Every app in this repository — 32 of them — with what it shows and a
-link to its source. This is the [overview app](src/z2ui5_cl_smps_app_00.clas.abap)
+link to its source. This is the [overview app](src/z2ui5_cl_smps_app_000.clas.abap)
 as a page you can read here, before installing anything.
 
 **What makes these different from [abap2UI5/samples](https://github.com/abap2UI5/samples):**
@@ -15,7 +15,7 @@ and a sample that needs nothing but abap2UI5 belongs in the other repository.
 **To run one:** install [abap2UI5](https://github.com/abap2UI5/abap2UI5), pull
 this repository with [abapGit](https://abapgit.org), do the setup its package
 README asks for, then open `<your endpoint>?app_start=<the class in the
-right-hand column>`. Or run `Z2UI5_CL_SMPS_APP_00` and click through the list
+right-hand column>`. Or run `Z2UI5_CL_SMPS_APP_000` and click through the list
 — that is the same catalogue, in the app.
 
 **To read one:** click the class. Every sample is a single class, so the link is
@@ -30,7 +30,7 @@ type who does not know it exists. `Ctrl+F` on this page uses them.
 
 | Sample | Class |
 |---|---|
-| **Overview** — All Samples in This Repository<br>every sample in this repository, grouped by what it needs from the system<br><sub>overview launchpad index start nav_app_call popover all samples</sub> | [`Z2UI5_CL_SMPS_APP_00`](src/z2ui5_cl_smps_app_00.clas.abap) |
+| **Overview** — All Samples in This Repository<br>every sample in this repository, grouped by what it needs from the system<br><sub>overview launchpad index start nav_app_call popover all samples</sub> | [`Z2UI5_CL_SMPS_APP_000`](src/z2ui5_cl_smps_app_000.clas.abap) |
 
 ### OData — `src/01`
 
@@ -56,28 +56,28 @@ type who does not know it exists. `Ctrl+F` on this page uses them.
 
 | Sample | Class |
 |---|---|
-| Read a Travel<br>reads one instance by its key - a missing key comes back in FAILED, not as an exception<br><sub>eml rap read travel select entity behavior</sub> | [`Z2UI5_CL_SMPS_APP_01`](src/03/z2ui5_cl_smps_app_01.clas.abap) |
-| Create a Travel<br>MODIFY ... CREATE, key from MAPPED<br><sub>eml rap create travel insert commit datepicker</sub> | [`Z2UI5_CL_SMPS_APP_02`](src/03/z2ui5_cl_smps_app_02.clas.abap) |
-| Update a Travel<br>changes single fields of one instance - UPDATE FIELDS names what may be touched<br><sub>eml rap update travel modify commit table</sub> | [`Z2UI5_CL_SMPS_APP_03`](src/03/z2ui5_cl_smps_app_03.clas.abap) |
-| Delete a Travel<br>deletes one instance - MODIFY ... DELETE FROM<br><sub>eml rap delete travel remove commit table</sub> | [`Z2UI5_CL_SMPS_APP_04`](src/03/z2ui5_cl_smps_app_04.clas.abap) |
-| Manage Travels, the Complete App<br>01-04 plus EXECUTE and COMMIT ENTITIES RESPONSE OF<br><sub>eml rap crud travel manage popup objectstatus</sub> | [`Z2UI5_CL_SMPS_APP_05`](src/03/z2ui5_cl_smps_app_05.clas.abap) |
+| Read a Travel<br>reads one instance by its key - a missing key comes back in FAILED, not as an exception<br><sub>eml rap read travel select entity behavior</sub> | [`Z2UI5_CL_SMPS_APP_001`](src/03/z2ui5_cl_smps_app_001.clas.abap) |
+| Create a Travel<br>MODIFY ... CREATE, key from MAPPED<br><sub>eml rap create travel insert commit datepicker</sub> | [`Z2UI5_CL_SMPS_APP_002`](src/03/z2ui5_cl_smps_app_002.clas.abap) |
+| Update a Travel<br>changes single fields of one instance - UPDATE FIELDS names what may be touched<br><sub>eml rap update travel modify commit table</sub> | [`Z2UI5_CL_SMPS_APP_003`](src/03/z2ui5_cl_smps_app_003.clas.abap) |
+| Delete a Travel<br>deletes one instance - MODIFY ... DELETE FROM<br><sub>eml rap delete travel remove commit table</sub> | [`Z2UI5_CL_SMPS_APP_004`](src/03/z2ui5_cl_smps_app_004.clas.abap) |
+| Manage Travels, the Complete App<br>01-04 plus EXECUTE and COMMIT ENTITIES RESPONSE OF<br><sub>eml rap crud travel manage popup objectstatus</sub> | [`Z2UI5_CL_SMPS_APP_005`](src/03/z2ui5_cl_smps_app_005.clas.abap) |
 
 ### RAP with Draft — `src/04`
 
 | Sample | Class |
 |---|---|
-| Which Travels Have One<br>READ ... %is_draft = mk-on<br><sub>eml rap draft list objectstatus which travels</sub> | [`Z2UI5_CL_SMPS_APP_06`](src/04/z2ui5_cl_smps_app_06.clas.abap) |
-| Enter Draft Mode<br>Edit copies the active instance into a new draft, Resume picks up an existing one<br><sub>eml rap draft edit enter lock mode</sub> | [`Z2UI5_CL_SMPS_APP_07`](src/04/z2ui5_cl_smps_app_07.clas.abap) |
-| Change and Save a Draft<br>UPDATE ... %is_draft = mk-on<br><sub>eml rap draft change save modify</sub> | [`Z2UI5_CL_SMPS_APP_08`](src/04/z2ui5_cl_smps_app_08.clas.abap) |
-| Leave Draft Mode<br>EXECUTE Activate / Discard<br><sub>eml rap draft discard resume leave mode</sub> | [`Z2UI5_CL_SMPS_APP_09`](src/04/z2ui5_cl_smps_app_09.clas.abap) |
-| Complete Draft Handling<br>a whole app, not a snippet - the complete draft lifecycle in one screen<br><sub>eml rap draft handling crud popup complete</sub> | [`Z2UI5_CL_SMPS_APP_10`](src/04/z2ui5_cl_smps_app_10.clas.abap) |
+| Which Travels Have One<br>READ ... %is_draft = mk-on<br><sub>eml rap draft list objectstatus which travels</sub> | [`Z2UI5_CL_SMPS_APP_006`](src/04/z2ui5_cl_smps_app_006.clas.abap) |
+| Enter Draft Mode<br>Edit copies the active instance into a new draft, Resume picks up an existing one<br><sub>eml rap draft edit enter lock mode</sub> | [`Z2UI5_CL_SMPS_APP_007`](src/04/z2ui5_cl_smps_app_007.clas.abap) |
+| Change and Save a Draft<br>UPDATE ... %is_draft = mk-on<br><sub>eml rap draft change save modify</sub> | [`Z2UI5_CL_SMPS_APP_008`](src/04/z2ui5_cl_smps_app_008.clas.abap) |
+| Leave Draft Mode<br>EXECUTE Activate / Discard<br><sub>eml rap draft discard resume leave mode</sub> | [`Z2UI5_CL_SMPS_APP_009`](src/04/z2ui5_cl_smps_app_009.clas.abap) |
+| Complete Draft Handling<br>a whole app, not a snippet - the complete draft lifecycle in one screen<br><sub>eml rap draft handling crud popup complete</sub> | [`Z2UI5_CL_SMPS_APP_010`](src/04/z2ui5_cl_smps_app_010.clas.abap) |
 
 ### Business Events — `src/05`
 
 | Sample | Class |
 |---|---|
-| Ticket App<br>every create and update raises an entity event<br><sub>rap business events ticket raise publish</sub> | [`Z2UI5_CL_SMPS_APP_11`](src/05/z2ui5_cl_smps_app_11.clas.abap) |
-| Event Log App<br>what the handler wrote, newest first<br><sub>rap business events log consumer subscribe</sub> | [`Z2UI5_CL_SMPS_APP_12`](src/05/z2ui5_cl_smps_app_12.clas.abap) |
+| Ticket App<br>every create and update raises an entity event<br><sub>rap business events ticket raise publish</sub> | [`Z2UI5_CL_SMPS_APP_011`](src/05/z2ui5_cl_smps_app_011.clas.abap) |
+| Event Log App<br>what the handler wrote, newest first<br><sub>rap business events log consumer subscribe</sub> | [`Z2UI5_CL_SMPS_APP_012`](src/05/z2ui5_cl_smps_app_012.clas.abap) |
 
 ### Stateful Sessions / Locks — `src/06`
 

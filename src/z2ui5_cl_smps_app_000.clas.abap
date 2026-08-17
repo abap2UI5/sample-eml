@@ -2,7 +2,7 @@
 " @summary every sample in this repository, grouped by what it needs from the system
 "! <p class="shorttext synchronized">Overview - All Samples in This Repository</p>
 "! The entry point of this repository: every sample of every package in one
-"! list, one press away. Start it with ?app_start=z2ui5_cl_smps_app_00.
+"! list, one press away. Start it with ?app_start=z2ui5_cl_smps_app_000.
 "!
 "! The Open button of a row starts its sample in a NEW BROWSER TAB, so the
 "! overview stays where it is and several samples can run side by side. That
@@ -37,7 +37,7 @@
 "! is entered with nav_app_call( ) and a missing one opens a popover saying it
 "! has to be installed first, with the link to its repository. Keep it in sync
 "! with the copies in abap2UI5/samples and abap2UI5/samples-controls.
-CLASS z2ui5_cl_smps_app_00 DEFINITION PUBLIC.
+CLASS z2ui5_cl_smps_app_000 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -76,11 +76,11 @@ CLASS z2ui5_cl_smps_app_00 DEFINITION PUBLIC.
     "! Regenerate Demo Data button has something to call
     DATA demo_data_installed TYPE abap_bool.
 
-    "! sap.ui.core.IconColor knows no blue - Positive, Critical, Negative and
-    "! Neutral are the semantic four - so the interactive icons of the header
-    "! carry the accent of the sap_horizon theme as a plain CSS colour, and the
-    "! one that leads nowhere keeps the semantic grey
     CONSTANTS:
+      "! sap.ui.core.IconColor knows no blue - Positive, Critical, Negative and
+      "! Neutral are the semantic four - so the interactive icons of the header
+      "! carry the accent of the sap_horizon theme as a plain CSS colour, and the
+      "! one that leads nowhere keeps the semantic grey
       BEGIN OF cs_color,
         active   TYPE string VALUE `#0064D9` ##NO_TEXT,
         inactive TYPE string VALUE `Neutral` ##NO_TEXT,
@@ -93,10 +93,10 @@ CLASS z2ui5_cl_smps_app_00 DEFINITION PUBLIC.
         install    TYPE string VALUE `INSTALL` ##NO_TEXT,
       END OF cs_event.
 
-    "! the overview apps of the abap2UI5 family, in the order the shared header
-    "! renders them - each repository is installed on its own, so the header
-    "! asks per entry whether its overview app is on THIS system
     CONSTANTS:
+      "! the overview apps of the abap2UI5 family, in the order the shared header
+      "! renders them - each repository is installed on its own, so the header
+      "! asks per entry whether its overview app is on THIS system
       BEGIN OF cs_overview,
         samples      TYPE string VALUE `z2ui5_cl_smp_app_000` ##NO_TEXT,
         "! the overview app of samples before its rename - an installation that
@@ -106,7 +106,7 @@ CLASS z2ui5_cl_smps_app_00 DEFINITION PUBLIC.
         "! the overview app of samples-controls before its 2026-08 rename - an
         "! installation that predates it still answers to this name
         controls_old TYPE string VALUE `z2ui5_cl_dmo_app_overview` ##NO_TEXT,
-        stack        TYPE string VALUE `z2ui5_cl_smps_app_00` ##NO_TEXT,
+        stack        TYPE string VALUE `z2ui5_cl_smps_app_000` ##NO_TEXT,
       END OF cs_overview.
 
     CONSTANTS:
@@ -150,23 +150,24 @@ CLASS z2ui5_cl_smps_app_00 DEFINITION PUBLIC.
         href   TYPE string
         name   TYPE string.
 
+    "! @parameter name | the entry's name - the tooltip opens with it and the
+    "! popover of an uninstalled repository is titled after it
+    "! @parameter class_old | the overview app's PREVIOUS name, tried when
+    "! CLASS is not on the system: a repository that renamed its overview app
+    "! is installed under both names in the wild for a while
+    "! @parameter group_start | this entry opens a new group of the header row,
+    "! so it carries the wider margin that sets the groups apart - see
+    "! render_header( )
     METHODS header_button
       IMPORTING
         toolbar     TYPE REF TO z2ui5_cl_ui5_view_builder
         icon        TYPE string
-        "! the entry's name - the tooltip opens with it and the popover of an
-        "! uninstalled repository is titled after it
         name        TYPE string
         descr       TYPE string
         href        TYPE string
         class       TYPE string OPTIONAL
-        "! the overview app's PREVIOUS name, tried when CLASS is not on the
-        "! system: a repository that renamed its overview app is installed
-        "! under both names in the wild for a while
         class_old   TYPE string OPTIONAL
         here        TYPE abap_bool DEFAULT abap_false
-        "! this entry opens a new group of the header row, so it carries the
-        "! wider margin that sets the groups apart - see render_header( )
         group_start TYPE abap_bool DEFAULT abap_false.
 
     "! the press wire of a button whose target is EXTERNAL: a Button carries no
@@ -269,7 +270,7 @@ CLASS z2ui5_cl_smps_app_00 DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
+CLASS z2ui5_cl_smps_app_000 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
@@ -852,58 +853,58 @@ CLASS z2ui5_cl_smps_app_00 IMPLEMENTATION.
                 classname = `Z2UI5_CL_SMPS_APP_493` ) ) ).
 
     t_rap = VALUE #(
-      ( sample( no        = `01`
+      ( sample( no        = `001`
                 title     = `Read a travel`
                 detail    = `reads one instance by its key - a missing key comes back in FAILED, not as an exception`
-                classname = `Z2UI5_CL_SMPS_APP_01` ) )
-      ( sample( no        = `02`
+                classname = `Z2UI5_CL_SMPS_APP_001` ) )
+      ( sample( no        = `002`
                 title     = `Create a travel`
                 detail    = `MODIFY ... CREATE, key from MAPPED`
-                classname = `Z2UI5_CL_SMPS_APP_02` ) )
-      ( sample( no        = `03`
+                classname = `Z2UI5_CL_SMPS_APP_002` ) )
+      ( sample( no        = `003`
                 title     = `Update a travel`
                 detail    = `changes single fields of one instance - UPDATE FIELDS names what may be touched`
-                classname = `Z2UI5_CL_SMPS_APP_03` ) )
-      ( sample( no        = `04`
+                classname = `Z2UI5_CL_SMPS_APP_003` ) )
+      ( sample( no        = `004`
                 title     = `Delete a travel`
                 detail    = `deletes one instance - MODIFY ... DELETE FROM`
-                classname = `Z2UI5_CL_SMPS_APP_04` ) )
-      ( sample( no        = `05`
+                classname = `Z2UI5_CL_SMPS_APP_004` ) )
+      ( sample( no        = `005`
                 title     = `Manage travels - the complete app`
                 detail    = `01-04 plus EXECUTE and COMMIT ENTITIES RESPONSE OF`
-                classname = `Z2UI5_CL_SMPS_APP_05` ) ) ).
+                classname = `Z2UI5_CL_SMPS_APP_005` ) ) ).
 
     t_draft = VALUE #(
-      ( sample( no        = `06`
+      ( sample( no        = `006`
                 title     = `Which travels have a draft?`
                 detail    = `READ ... %is_draft = mk-on`
-                classname = `Z2UI5_CL_SMPS_APP_06` ) )
-      ( sample( no        = `07`
+                classname = `Z2UI5_CL_SMPS_APP_006` ) )
+      ( sample( no        = `007`
                 title     = `Enter draft mode`
                 detail    = `Edit copies the active instance into a new draft, Resume picks up an existing one`
-                classname = `Z2UI5_CL_SMPS_APP_07` ) )
-      ( sample( no        = `08`
+                classname = `Z2UI5_CL_SMPS_APP_007` ) )
+      ( sample( no        = `008`
                 title     = `Change and save a draft`
                 detail    = `UPDATE ... %is_draft = mk-on`
-                classname = `Z2UI5_CL_SMPS_APP_08` ) )
-      ( sample( no        = `09`
+                classname = `Z2UI5_CL_SMPS_APP_008` ) )
+      ( sample( no        = `009`
                 title     = `Leave draft mode`
                 detail    = `EXECUTE Activate / Discard`
-                classname = `Z2UI5_CL_SMPS_APP_09` ) )
-      ( sample( no        = `10`
+                classname = `Z2UI5_CL_SMPS_APP_009` ) )
+      ( sample( no        = `010`
                 title     = `Manage travels with draft - the complete app`
                 detail    = `a whole app, not a snippet - the complete draft lifecycle in one screen`
-                classname = `Z2UI5_CL_SMPS_APP_10` ) ) ).
+                classname = `Z2UI5_CL_SMPS_APP_010` ) ) ).
 
     t_events = VALUE #(
-      ( sample( no        = `11`
+      ( sample( no        = `011`
                 title     = `Create tickets through the BO`
                 detail    = `every create and update raises an entity event`
-                classname = `Z2UI5_CL_SMPS_APP_11` ) )
-      ( sample( no        = `12`
+                classname = `Z2UI5_CL_SMPS_APP_011` ) )
+      ( sample( no        = `012`
                 title     = `The event log`
                 detail    = `what the handler wrote, newest first`
-                classname = `Z2UI5_CL_SMPS_APP_12` ) ) ).
+                classname = `Z2UI5_CL_SMPS_APP_012` ) ) ).
 
     t_stateful = VALUE #(
       ( sample( no        = `486`

@@ -3,10 +3,11 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOCLASS>
-    <CLSNAME>Z2UI5_CL_SMPS_APP_11</CLSNAME>
+    <CLSNAME>Z2UI5_CL_SMPS_APP_005</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>Business Events - Ticket App</DESCRIPT>
+    <DESCRIPT>RAP - Manage Travels, the Complete App</DESCRIPT>
     <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
    </VSEOCLASS>

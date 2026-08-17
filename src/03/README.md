@@ -32,8 +32,8 @@ nothing else has to be installed.
 
 ## Start here
 
-Run [`00 overview`](../z2ui5_cl_smps_app_00.clas.abap) —
-`?app_start=z2ui5_cl_smps_app_00`. It lists every sample of this repository, the
+Run [`000 overview`](../z2ui5_cl_smps_app_000.clas.abap) —
+`?app_start=z2ui5_cl_smps_app_000`. It lists every sample of this repository, the
 RAP ones included, and opens each in a new browser tab, so the overview stays open
 and several samples can run side by side. *Regenerate Demo Data* in its header
 fills both business objects.
@@ -86,10 +86,10 @@ reading order.
 
 | You want to | Statement | Sample |
 |---|---|---|
-| read an instance | `READ ENTITIES` | [`01`](z2ui5_cl_smps_app_01.clas.abap) |
-| create one | `MODIFY … CREATE` → `MAPPED` | [`02`](z2ui5_cl_smps_app_02.clas.abap) |
-| change fields | `MODIFY … UPDATE FIELDS` | [`03`](z2ui5_cl_smps_app_03.clas.abap) |
-| delete one | `MODIFY … DELETE FROM` | [`04`](z2ui5_cl_smps_app_04.clas.abap) |
+| read an instance | `READ ENTITIES` | [`001`](z2ui5_cl_smps_app_001.clas.abap) |
+| create one | `MODIFY … CREATE` → `MAPPED` | [`002`](z2ui5_cl_smps_app_002.clas.abap) |
+| change fields | `MODIFY … UPDATE FIELDS` | [`003`](z2ui5_cl_smps_app_003.clas.abap) |
+| delete one | `MODIFY … DELETE FROM` | [`004`](z2ui5_cl_smps_app_004.clas.abap) |
 | show BO messages in the UI | `msg_get_collect( )` | [`context`](../00/00/z2ui5_cl_smps_context.clas.abap) |
 
 **The complete app** shows the next step: everything the single statements teach,
@@ -99,7 +99,7 @@ made sense:
 
 | | | |
 |---|---|---|
-| call a BO action, save and catch what failed | `MODIFY … EXECUTE`, `COMMIT ENTITIES RESPONSE OF` | [`05` manage travels](z2ui5_cl_smps_app_05.clas.abap) |
+| call a BO action, save and catch what failed | `MODIFY … EXECUTE`, `COMMIT ENTITIES RESPONSE OF` | [`005` manage travels](z2ui5_cl_smps_app_005.clas.abap) |
 
 ## The snippets
 

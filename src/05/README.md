@@ -25,7 +25,7 @@ a younger RAP feature than EML itself: if `RAISE ENTITY EVENT` does not activate
 your system, this package is simply out of reach for now, and nothing else in this
 repository is affected.
 
-The overview app `z2ui5_cl_smps_app_00` lists these two samples like any others and
+The overview app `z2ui5_cl_smps_app_000` lists these two samples like any others and
 does not depend on them: it looks every sample up at runtime, so on a release
 without business events the two rows are shown with their Open button disabled
 instead of taking the overview down.
@@ -37,12 +37,12 @@ table fills itself as you create tickets.
 
 | Sample | Role |
 |---|---|
-| [`11`](z2ui5_cl_smps_app_11.clas.abap) | create tickets through the BO — every create and update raises an event |
-| [`12`](z2ui5_cl_smps_app_12.clas.abap) | the event log the handler writes, newest first |
+| [`011`](z2ui5_cl_smps_app_011.clas.abap) | create tickets through the BO — every create and update raises an event |
+| [`012`](z2ui5_cl_smps_app_012.clas.abap) | the event log the handler writes, newest first |
 
-Start them with `?app_start=z2ui5_cl_smps_app_11` and
-`?app_start=z2ui5_cl_smps_app_12`, or from the overview app
-`?app_start=z2ui5_cl_smps_app_00`, whose Open button puts each in its own tab. Open
+Start them with `?app_start=z2ui5_cl_smps_app_011` and
+`?app_start=z2ui5_cl_smps_app_012`, or from the overview app
+`?app_start=z2ui5_cl_smps_app_000`, whose Open button puts each in its own tab. Open
 both in two browser tabs, create a ticket in the first, press refresh in the
 second — the log entry the handler wrote is there.
 
@@ -117,7 +117,7 @@ the business object changing a line.
 | [`Z2UI5_CL_SMPS_EVT_TCK`](01/z2ui5_cl_smps_evt_tck.clas.locals_imp.abap) | the event handler, writes the log |
 | `Z2UI5_T_SMPS_LOG` + [`Z2UI5_R_SMPS_LOG`](01/z2ui5_r_smps_log.ddls.asddls) | the log table and its CDS view |
 | [`Z2UI5_R_SMPS_TCK_C`](01/z2ui5_r_smps_tck_c.ddls.asddls), `Z2UI5_SD_SMPS_TCK`, `Z2UI5_SB_SMPS_TCK` | projection, service definition and an OData V4 binding |
-| [`Z2UI5_CL_SMPS_APP_11`](z2ui5_cl_smps_app_11.clas.abap), [`Z2UI5_CL_SMPS_APP_12`](z2ui5_cl_smps_app_12.clas.abap) | the two abap2UI5 apps |
+| [`Z2UI5_CL_SMPS_APP_011`](z2ui5_cl_smps_app_011.clas.abap), [`Z2UI5_CL_SMPS_APP_012`](z2ui5_cl_smps_app_012.clas.abap) | the two abap2UI5 apps |
 
 The projection, service definition and service binding are there on purpose: the
 same business object can be published as an OData V4 service and consumed by a

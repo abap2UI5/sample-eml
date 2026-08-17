@@ -1,10 +1,10 @@
 CLASS lhe_ticket DEFINITION INHERITING FROM cl_abap_behavior_event_handler.
   PRIVATE SECTION.
     METHODS on_ticket_created FOR ENTITY EVENT
-      ticketcreated FOR z2ui5_r_smps_tck~TicketCreated.
+      ticketcreated FOR ticket~TicketCreated.
 
     METHODS on_status_changed FOR ENTITY EVENT
-      statuschanged FOR z2ui5_r_smps_tck~StatusChanged.
+      statuschanged FOR ticket~StatusChanged.
 ENDCLASS.
 
 CLASS lhe_ticket IMPLEMENTATION.

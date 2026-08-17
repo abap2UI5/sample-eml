@@ -37,7 +37,7 @@ message arrive in both at once.
 | `Z2UI5_APC_SMP_2` | the push channel and its ICF node |
 
 Start it with `?app_start=z2ui5_cl_smps_app_489`, or from the overview app
-`?app_start=z2ui5_cl_smps_app_00`, which lists every sample of this repository.
+`?app_start=z2ui5_cl_smps_app_000`, which lists every sample of this repository.
 
 ## Where to go next
 

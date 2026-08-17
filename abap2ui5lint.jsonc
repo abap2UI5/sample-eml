@@ -90,8 +90,8 @@
     "render-error": {
       "exclude": [
         "/src/02/",
-        "/src/03/z2ui5_cl_smps_app_05\\.",
-        "/src/04/z2ui5_cl_smps_app_(06|10)\\.",
+        "/src/03/z2ui5_cl_smps_app_005\\.",
+        "/src/04/z2ui5_cl_smps_app_(006|010)\\.",
         "/src/07/z2ui5_cl_smps_app_489\\.",
         "/src/08/z2ui5_cl_smps_app_487\\."
       ]

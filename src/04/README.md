@@ -22,7 +22,7 @@ ABAP Platform >= 1909 or a BTP ABAP Environment. The draft enabled business obje
 and its two tables come with this package ([`src/04/01`](01)).
 
 Fill the table with `Z2UI5_CL_SMPS_DATA_TRD` (F9 in ADT) or press *Regenerate Demo
-Data* in the overview app `?app_start=z2ui5_cl_smps_app_00`.
+Data* in the overview app `?app_start=z2ui5_cl_smps_app_000`.
 
 ## What changes with draft
 
@@ -39,10 +39,10 @@ first.
 
 | You want to | Statement | Sample |
 |---|---|---|
-| see which instances have a draft | `READ … %is_draft = mk-on` | [`06`](z2ui5_cl_smps_app_06.clas.abap) |
-| enter draft mode | `EXECUTE Edit` / `Resume` | [`07`](z2ui5_cl_smps_app_07.clas.abap) |
-| change a draft | `UPDATE … %is_draft = mk-on` | [`08`](z2ui5_cl_smps_app_08.clas.abap) |
-| leave draft mode | `EXECUTE Activate` / `Discard` | [`09`](z2ui5_cl_smps_app_09.clas.abap) |
+| see which instances have a draft | `READ … %is_draft = mk-on` | [`006`](z2ui5_cl_smps_app_006.clas.abap) |
+| enter draft mode | `EXECUTE Edit` / `Resume` | [`007`](z2ui5_cl_smps_app_007.clas.abap) |
+| change a draft | `UPDATE … %is_draft = mk-on` | [`008`](z2ui5_cl_smps_app_008.clas.abap) |
+| leave draft mode | `EXECUTE Activate` / `Discard` | [`009`](z2ui5_cl_smps_app_009.clas.abap) |
 
 Start at `06` — it carries the one trick the other three reuse.
 
@@ -52,7 +52,7 @@ looks like:
 
 | | | |
 |---|---|---|
-| the whole draft lifecycle | everything from 06–09 | [`10` manage travels with draft](z2ui5_cl_smps_app_10.clas.abap) |
+| the whole draft lifecycle | everything from 006–009 | [`010` manage travels with draft](z2ui5_cl_smps_app_010.clas.abap) |
 
 ## The snippets
 

@@ -7,7 +7,7 @@
 "!
 "! It repeats what those four show, nothing more. Read them first, then come
 "! here to see how the pieces sit together in one app.
-CLASS z2ui5_cl_smps_app_10 DEFINITION PUBLIC.
+CLASS z2ui5_cl_smps_app_010 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -67,7 +67,7 @@ CLASS z2ui5_cl_smps_app_10 DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smps_app_10 IMPLEMENTATION.
+CLASS z2ui5_cl_smps_app_010 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
