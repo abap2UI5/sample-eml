@@ -31,7 +31,7 @@ Two consequences worth stating:
 ## 2. The package scheme
 
 One directory per technology under `src/`, `src/00` for what several of them
-share, and the overview app `z2ui5_cl_smps_app_00` in the root.
+share, and the overview app `z2ui5_cl_smps_app_000` in the root.
 
 `.github/packages.json` is the index: directory, branch name, title, the
 release the package needs, its abaplint syntax version, and the `shared`
@@ -77,7 +77,7 @@ What that costs you when you edit:
 
 ```sh
 npm ci
-npm run check        # abaplint + abap2UI5-linter + overview + keywords + SAMPLES.md
+npm run check        # abaplint + abap2UI5-linter + overview + keywords + abapdoc + SAMPLES.md
 ```
 
 Individually: `npm run lint` (abaplint), `npm run check:abap2ui5` (the app
@@ -128,7 +128,7 @@ everybody. Each pattern matches nothing under the other two `src/` trees:
   aggregate (`MAX( travel_id )`), which returns exactly one row by definition.
 - `unused_ddic` excludes the persistent and draft tables — they are referenced
   from the CDS and behavior definitions, which abaplint does not trace into.
-- `fully_type_constants` excludes apps 07 and 10: `TYPE RESPONSE FOR FAILED /
+- `fully_type_constants` excludes apps 007 and 010: `TYPE RESPONSE FOR FAILED /
   REPORTED EARLY` is fully typed RAP syntax abaplint reads as implicit.
 - `max_one_statement` excludes app 319 — its operator mapping is a table
   written as a `CASE`, one `WHEN` per line, and splitting it loses the shape.
@@ -231,7 +231,7 @@ gone.
   **third** description of every sample, disagreeing with the app this page
   claims to be a reading copy of.
 
-  So: title and detail come from `z2ui5_cl_smps_app_00`, the search terms from
+  So: title and detail come from `z2ui5_cl_smps_app_000`, the search terms from
   the class's `@keywords`, the link from the file path. One place per fact.
 
   Two checks close the loop in both directions. `check-overview` refuses a
@@ -252,7 +252,7 @@ gone.
    is "nothing but abap2UI5", it belongs in `abap2UI5/samples`.
 2. Name it `Z2UI5_CL_SMPS_APP_<no>`, following the numbers already in the
    package.
-3. Add it to the overview app's catalogue in `z2ui5_cl_smps_app_00` — by name,
+3. Add it to the overview app's catalogue in `z2ui5_cl_smps_app_000` — by name,
    never with a static reference.
 4. Give it a `" @keywords` line as its first line (§6) — what somebody would
    type who does not know your sample exists.

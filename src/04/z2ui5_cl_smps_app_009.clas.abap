@@ -13,7 +13,7 @@
 "! draft stays a draft and says why. Discard leaves the active instance exactly
 "! as it was. Both are draft actions like Edit and Resume - key only, no
 "! %is_draft.
-CLASS z2ui5_cl_smps_app_09 DEFINITION PUBLIC.
+CLASS z2ui5_cl_smps_app_009 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -42,7 +42,7 @@ CLASS z2ui5_cl_smps_app_09 DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smps_app_09 IMPLEMENTATION.
+CLASS z2ui5_cl_smps_app_009 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 

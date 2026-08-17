@@ -21,7 +21,7 @@
 "! the active one, Resume from the draft - so there is no %is_draft here. And
 "! Edit on an instance that already has a draft fails, which is why this sample
 "! asks first (sample 06) and calls Resume instead.
-CLASS z2ui5_cl_smps_app_07 DEFINITION PUBLIC.
+CLASS z2ui5_cl_smps_app_007 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -51,7 +51,7 @@ CLASS z2ui5_cl_smps_app_07 DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smps_app_07 IMPLEMENTATION.
+CLASS z2ui5_cl_smps_app_007 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
@@ -144,7 +144,7 @@ CLASS z2ui5_cl_smps_app_07 IMPLEMENTATION.
       INTO TABLE @DATA(t_result)
       UP TO 20 ROWS.
 
-    " see z2ui5_cl_smps_app_06 for what this read does - the description is
+    " see z2ui5_cl_smps_app_006 for what this read does - the description is
     " read along so the table can show the draft next to the active instance
     READ ENTITIES OF z2ui5_r_smps_trd
       ENTITY travel

@@ -38,7 +38,7 @@ appear live.
 | [`490`](z2ui5_cl_smps_app_490.clas.abap) | one lock per screen — every *Next Lock View* navigates into a new app instance that takes the next `VARKEY`, going back releases it |
 
 Start any of them with `?app_start=z2ui5_cl_smps_app_<no>`, or from the overview
-app `?app_start=z2ui5_cl_smps_app_00`, which lists every sample of this repository.
+app `?app_start=z2ui5_cl_smps_app_000`, which lists every sample of this repository.
 Begin with `486`: it makes the mode switch visible in one number before any lock is
 involved.
 

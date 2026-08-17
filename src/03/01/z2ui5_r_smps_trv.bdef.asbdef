@@ -1,5 +1,5 @@
 // Managed business object without draft. Everything the abap2UI5 apps
-// z2ui5_cl_smps_app_01 and z2ui5_cl_smps_app_05 call with EML is declared here -
+// z2ui5_cl_smps_app_001 and z2ui5_cl_smps_app_005 call with EML is declared here -
 // the runtime executes the validations, the determination and the feature
 // control no matter who triggers the operation.
 managed implementation in class z2ui5_cl_smps_bp_trv unique;

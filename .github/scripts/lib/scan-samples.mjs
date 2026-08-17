@@ -128,7 +128,7 @@ export function scanSamples(root) {
  */
 const ENTRY = /sample\(\s*no\s*=\s*`([^`]*)`[\s\S]*?title\s*=\s*`([^`]*)`[\s\S]*?detail\s*=\s*`([^`]*)`[\s\S]*?classname\s*=\s*`([^`]*)`/g;
 
-export function scanOverview(root, overviewClass = 'z2ui5_cl_smps_app_00') {
+export function scanOverview(root, overviewClass = 'z2ui5_cl_smps_app_000') {
   const file = path.join(root, 'src', `${overviewClass}.clas.abap`);
   const text = fs.readFileSync(file, 'utf8');
   const byClass = new Map();

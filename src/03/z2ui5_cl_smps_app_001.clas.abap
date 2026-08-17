@@ -12,7 +12,7 @@
 "! Worth knowing: a key that does not exist is not an exception. It comes back
 "! in FAILED and RESULT stays empty, so the response is what you check - never
 "! sy-subrc.
-CLASS z2ui5_cl_smps_app_01 DEFINITION PUBLIC.
+CLASS z2ui5_cl_smps_app_001 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -41,7 +41,7 @@ CLASS z2ui5_cl_smps_app_01 DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smps_app_01 IMPLEMENTATION.
+CLASS z2ui5_cl_smps_app_001 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 

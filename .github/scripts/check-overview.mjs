@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Keeps the overview app and the repository in sync.
 //
-// z2ui5_cl_smps_app_00 references every sample BY NAME and resolves it at
+// z2ui5_cl_smps_app_000 references every sample BY NAME and resolves it at
 // runtime, so that it survives a package the system cannot activate and a
 // checkout that carries only part of this repository (see the class
 // documentation). The price is that the compiler no longer notices a renamed
@@ -37,7 +37,7 @@ import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, basename } from 'node:path';
 
 const SRC = 'src';
-const OVERVIEW = join(SRC, 'z2ui5_cl_smps_app_00.clas.abap');
+const OVERVIEW = join(SRC, 'z2ui5_cl_smps_app_000.clas.abap');
 const packages = JSON.parse(readFileSync(join('.github', 'packages.json'), 'utf8'));
 const PACKAGES = packages.map((entry) => entry.dir);
 
@@ -113,7 +113,7 @@ if (complete) {
   // what every branch keeps out of src/ on top of its own package - the same
   // list build-package-branch.mjs applies, and the reason the overview itself
   // is not reported here
-  const always = /^(package\.devc\.xml|z2ui5_cl_smps_app_00\.clas\..*)$/;
+  const always = /^(package\.devc\.xml|z2ui5_cl_smps_app_000\.clas\..*)$/;
 
   for (const name of new Set([...code.matchAll(/z2ui5_c[lx]_smps_[a-z0-9_]+/g)].map((m) => m[0]))) {
     const dir = home.get(name);

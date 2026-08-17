@@ -1,18 +1,21 @@
-" @keywords eml rap delete travel remove commit table
-" @summary deletes one instance - MODIFY ... DELETE FROM
-"! <p class="shorttext synchronized">RAP - Delete a Travel</p>
-"! Deletes one instance.
+" @keywords eml rap update travel modify commit table
+" @summary changes single fields of one instance - UPDATE FIELDS names what may be touched
+"! <p class="shorttext synchronized">RAP - Update a Travel</p>
+"! Changes single fields of one instance. UPDATE FIELDS names what may be
+"! written, everything else stays untouched.
 "!
 "!     MODIFY ENTITIES OF z2ui5_r_smps_trv
 "!       ENTITY travel
-"!         DELETE FROM VALUE #( ( travelid = travel_id ) )
+"!         UPDATE FIELDS ( description )
+"!         WITH VALUE #( ( travelid    = travel_id
+"!                         description = s_travel-description ) )
 "!       FAILED DATA(s_failed)
 "!       REPORTED DATA(s_reported).
 "!
-"! Worth knowing: DELETE FROM takes the key only, there is no field list. And
-"! like every other operation it only asks the transactional buffer - the row
-"! is gone after the COMMIT, not before.
-CLASS z2ui5_cl_smps_app_04 DEFINITION PUBLIC.
+"! Worth knowing: fields the behavior definition marks readonly are refused.
+"! TotalPrice and OverallStatus belong to the business object, not to the
+"! caller - try it and read what comes back in REPORTED.
+CLASS z2ui5_cl_smps_app_003 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -29,14 +32,14 @@ CLASS z2ui5_cl_smps_app_04 DEFINITION PUBLIC.
     DATA client TYPE REF TO z2ui5_if_client.
 
     METHODS data_read.
-    METHODS data_delete.
+    METHODS data_update.
     METHODS view_display.
 
   PRIVATE SECTION.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smps_app_04 IMPLEMENTATION.
+CLASS z2ui5_cl_smps_app_003 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
@@ -46,8 +49,8 @@ CLASS z2ui5_cl_smps_app_04 IMPLEMENTATION.
       view_display( ).
     ELSEIF client->check_on_navigated( ).
       view_display( ).
-    ELSEIF client->check_on_event( `DELETE` ).
-      data_delete( ).
+    ELSEIF client->check_on_event( `UPDATE` ).
+      data_update( ).
     ENDIF.
 
   ENDMETHOD.
@@ -55,6 +58,8 @@ CLASS z2ui5_cl_smps_app_04 IMPLEMENTATION.
 
   METHOD data_read.
 
+    " a plain SELECT on the CDS view - reading does not need EML, the list
+    " is only here so there is something to change
     SELECT FROM z2ui5_r_smps_trv
       FIELDS TravelId,
              CustomerId,
@@ -71,15 +76,19 @@ CLASS z2ui5_cl_smps_app_04 IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD data_delete.
+  METHOD data_update.
 
     DATA(travel_id) = client->get_event_arg( 1 ).
+    DATA(s_travel) = t_travels[ travel_id = travel_id ].
 
-    " DELETE only needs the key - and it can still fail, e.g. when the
-    " business object refuses the deletion or the instance is locked
+    " UPDATE FIELDS names exactly the fields that are changed - everything
+    " else on the instance stays untouched, which is why no read is needed
+    " before the change
     MODIFY ENTITIES OF z2ui5_r_smps_trv
       ENTITY travel
-        DELETE FROM VALUE #( ( travelid = travel_id ) )
+        UPDATE FIELDS ( description )
+        WITH VALUE #( ( travelid    = travel_id
+                        description = s_travel-description ) )
       FAILED DATA(s_failed)
       REPORTED DATA(s_reported).
 
@@ -103,7 +112,7 @@ CLASS z2ui5_cl_smps_app_04 IMPLEMENTATION.
     ENDIF.
 
     data_read( ).
-    client->message_toast_display( |Travel { travel_id } deleted| ).
+    client->message_toast_display( |Travel { travel_id } updated| ).
 
   ENDMETHOD.
 
@@ -119,7 +128,7 @@ CLASS z2ui5_cl_smps_app_04 IMPLEMENTATION.
             )->a( n = `xmlns:core`   v = `sap.ui.core` ).
     DATA(table) = view->ele( `Shell`
         )->ele( `Page`
-            )->a( n = `title`          v = `abap2UI5 - EML - 04 Delete Travel`
+            )->a( n = `title`          v = `abap2UI5 - EML - 03 Update Travel`
             )->a( n = `showNavButton`  b = client->check_app_prev_stack( )
             )->a( n = `navButtonPress` v = client->_event_nav_app_leave( )
             )->ele( `Table`
@@ -128,7 +137,7 @@ CLASS z2ui5_cl_smps_app_04 IMPLEMENTATION.
     table->ele( `headerToolbar`
         )->ele( `Toolbar`
             )->tag( `Title`
-                )->a( n = `text` v = `MODIFY ENTITIES OF Z2UI5_R_SMPS_TRV ... DELETE` ).
+                )->a( n = `text` v = `MODIFY ENTITIES OF Z2UI5_R_SMPS_TRV ... UPDATE` ).
 
     table->ele( `columns`
         )->ele( `Column`
@@ -154,13 +163,12 @@ CLASS z2ui5_cl_smps_app_04 IMPLEMENTATION.
                     )->a( n = `text` v = `{TRAVEL_ID}`
                 )->tag( `Text`
                     )->a( n = `text` v = `{CUSTOMER_ID}`
-                )->tag( `Text`
-                    )->a( n = `text` v = `{DESCRIPTION}`
+                )->tag( `Input`
+                    )->a( n = `value` v = `{DESCRIPTION}`
                 )->tag( `Button`
-                    )->a( n = `press` v = client->_event( val   = `DELETE`
+                    )->a( n = `press` v = client->_event( val   = `UPDATE`
                                             t_arg = VALUE #( ( `${TRAVEL_ID}` ) ) )
-                    )->a( n = `text`  v = `Delete`
-                    )->a( n = `icon`  v = `sap-icon://delete` ).
+                    )->a( n = `text`  v = `Update` ).
 
     client->view_display( view->stringify( ) ).
 

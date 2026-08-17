@@ -17,7 +17,7 @@
 "!     COMMIT ENTITIES RESPONSE OF z2ui5_r_smps_trv
 "!       FAILED DATA(s_failed_commit)
 "!       REPORTED DATA(s_reported_commit).
-CLASS z2ui5_cl_smps_app_05 DEFINITION PUBLIC.
+CLASS z2ui5_cl_smps_app_005 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -70,7 +70,7 @@ CLASS z2ui5_cl_smps_app_05 DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smps_app_05 IMPLEMENTATION.
+CLASS z2ui5_cl_smps_app_005 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
@@ -103,7 +103,7 @@ CLASS z2ui5_cl_smps_app_05 IMPLEMENTATION.
         on_event_generate( ).
       WHEN `CREATE`.
         " the popup opens on a set that passes both validations, so Create
-        " goes through on the first press - see z2ui5_cl_smps_app_02, which
+        " goes through on the first press - see z2ui5_cl_smps_app_002, which
         " also explains why the end date needs the CONV d( )
         DATA(end_date) = CONV d( sy-datum + 14 ).
 

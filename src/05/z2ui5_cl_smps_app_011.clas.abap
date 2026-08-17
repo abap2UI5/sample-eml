@@ -1,6 +1,6 @@
 " @keywords rap business events ticket raise publish
 " @summary every create and update raises an entity event
-CLASS z2ui5_cl_smps_app_11 DEFINITION PUBLIC CREATE PUBLIC.
+CLASS z2ui5_cl_smps_app_011 DEFINITION PUBLIC CREATE PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES z2ui5_if_app.
@@ -35,7 +35,7 @@ CLASS z2ui5_cl_smps_app_11 DEFINITION PUBLIC CREATE PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_cl_smps_app_11 IMPLEMENTATION.
+CLASS z2ui5_cl_smps_app_011 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
     me->client = client.

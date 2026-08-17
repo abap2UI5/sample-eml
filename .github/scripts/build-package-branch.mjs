@@ -26,7 +26,7 @@ const SRC = 'src';
 // which is the entry point on every branch - it lists every sample of the
 // repository and marks the ones this checkout does not carry as "not on this
 // system"
-const SRC_ALWAYS = /^(package\.devc\.xml|z2ui5_cl_smps_app_00\.clas\..*)$/;
+const SRC_ALWAYS = /^(package\.devc\.xml|z2ui5_cl_smps_app_000\.clas\..*)$/;
 
 const branch = process.argv[2];
 if (!branch) {
@@ -55,7 +55,7 @@ const walk = (dir) =>
 
 const samples = walk(SRC)
   .filter((path) => /^z2ui5_cl_smps_app_.*\.clas\.abap$/.test(basename(path)))
-  .filter((path) => basename(path) !== 'z2ui5_cl_smps_app_00.clas.abap')
+  .filter((path) => basename(path) !== 'z2ui5_cl_smps_app_000.clas.abap')
   .filter((path) => /INTERFACES\s+z2ui5_if_app\s*\./i.test(readFileSync(path, 'utf8'))).length;
 
 // 1. everything in src/ that is not this package, its shared dependencies or
@@ -132,7 +132,7 @@ ${pkg.note ? `\n${wrap(pkg.note)}\n` : ''}
 3. Set up whatever the package builds on: **[src/${pkg.dir}/README.md](src/${pkg.dir}/README.md)**
    says so in one short section.
 4. Start a sample with \`?app_start=<class name>\`, or start the overview with
-   \`?app_start=z2ui5_cl_smps_app_00\`.
+   \`?app_start=z2ui5_cl_smps_app_000\`.
 
 The overview app ships on every branch and lists **all ${samples} samples** of the
 repository, not just this package's. The ones that are not on this branch are

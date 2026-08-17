@@ -25,7 +25,7 @@ app checks the node and warns if it is inactive.
 ## The sample
 
 Start it with `?app_start=z2ui5_cl_smps_app_487`, or from the overview app
-`?app_start=z2ui5_cl_smps_app_00`, which lists every sample of this repository.
+`?app_start=z2ui5_cl_smps_app_000`, which lists every sample of this repository.
 Type the magic key the app tells you and you get the success sound; type anything
 else and you get the error one.
 

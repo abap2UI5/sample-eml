@@ -128,7 +128,7 @@ every package of the current layout — and pull the rest afterwards.
 
 ## The overview app
 
-You do not have to look a number up. `?app_start=z2ui5_cl_smps_app_00` lists
+You do not have to look a number up. `?app_start=z2ui5_cl_smps_app_000` lists
 **every sample of this repository**, one collapsible section per package, and
 starts each one in a new browser tab — so the overview stays where it is and
 several samples can run side by side. Its header button fills the demo data of
