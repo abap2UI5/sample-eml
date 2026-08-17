@@ -165,9 +165,9 @@ overview app and nothing else:
 | [`08-mime`](../../tree/08-mime) | [`src/08`](src/08) — MIME Play Audio | Standard only, ≥ 7.50 |
 | [`09-launchpad`](../../tree/09-launchpad) | [`src/09`](src/09) — Launchpad | Cloud + Standard ≥ 7.40 SP08 |
 
-The overview app ships on every branch and keeps listing **all 31 samples**, so it
-stays the catalogue of what the other branches hold — the ones that are not on
-your branch simply show up with a disabled Open button.
+The overview app ships on every branch and keeps listing **every sample in the
+repository**, so it stays the catalogue of what the other branches hold — the
+ones that are not on your branch simply show up with a disabled Open button.
 
 These branches are **generated**: `create-package-branches` rebuilds and
 force-pushes every one of them on every push to `main`, and abaplint checks each

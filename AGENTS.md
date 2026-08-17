@@ -77,7 +77,7 @@ What that costs you when you edit:
 
 ```sh
 npm ci
-npm run check        # abaplint + abap2UI5-linter + overview + keywords + abapdoc + SAMPLES.md
+npm run check        # abaplint + abap2UI5-linter + overview + keywords + abapdoc + SAMPLES.md + app-rules
 ```
 
 Individually: `npm run lint` (abaplint), `npm run check:abap2ui5` (the app
@@ -91,25 +91,41 @@ where a statement ends, so run `npm run lint` first if a chain is mid-edit.
 
 ## 5. Conventions that are checked here
 
-**The rule block in `abaplint.jsonc` is byte-identical in three
-repositories** — this one, [samples](https://github.com/abap2UI5/samples) and
-[samples-controls](https://github.com/abap2UI5/samples-controls) — the same way
-`scripts/chain-format.mjs` is shared between the other two. abaplint has no
-`extends`, so the copy is the mechanism, and the block carries a header saying
-so. **Change it here and copy it to the other two**, then re-run their gates:
-what is checked is a joint decision of the three corpora, not a local
-preference.
+**The rule block below the marker in `abaplint.jsonc` is a CHECKED COPY of the
+shared app rule set, and its source is
+[abap2UI5/abap2UI5](https://github.com/abap2UI5/abap2UI5)
+`.github/abaplint/app-rules.json`** — the repository where the rest of "how to
+write an abap2UI5 app" already lives (the `build-an-app` and
+`view-chain-layout` skills, `docs/agents/building-apps.md`, `abap-check`,
+`ui5-check`), because a shared thing needs one owner. **Change it THERE first,
+then copy it here**; this one, [samples](https://github.com/abap2UI5/samples)
+and [samples-controls](https://github.com/abap2UI5/samples-controls) are
+consumers of that file, not peers of each other. abaplint has no `extends`, so
+the checked copy is the mechanism, and the block carries a header saying so.
+
+**The gate is `scripts/check-app-rules.mjs`** — `npm run check:app-rules`, the
+last step of `npm run check`, and the `check-app-rules` workflow on every pull
+request and push to `main`. It compares PARSED SETTINGS against the source,
+preferring an `abap2UI5` checkout next to this one and otherwise fetching it,
+and it is the one check here that needs the network: an unreachable source
+SAYS SO and passes, rather than turning this repository red because github.com
+is. It replaced a three-way peer comparison, which had no answer to which of
+three peers is right, went red in the *other* repositories when one drifted,
+and compared rule NAMES only — so flipping a rule to `false` to get a pull
+request through, the exact drift it existed to catch, read to it as no change
+at all. abap2UI5 checks the same thing from its side (`shared-file-gate.mjs`).
 
 Only `global`, `dependencies` and `syntax` are per repository (this one runs
 at `v757` against the full steampunk API, and silences the RAP event handler
 abaplint cannot parse) — plus exactly **one** rule: `object_naming`, which
-carries the `SMPS` token. It sits last in the file behind a marker that says
-so; everything above that marker must stay identical.
+carries the `SMPS` token and is the only rule `check-app-rules` excludes from
+the comparison. It sits last in the file behind a marker that says so;
+everything above that marker must match the source.
 
 All 188 rules abaplint ships are named: 171 on, 17 off, each with its reason
 in a comment. **A rule is never left out of the file** — when an upgrade adds
-one, add the key in all three: on if all three corpora pass, off with the
-reason if they do not.
+one, add the key to `app-rules.json` and copy the block into all three
+consumers: on if all three corpora pass, off with the reason if they do not.
 
 RAP is what makes this corpus different from the other two, and the shared
 block carries **scoped excludes** for it rather than turning rules off for
@@ -193,8 +209,8 @@ gone.
   synonyms (`flp` for launchpad, `eml` for the RAP entity API), the controls
   the sample actually builds (`smartfilterbar`, `feedlistitem`) and the
   abap2UI5 API it demonstrates (`set_session_stateful`, `nav_app_call`). Leave
-  out the scaffolding — `check_on_init`, `view_display` and `_bind` are in all
-  32 apps and therefore separate none of them.
+  out the scaffolding — `check_on_init`, `view_display` and `_bind` run through
+  nearly every app here and therefore separate none of them.
 
   Why it is gated: nothing about a missing line is broken. The app compiles,
   runs, and appears in the overview. The only symptom is that nobody looking
