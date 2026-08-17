@@ -102,10 +102,12 @@ CLASS z2ui5_cl_smps_app_000 DEFINITION PUBLIC.
         "! the overview app of samples before its rename - an installation that
         "! predates it still answers to this name
         samples_old  TYPE string VALUE `z2ui5_cl_demo_app_g00` ##NO_TEXT,
-        controls     TYPE string VALUE `z2ui5_cl_smpc_app_overview` ##NO_TEXT,
-        "! the overview app of samples-controls before its 2026-08 rename - an
-        "! installation that predates it still answers to this name
-        controls_old TYPE string VALUE `z2ui5_cl_dmo_app_overview` ##NO_TEXT,
+        controls     TYPE string VALUE `z2ui5_cl_smpc_app_000` ##NO_TEXT,
+        "! the overview app of samples-controls before its 2026-08 rename to
+        "! the three-digit number scheme - an installation that predates it
+        "! still answers to this name (the dmo-era name is older still and no
+        "! longer tried)
+        controls_old TYPE string VALUE `z2ui5_cl_smpc_app_overview` ##NO_TEXT,
         stack        TYPE string VALUE `z2ui5_cl_smps_app_000` ##NO_TEXT,
       END OF cs_overview.
 
