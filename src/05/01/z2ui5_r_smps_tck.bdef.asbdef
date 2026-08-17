@@ -26,7 +26,7 @@ etag master LocalLastChangedAt
   // ---- Draft actions (mandatory with 'with draft' + 'strict') ----
   draft action Resume;
   draft action Edit;
-  draft action Activate;
+  draft action Activate optimized;
   draft action Discard;
   draft determine action Prepare;
 

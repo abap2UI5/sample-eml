@@ -76,11 +76,11 @@ CLASS z2ui5_cl_smps_app_000 DEFINITION PUBLIC.
     "! Regenerate Demo Data button has something to call
     DATA demo_data_installed TYPE abap_bool.
 
-    "! sap.ui.core.IconColor knows no blue - Positive, Critical, Negative and
-    "! Neutral are the semantic four - so the interactive icons of the header
-    "! carry the accent of the sap_horizon theme as a plain CSS colour, and the
-    "! one that leads nowhere keeps the semantic grey
     CONSTANTS:
+      "! sap.ui.core.IconColor knows no blue - Positive, Critical, Negative and
+      "! Neutral are the semantic four - so the interactive icons of the header
+      "! carry the accent of the sap_horizon theme as a plain CSS colour, and the
+      "! one that leads nowhere keeps the semantic grey
       BEGIN OF cs_color,
         active   TYPE string VALUE `#0064D9` ##NO_TEXT,
         inactive TYPE string VALUE `Neutral` ##NO_TEXT,
@@ -93,10 +93,10 @@ CLASS z2ui5_cl_smps_app_000 DEFINITION PUBLIC.
         install    TYPE string VALUE `INSTALL` ##NO_TEXT,
       END OF cs_event.
 
-    "! the overview apps of the abap2UI5 family, in the order the shared header
-    "! renders them - each repository is installed on its own, so the header
-    "! asks per entry whether its overview app is on THIS system
     CONSTANTS:
+      "! the overview apps of the abap2UI5 family, in the order the shared header
+      "! renders them - each repository is installed on its own, so the header
+      "! asks per entry whether its overview app is on THIS system
       BEGIN OF cs_overview,
         samples      TYPE string VALUE `z2ui5_cl_smp_app_000` ##NO_TEXT,
         "! the overview app of samples before its rename - an installation that
@@ -150,23 +150,24 @@ CLASS z2ui5_cl_smps_app_000 DEFINITION PUBLIC.
         href   TYPE string
         name   TYPE string.
 
+    "! @parameter name | the entry's name - the tooltip opens with it and the
+    "! popover of an uninstalled repository is titled after it
+    "! @parameter class_old | the overview app's PREVIOUS name, tried when
+    "! CLASS is not on the system: a repository that renamed its overview app
+    "! is installed under both names in the wild for a while
+    "! @parameter group_start | this entry opens a new group of the header row,
+    "! so it carries the wider margin that sets the groups apart - see
+    "! render_header( )
     METHODS header_button
       IMPORTING
         toolbar     TYPE REF TO z2ui5_cl_ui5_view_builder
         icon        TYPE string
-        "! the entry's name - the tooltip opens with it and the popover of an
-        "! uninstalled repository is titled after it
         name        TYPE string
         descr       TYPE string
         href        TYPE string
         class       TYPE string OPTIONAL
-        "! the overview app's PREVIOUS name, tried when CLASS is not on the
-        "! system: a repository that renamed its overview app is installed
-        "! under both names in the wild for a while
         class_old   TYPE string OPTIONAL
         here        TYPE abap_bool DEFAULT abap_false
-        "! this entry opens a new group of the header row, so it carries the
-        "! wider margin that sets the groups apart - see render_header( )
         group_start TYPE abap_bool DEFAULT abap_false.
 
     "! the press wire of a button whose target is EXTERNAL: a Button carries no
