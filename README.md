@@ -61,7 +61,7 @@ earlier:
 |      | Repository | What you learn | Where to start |
 |------|------------|----------------|----------------|
 | 1️⃣ | [**samples**](https://github.com/abap2UI5/samples) | **the abap2UI5 basics** — bindings, events, popups, navigation, complete apps | run `Z2UI5_CL_SMP_APP_000` |
-| 2️⃣ | [**samples-controls**](https://github.com/abap2UI5/samples-controls) | **how to use every UI5 control** — the UI5 Demo Kit rebuilt with abap2UI5 | run `z2ui5_cl_dmo_app_overview` |
+| 2️⃣ | [**samples-controls**](https://github.com/abap2UI5/samples-controls) | **how to use every UI5 control** — the UI5 Demo Kit rebuilt with abap2UI5 | run `z2ui5_cl_smpc_app_000` |
 | 3️⃣ | **samples-stack** — 📍 *you are here* | **how abap2UI5 plays with your stack** — OData, RAP, WebSockets, the Fiori Launchpad and more | pick your technology in the table above |
 
 ### Reading the *Runs on* column
@@ -165,9 +165,9 @@ overview app and nothing else:
 | [`08-mime`](../../tree/08-mime) | [`src/08`](src/08) — MIME Play Audio | Standard only, ≥ 7.50 |
 | [`09-launchpad`](../../tree/09-launchpad) | [`src/09`](src/09) — Launchpad | Cloud + Standard ≥ 7.40 SP08 |
 
-The overview app ships on every branch and keeps listing **all 31 samples**, so it
-stays the catalogue of what the other branches hold — the ones that are not on
-your branch simply show up with a disabled Open button.
+The overview app ships on every branch and keeps listing **every sample in the
+repository**, so it stays the catalogue of what the other branches hold — the
+ones that are not on your branch simply show up with a disabled Open button.
 
 These branches are **generated**: `create-package-branches` rebuilds and
 force-pushes every one of them on every push to `main`, and abaplint checks each
