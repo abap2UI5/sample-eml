@@ -67,11 +67,11 @@ jobs:
     - run: npm ci
 
     - name: Reduce the tree to one package
-      run: node .github/scripts/build-package-branch.mjs ${{ matrix.branch }}
+      run: node scripts/build-package-branch.mjs ${{ matrix.branch }}
 
     # the package alone, at the release it says it needs
     - run: npx abaplint ./abaplint.jsonc
-    - run: node .github/scripts/check-overview.mjs
+    - run: node scripts/check-overview.mjs
 
     - name: Commit and push
       if: github.event_name != 'pull_request' && github.repository == 'abap2UI5/samples-stack'

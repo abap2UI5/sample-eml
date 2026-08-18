@@ -35,14 +35,14 @@
  * generated APC protocol class - and is reached BY a sample rather than looked
  * up. An exemption list would need maintaining and would rot; this cannot.
  *
- *   node .github/scripts/check-keywords.mjs   (npm run check:keywords)
+ *   node scripts/check-keywords.mjs   (npm run check:keywords)
  */
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { scanSamples, scanOverview } from './lib/scan-samples.mjs';
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'src');
 
 /* Loose enough to survive formatting, strict enough to mean it: the line has

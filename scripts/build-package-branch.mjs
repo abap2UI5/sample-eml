@@ -9,7 +9,7 @@
 // activation errors for technology it never asked for. One branch per package
 // makes the abapGit branch dropdown the place where you pick your feature.
 //
-// Usage: node .github/scripts/build-package-branch.mjs <branch>
+// Usage: node scripts/build-package-branch.mjs <branch>
 //
 // DESTRUCTIVE - it rewrites the working tree in place. Run it on a throwaway
 // CI checkout, never on a tree you still want.
@@ -67,8 +67,9 @@ for (const entry of readdirSync(SRC)) {
 
 // 2. the workflows. A generated branch runs no CI of its own: pushes made with
 //    GITHUB_TOKEN do not trigger workflow runs anyway, and the branch is
-//    already verified by the job that builds it. .github/scripts and
-//    packages.json stay, so `npm run check:overview` still works on a branch.
+//    already verified by the job that builds it. `scripts/` and
+//    .github/packages.json stay, so `npm run check:overview` still works on a
+//    branch.
 rmSync(join('.github', 'workflows'), { recursive: true, force: true });
 
 // 3. abaplint checks the branch at the release the package actually needs
