@@ -289,7 +289,7 @@ gone.
   refuses an app that exists and is in no entry — the case that leaves a
   working sample invisible in the app *and* on the page.
 
-  **The row format is byte-for-byte abap2UI5/samples'**, on purpose: `ai-mcp`'s
+  **The row format is byte-for-byte abap2UI5/samples'**, on purpose: `mcp-server`'s
   `examples` tool and `docs`' `link-samples.mjs` already parse those rows with a
   regex. Neither reads this repository yet, and the identical shape is what
   makes that a configuration change over there rather than a second parser.
