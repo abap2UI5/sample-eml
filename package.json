@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "Learn how abap2UI5 plays with your stack - OData, Smart Controls, RAP (with draft), business events, stateful sessions and locks, AMC/APC, MIME and the Fiori Launchpad.",
   "scripts": {
+    "test": "npm run check",
     "lint": "abaplint ./abaplint.jsonc",
     "check:abap2ui5": "abap2ui5lint",
     "fmt:chains": "abap2ui5lint --fix",
