@@ -32,13 +32,13 @@
  * Only the class-pool main and interface sources are read — ABAP Doc lives in
  * declarations, and the includes (`.locals_imp`, `.testclasses`) have none.
  *
- *   node .github/scripts/check-abapdoc.mjs   (npm run check:abapdoc)
+ *   node scripts/check-abapdoc.mjs   (npm run check:abapdoc)
  */
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'src');
 
 const CHAIN_KEYWORD =
