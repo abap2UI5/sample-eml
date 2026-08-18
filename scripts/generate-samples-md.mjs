@@ -14,14 +14,14 @@
  * abap2UI5/samples emits, because two programs already parse those rows with a
  * regex:
  *
- *   abap2UI5/ai-mcp    lib/examples.mjs   — the `examples` MCP tool
- *   abap2UI5/docs      scripts/link-samples.mjs — the Working Samples block
+ *   abap2UI5/mcp-server   lib/examples.mjs   — the `examples` MCP tool
+ *   abap2UI5/docs         scripts/link-samples.mjs — the Working Samples block
  *
  * Neither reads this repository yet. Emitting the same shape is what makes
  * that a configuration change over there rather than a second parser. And the
  * cost of getting it wrong is not a crash: a row that does not match is a row
  * that silently is not there — which is exactly how a format change over there
- * once took ai-mcp's answer to zero without an error anywhere.
+ * once took mcp-server's answer to zero without an error anywhere.
  *
  *   node scripts/generate-samples-md.mjs           write SAMPLES.md
  *   node scripts/generate-samples-md.mjs --check   fail if it differs
