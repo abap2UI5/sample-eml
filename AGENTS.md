@@ -51,6 +51,24 @@ The 25-character cap is not ABAP's 30: `build_rename` swaps the 5-character
 `z2ui5` namespace for one up to 9 long, which costs 4. Tables are capped at 16
 because that is the DDIC limit — a 17-character table does not activate.
 
+### Sample numbers are per repository — the prefix is what qualifies them
+
+`Z2UI5_CL_SMPS_APP_<no>` is the name; `<no>` alone is not. **Numbers are handed
+out inside this repository only**, and the three sample repositories reuse each
+other's freely — `493` is `Z2UI5_CL_SMPS_APP_493`, the classic FilterBar with
+variant management, here, and `Z2UI5_CL_SMP_APP_493`, Hello World, in
+[samples](https://github.com/abap2UI5/samples). So are `489` and `490`. There is
+no global number space and there was never going to be one: each repository
+numbers from its own sequence, and coordinating three of them would buy nothing
+the prefix does not already give.
+
+What follows, in prose anywhere — this file, the READMEs, a commit message, a
+comment: **name a sample by its class, never by its number alone.**
+`Z2UI5_CL_SMPS_APP_319` and "app 319" read the same to somebody who already
+knows which repository they are in, and only the first one still reads correctly
+to everybody else. A package README's sample table is exempt: there the number
+is a link to the class file, which is the qualification.
+
 ## 3. The generated one-package branches
 
 abapGit imports a whole repository; there is no sparse checkout. Nine packages
@@ -158,12 +176,14 @@ everybody. Each pattern matches nothing under the other two `src/` trees:
   aggregate (`MAX( travel_id )`), which returns exactly one row by definition.
 - `unused_ddic` excludes the persistent and draft tables — they are referenced
   from the CDS and behavior definitions, which abaplint does not trace into.
-- `fully_type_constants` excludes apps 007 and 010: `TYPE RESPONSE FOR FAILED /
-  REPORTED EARLY` is fully typed RAP syntax abaplint reads as implicit.
-- `max_one_statement` excludes app 319 — its operator mapping is a table
-  written as a `CASE`, one `WHEN` per line, and splitting it loses the shape.
-- `check_syntax` / `superclass_final` exclude app 489: ABAP Push Channels are
-  on-premise only and absent from the steampunk dependency.
+- `fully_type_constants` excludes `Z2UI5_CL_SMPS_APP_007` and `_010`: `TYPE
+  RESPONSE FOR FAILED / REPORTED EARLY` is fully typed RAP syntax abaplint
+  reads as implicit.
+- `max_one_statement` excludes `Z2UI5_CL_SMPS_APP_319` — its operator mapping is
+  a table written as a `CASE`, one `WHEN` per line, and splitting it loses the
+  shape.
+- `check_syntax` / `superclass_final` exclude `Z2UI5_CL_SMPS_APP_489`: ABAP Push
+  Channels are on-premise only and absent from the steampunk dependency.
 - `cds_naming` takes the `Z2UI5_` namespace instead of SAP's per-category
   `ZI_` / `ZC_` / `ZR_` prefixes — the root view entities here are
   `Z2UI5_R_SMPS_<object>`.
@@ -253,8 +273,8 @@ gone.
   description sat in a DIFFERENT class from the sample.
 
   The old note, kept because the numbers are the argument for `@summary`:
-  Both exist and they disagree — app 315's DESCRIPT reads *"Model - Use OData
-  models"* while the overview says *"Two OData models in one view"* with *"one
+  Both exist and they disagree — `Z2UI5_CL_SMPS_APP_315`'s DESCRIPT reads
+  *"Model - Use OData models"* while the overview says *"Two OData models in one view"* with *"one
   table bound to each, column headers from the metadata"* under it. The second
   is the curated text, the first is a 60-character abapGit short text written
   for ADT's object list. Rendering the page from DESCRIPT would have produced a

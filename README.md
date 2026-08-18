@@ -112,9 +112,17 @@ of them.
    short section.
 4. Start an app with `?app_start=<class name>`.
 
-Every sample of the abap2UI5 sample scheme is called `Z2UI5_CL_SMPS_APP_<no>`, and
-the tables in the package READMEs give you the number, so sample `487` is
+Every sample here is called `Z2UI5_CL_SMPS_APP_<no>`, and the tables in the
+package READMEs give you the number — so the MIME sample is
 `?app_start=z2ui5_cl_smps_app_487`.
+
+**A number on its own does not name a sample.** Numbers are handed out per
+repository and the class prefix is what qualifies them: `Z2UI5_CL_SMPS_APP_493`
+is the classic FilterBar sample here, while `Z2UI5_CL_SMP_APP_493` in
+[abap2UI5/samples](https://github.com/abap2UI5/samples) is Hello World. So are
+`489` and `490`. There is no shared number space between the three sample
+repositories, and there is not meant to be one — the prefix already says which
+repository you are in. Always name a sample by its class.
 
 ## The overview app
 
