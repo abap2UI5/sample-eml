@@ -89,6 +89,20 @@ app, the tree, `packages.json` and the README table).
 between chain segments only — but it needs the ABAP to be *balanced* to know
 where a statement ends, so run `npm run lint` first if a chain is mid-edit.
 
+**Every script lives in `scripts/`**, plain node with no dependencies, and every
+one of them is run from the repository root. There is no second place: the
+scripts sat in `.github/scripts/` and in `scripts/` at the same time until
+2026-08-18, split by nothing but which two had been copied in from
+`abap2UI5/samples` — so "where does a new check go" had no answer, and the two
+halves could not share `lib/`. `scripts/` is what both sibling repositories use.
+
+`.github/` keeps what GitHub reads: the workflows, the badges, and
+`packages.json`, which is a workflow input.
+
+**Every check has a workflow, and every workflow is in `npm run check`.** A
+check only `npm run check` runs cannot make a pull request red, which is the
+same as not having it — `check:abapdoc` was in that state for its whole life.
+
 ## 5. Conventions that are checked here
 
 **The rule block below the marker in `abaplint.jsonc` is a CHECKED COPY of the

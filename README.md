@@ -5,6 +5,15 @@
 <br>
 [![abap-standard](https://github.com/abap2UI5/samples-stack/actions/workflows/abap-standard.yaml/badge.svg)](https://github.com/abap2UI5/samples-stack/actions/workflows/abap-standard.yaml)
 [![check-abap2UI5](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fabap2UI5%2Fsamples-stack%2Fmain%2F.github%2Fbadges%2Fcheck-abap2ui5.json)](https://github.com/abap2UI5/samples-stack/actions/workflows/check-abap2UI5.yaml)
+[![check-app-rules](https://github.com/abap2UI5/samples-stack/actions/workflows/check-app-rules.yaml/badge.svg)](https://github.com/abap2UI5/samples-stack/actions/workflows/check-app-rules.yaml)
+<br>
+[![check-overview](https://github.com/abap2UI5/samples-stack/actions/workflows/check-overview.yaml/badge.svg)](https://github.com/abap2UI5/samples-stack/actions/workflows/check-overview.yaml)
+[![check-samples-md](https://github.com/abap2UI5/samples-stack/actions/workflows/check-samples-md.yaml/badge.svg)](https://github.com/abap2UI5/samples-stack/actions/workflows/check-samples-md.yaml)
+[![check-keywords](https://github.com/abap2UI5/samples-stack/actions/workflows/check-keywords.yaml/badge.svg)](https://github.com/abap2UI5/samples-stack/actions/workflows/check-keywords.yaml)
+<br>
+[![check-abapdoc](https://github.com/abap2UI5/samples-stack/actions/workflows/check-abapdoc.yaml/badge.svg)](https://github.com/abap2UI5/samples-stack/actions/workflows/check-abapdoc.yaml)
+[![check-prose-names](https://github.com/abap2UI5/samples-stack/actions/workflows/check-prose-names.yaml/badge.svg)](https://github.com/abap2UI5/samples-stack/actions/workflows/check-prose-names.yaml)
+[![create-package-branches](https://github.com/abap2UI5/samples-stack/actions/workflows/create-package-branches.yaml/badge.svg)](https://github.com/abap2UI5/samples-stack/actions/workflows/create-package-branches.yaml)
 
 # abap2UI5 — samples-stack
 
@@ -107,25 +116,6 @@ Every sample of the abap2UI5 sample scheme is called `Z2UI5_CL_SMPS_APP_<no>`, a
 the tables in the package READMEs give you the number, so sample `487` is
 `?app_start=z2ui5_cl_smps_app_487`.
 
-### Pulling over an older checkout
-
-The packages were renumbered once, so a system that pulled this repository before
-that has objects sitting in packages the folders no longer point at. abapGit moves
-most of them on the next pull, but a MIME object keeps the package it was created
-in, and you get a warning naming the package it came from:
-
-```
-SMIM 027C66AAA6591EDFA9BB6B42F39E45DD exists but package $..._07_01 is missing
-(might have been lost during an upgrade, SAP Note 2478895)
-```
-
-Both of them belong to `08` now, the two sounds sample `487` plays. The quickest
-way out is to delete them and let abapGit put them back where the tree says they
-go: SE80 → MIME Repository → `SAP/PUBLIC/BC/ABAP/mime_demo`, delete
-`z2ui5_smp_error.mp3` and `z2ui5_smp_success.mp3`, then pull again. If the warning
-names other objects too, pull the `DEVC` entries alone first — that recreates
-every package of the current layout — and pull the rest afterwards.
-
 ## The overview app
 
 You do not have to look a number up. `?app_start=z2ui5_cl_smps_app_000` lists
@@ -206,7 +196,7 @@ They carry the older `SMP` token (`Z2UI5_AMC_SMP_2`, `Z2UI5_APC_SMP_2`,
 
 ## Checks
 
-Locally, the same three CI runs, in one command:
+Locally, everything CI runs, in one command:
 
 ```sh
 npm ci
@@ -218,11 +208,21 @@ and the view it builds, with a headless render of every view) and `npm run
 check:overview`. `npm run fmt:chains` applies the house chain layout.
 [`AGENTS.md`](AGENTS.md) has the conventions those checks enforce.
 
+Every check below has a workflow, and every workflow is a step of `npm run
+check` — the two lists are the same list, which is the only thing that makes a
+green run here mean a green run there. The node checks carry no dependencies, so
+they take seconds.
+
 | Workflow | What it does |
 |---|---|
 | `abap-standard` | `abaplint ./abaplint.jsonc` — syntax `v757`, the on-premise release |
 | `check-abap2UI5` | [`abap2ui5lint`](https://github.com/abap2UI5/linter) — the app class and the view it produces, together; also writes the two badges above |
 | `check-overview` | the two hand-kept indexes: every sample is listed in the overview app, and the package table matches `.github/packages.json` |
+| `check-samples-md` | [`SAMPLES.md`](SAMPLES.md) still is what the generator would write — and every app that exists is in an entry |
+| `check-keywords` | every app carries `@keywords` and `@summary`, and the overview's detail line still is the class's `@summary` |
+| `check-abapdoc` | every `"!` block documents the declaration below it, rather than attaching to nothing |
+| `check-app-rules` | the shared abaplint rule block still matches its source in [abap2UI5](https://github.com/abap2UI5/abap2UI5) |
+| `check-prose-names` | every class name written in prose exists — including the sibling repositories' |
 | `create-package-branches` | rebuilds the nine per-package branches, each verified with abaplint at its own release before it is pushed |
 
 `check-overview` exists because the overview app names its samples as strings and
@@ -231,7 +231,7 @@ activate, and it is also what stops the compiler from noticing a renamed or a ne
 added sample. The check notices instead, and it compares the *Runs on* column with
 the releases [`.github/packages.json`](.github/packages.json) declares, which is
 where the generated branches take theirs from. It runs `node
-.github/scripts/check-overview.mjs`, needs no dependencies, and skips both
+scripts/check-overview.mjs`, needs no dependencies, and skips both
 full-tree halves on a checkout that carries only part of the repository.
 
 `create-package-branches` runs on pull requests too, everything except the push —
@@ -254,6 +254,27 @@ Two things to know when you read the badges:
 - `RAISE ENTITY EVENT` and `FOR ENTITY EVENT` (`src/05`) are beyond the abaplint
   parser as well, so that package reports parser errors on syntax that activates
   fine in an ABAP system.
+
+## Troubleshooting
+
+### Pulling over an older checkout
+
+The packages were renumbered once, so a system that pulled this repository before
+that has objects sitting in packages the folders no longer point at. abapGit moves
+most of them on the next pull, but a MIME object keeps the package it was created
+in, and you get a warning naming the package it came from:
+
+```
+SMIM 027C66AAA6591EDFA9BB6B42F39E45DD exists but package $..._07_01 is missing
+(might have been lost during an upgrade, SAP Note 2478895)
+```
+
+Both of them belong to `08` now, the two sounds `Z2UI5_CL_SMPS_APP_487` plays. The
+quickest way out is to delete them and let abapGit put them back where the tree
+says they go: SE80 → MIME Repository → `SAP/PUBLIC/BC/ABAP/mime_demo`, delete
+`z2ui5_smp_error.mp3` and `z2ui5_smp_success.mp3`, then pull again. If the warning
+names other objects too, pull the `DEVC` entries alone first — that recreates
+every package of the current layout — and pull the rest afterwards.
 
 ## Where to go from here
 
