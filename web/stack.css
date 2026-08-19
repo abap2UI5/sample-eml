@@ -94,7 +94,6 @@ code {
 .lede.small { font-size: .9rem; max-width: 46rem; }
 
 .masthead .note {
-  max-width: 46rem;
   margin: .9rem 0 0;
   font-size: .85rem;
   color: var(--ink-faint);
@@ -630,8 +629,10 @@ footer p { margin: .4rem 0; }
   letter-spacing: -.02em;
 }
 
+/* No max-width: the lede is the page's description and lines up with the
+ * column under it - the search box, the cards, the rail - rather than ending
+ * two thirds of the way across and leaving the masthead looking unfinished. */
 .lede {
-  max-width: 62ch;
   margin: 0;
   color: var(--ink-soft);
   font-size: 1.03rem;
@@ -655,7 +656,6 @@ footer p { margin: .4rem 0; }
 }
 .three > h2 { margin: 0 0 .3rem; font-size: 1.15rem; }
 .three-lede {
-  max-width: 46rem;
   margin: 0 0 1rem;
   font-size: .9rem;
   color: var(--ink-soft);
