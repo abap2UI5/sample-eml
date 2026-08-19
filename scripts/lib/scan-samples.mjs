@@ -1,8 +1,9 @@
 /*
  * scan-samples — the one place that knows what a sample in this repository is.
  *
- * Two things read this: `check-keywords.mjs`, which insists every app says what
- * it is about, and `generate-samples-md.mjs`, which writes the catalogue. They
+ * Three things read this: `check-keywords.mjs`, which insists every app says
+ * what it is about, `generate-samples-md.mjs`, which writes the catalogue, and
+ * `generate-web-index.mjs`, which writes the data behind the page in web/. They
  * have to agree on which classes are apps, where a title comes from and which
  * section a sample belongs to — abap2UI5/samples learned that the hard way and
  * says so in its AGENTS.md: two copies of this drift silently, and then the
@@ -44,6 +45,27 @@ export function splitDescript(d) {
   const t = d.trim();
   const i = t.indexOf(' - ');
   return i === -1 ? { header: t, sub: '' } : { header: t.slice(0, i), sub: t.slice(i + 3) };
+}
+
+/**
+ * The title and the line under it, as a catalogue shows them.
+ *
+ * A DESCRIPT is `Titel - Kurzbeschreibung` and its first half often repeats
+ * the package heading — `OData - Two Models in One View` under the heading
+ * *OData*. Under that heading the useful title is the second half, and the
+ * first is noise the heading already carried.
+ *
+ * Both catalogues built from this scan need that decision (SAMPLES.md and the
+ * page in web/), and two copies of it would drift the way two copies of the
+ * scan itself once did. `fromSub` is for a renderer that emphasises a title
+ * differently when it is a substitute — SAMPLES.md does.
+ *
+ * @returns {{title: string, sub: string, fromSub: boolean}}
+ */
+export function sampleTitle(s, section) {
+  return s.header === section && s.sub
+    ? { title: s.sub, sub: '', fromSub: true }
+    : { title: s.header, sub: s.sub, fromSub: false };
 }
 
 function walk(dir, out = []) {
