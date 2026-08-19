@@ -13,7 +13,10 @@
 <br>
 [![check-abapdoc](https://github.com/abap2UI5/samples-stack/actions/workflows/check-abapdoc.yaml/badge.svg)](https://github.com/abap2UI5/samples-stack/actions/workflows/check-abapdoc.yaml)
 [![check-prose-names](https://github.com/abap2UI5/samples-stack/actions/workflows/check-prose-names.yaml/badge.svg)](https://github.com/abap2UI5/samples-stack/actions/workflows/check-prose-names.yaml)
+[![check-web](https://github.com/abap2UI5/samples-stack/actions/workflows/check-web.yaml/badge.svg)](https://github.com/abap2UI5/samples-stack/actions/workflows/check-web.yaml)
+<br>
 [![create-package-branches](https://github.com/abap2UI5/samples-stack/actions/workflows/create-package-branches.yaml/badge.svg)](https://github.com/abap2UI5/samples-stack/actions/workflows/create-package-branches.yaml)
+[![deploy-web](https://github.com/abap2UI5/samples-stack/actions/workflows/deploy-web.yaml/badge.svg)](https://github.com/abap2UI5/samples-stack/actions/workflows/deploy-web.yaml)
 
 # abap2UI5 — samples-stack
 
@@ -41,6 +44,12 @@ install-and-run.
 
 Every area is self-contained and brings its own README. Pick the one you came
 for and try it out — the others can wait until you need them.
+
+> **Looking for one particular sample?**
+> **<https://abap2ui5.github.io/samples-stack/>** is this catalogue as a
+> searchable page: filter by the technology you came for and by the release
+> your system runs, and every card says what the sample needs from that system
+> before you install anything. ([`web/`](web/README.md))
 
 ## What is in here
 
@@ -231,7 +240,9 @@ they take seconds.
 | `check-abapdoc` | every `"!` block documents the declaration below it, rather than attaching to nothing |
 | `check-app-rules` | the shared abaplint rule block still matches its source in [abap2UI5](https://github.com/abap2UI5/abap2UI5) |
 | `check-prose-names` | every class name written in prose exists — including the sibling repositories' |
+| `check-web` | the data behind the [page](https://abap2ui5.github.io/samples-stack/) can still be generated — every package has a README row that parses, every app sits in a package |
 | `create-package-branches` | rebuilds the nine per-package branches, each verified with abaplint at its own release before it is pushed |
+| `deploy-web` | publishes [`web/`](web/README.md) to GitHub Pages on every push to `main` that touches the tree it describes |
 
 `check-overview` exists because the overview app names its samples as strings and
 resolves them at runtime — that is what lets it survive a package the system cannot
@@ -241,6 +252,13 @@ the releases [`.github/packages.json`](.github/packages.json) declares, which is
 where the generated branches take theirs from. It runs `node
 scripts/check-overview.mjs`, needs no dependencies, and skips both
 full-tree halves on a checkout that carries only part of the repository.
+
+`check-web` and `deploy-web` are the two halves of the page: the check runs the
+generator on every pull request without writing anything, the deploy runs it for
+real and uploads `web/` as the Pages artefact. Nothing generated is committed, so
+the page can never be staler than the tree — and a sample pull request carries no
+diff of derived data. `deploy-web` is the *only* way the site is published:
+*Settings → Pages → Source* has to be **GitHub Actions**.
 
 `create-package-branches` runs on pull requests too, everything except the push —
 so a change that would break one of the branches fails while it can still be
@@ -291,6 +309,11 @@ a Gateway service, a RAP business object, an APC channel — and put an abap2UI5
 in front of it. None of these packages depends on another, and none of them is a
 prerequisite for using abap2UI5 at all: they are options you can reach for when
 they help.
+
+If you are not sure which package that is, start at
+**<https://abap2ui5.github.io/samples-stack/>**: pick the release your system runs
+and it shows you what is within reach, with the setup each sample needs on its
+card.
 
 Something else you would like to see combined with abap2UI5? Open an issue or a
 pull request — the collection grows with the scenarios people bring to it.

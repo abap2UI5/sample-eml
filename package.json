@@ -9,13 +9,15 @@
     "check:abap2ui5": "abap2ui5lint",
     "fmt:chains": "abap2ui5lint --fix",
     "check:overview": "node scripts/check-overview.mjs",
-    "check": "npm run lint && npm run check:abap2ui5 && npm run check:overview && npm run check:keywords && npm run check:abapdoc && npm run check:samples-md && npm run check:app-rules && npm run check:prose",
+    "check": "npm run lint && npm run check:abap2ui5 && npm run check:overview && npm run check:keywords && npm run check:abapdoc && npm run check:samples-md && npm run check:app-rules && npm run check:prose && npm run check:web",
     "check:keywords": "node scripts/check-keywords.mjs",
     "check:abapdoc": "node scripts/check-abapdoc.mjs",
     "samples:md": "node scripts/generate-samples-md.mjs",
     "check:samples-md": "node scripts/generate-samples-md.mjs --check",
     "check:app-rules": "node scripts/check-app-rules.mjs",
-    "check:prose": "node scripts/check-prose-names.mjs"
+    "check:prose": "node scripts/check-prose-names.mjs",
+    "web:index": "node scripts/generate-web-index.mjs",
+    "check:web": "node scripts/generate-web-index.mjs --check"
   },
   "repository": {
     "type": "git",

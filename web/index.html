@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>abap2UI5 and your stack · samples-stack</title>
+<meta name="description" content="Every abap2UI5 sample that plays together with your stack — OData, Smart Controls, RAP, business events, stateful sessions, WebSockets, MIME, the Fiori Launchpad. Search them by technology and by the release your system runs, and see what each one needs before you install anything.">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="stack.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="inner">
+    <p class="brand"><a href="https://github.com/abap2UI5/samples-stack">abap2UI5 · samples-stack</a></p>
+    <h1>abap2UI5 and the rest of your stack</h1>
+    <p class="lede">
+      <strong id="total">…</strong> samples across
+      <strong id="pkgcount">…</strong> technologies — OData, Smart Controls, RAP with
+      and without draft, business events, stateful sessions and locks, WebSockets,
+      the MIME repository, the Fiori Launchpad. Every one of them is a single ABAP
+      class, and every one of them needs <em>something your system already has</em>.
+      This page tells you which something, and whether your release can run it —
+      before you install anything.
+    </p>
+    <p class="note">
+      There is no in-browser demo here, unlike on the
+      <a href="https://abap2ui5.github.io/samples/">samples</a> and
+      <a href="https://abap2ui5.github.io/samples-controls/">samples-controls</a>
+      pages: a Gateway service, a RAP business object, an APC channel or a
+      launchpad is exactly what the playground does not have, so each of these
+      apps would open there and then fail. The links go where they can help — into
+      the source, and into the setup the sample needs.
+    </p>
+  </div>
+</header>
+
+<main>
+  <form class="panel" id="filters" autocomplete="off" role="search">
+    <div class="q">
+      <label class="sr-only" for="q">Search the samples</label>
+      <input type="search" id="q" name="q" placeholder="websocket, draft, variant, lock, eml, smartfilterbar …" spellcheck="false">
+      <kbd class="hint">/</kbd>
+    </div>
+
+    <fieldset class="chips">
+      <legend class="sr-only">Technology</legend>
+      <div id="tech"></div>
+    </fieldset>
+
+    <p class="facet">
+      <label for="system">Your system</label>
+      <select id="system" name="system"></select>
+      <span class="note">what a sample needs is the package's floor — the release and the stack</span>
+    </p>
+
+    <p class="resultline">
+      <span id="count">…</span>
+      <button type="button" id="reset" class="linkish" hidden>clear filters</button>
+    </p>
+  </form>
+
+  <p id="pkgline" class="pkgline" hidden></p>
+
+  <section id="results" aria-live="polite"></section>
+
+  <p id="empty" hidden class="empty">
+    Nothing matches. <button type="button" id="reset2" class="linkish">Clear the filters</button>
+    — or look at <a href="https://github.com/abap2UI5/samples/blob/main/SAMPLES.md">abap2UI5/samples</a>,
+    which is where a sample that needs nothing but abap2UI5 lives.
+  </p>
+
+  <section class="how" id="how">
+    <h2>How to run one</h2>
+    <ol>
+      <li>
+        <b>Install <a href="https://github.com/abap2UI5/abap2UI5">abap2UI5</a>.</b>
+        This repository ships apps, not the framework.
+      </li>
+      <li>
+        <b>Pull this repository with <a href="https://abapgit.org">abapGit</a>.</b>
+        <code>main</code> carries all nine packages and asks for ABAP Platform ≥ 1909,
+        because RAP does. Every package also has a <b>branch of its own</b> — pick it
+        in the abapGit branch dropdown and only that package lands on your system, at
+        its own, often much lower, release. Each card links to its branch.
+      </li>
+      <li>
+        <b>Do the setup the package asks for</b> — activate the OData service, the ICF
+        node, the launchpad tile. It is one short section in every package README, and
+        the <b>Setup&nbsp;↗</b> link on a card goes straight to it.
+      </li>
+      <li>
+        <b>Start the app:</b> <code>&lt;your abap2UI5 endpoint&gt;?app_start=&lt;the class&gt;</code>.
+        Every card copies that for you. Or start
+        <code id="overviewapp">Z2UI5_CL_SMPS_APP_000</code>, the overview app — the same
+        catalogue inside your system, which lists what is installed and greys out what
+        is not.
+      </li>
+    </ol>
+  </section>
+
+  <section class="packages" id="packages">
+    <h2>The packages</h2>
+    <p class="lede small">
+      One directory per technology, one branch per directory. The release is the higher
+      of two floors: the ABAP the package is written in, and what the technology itself
+      asks for — measured with one abaplint run per release, not estimated.
+    </p>
+    <div id="pkgcards"></div>
+  </section>
+
+  <section class="ladder">
+    <h2>This is step 3 of 3</h2>
+    <ol class="steps">
+      <li>
+        <a href="https://abap2ui5.github.io/samples/">samples</a> — the abap2UI5
+        basics: bindings, events, popups, navigation, complete apps.
+      </li>
+      <li>
+        <a href="https://abap2ui5.github.io/samples-controls/">samples-controls</a> —
+        every UI5 control, the demo kit rebuilt in ABAP.
+      </li>
+      <li>
+        <b>samples-stack</b> — 📍 you are here: how abap2UI5 plays with what your
+        system already runs.
+      </li>
+    </ol>
+  </section>
+</main>
+
+<footer>
+  <p>
+    Built from the repository itself: the class tree, each class's abapGit short text,
+    its <code>@summary</code> and <code>@keywords</code> lines and its ABAP-Doc header,
+    plus <code>.github/packages.json</code> and the package table of the README — the
+    same scan behind
+    <a href="https://github.com/abap2UI5/samples-stack/blob/main/SAMPLES.md">SAMPLES.md</a>
+    and the overview app, so the three cannot disagree. Regenerated on every deploy.
+  </p>
+  <p>
+    <a href="https://github.com/abap2UI5/samples-stack">Repository</a> ·
+    <a href="https://github.com/abap2UI5/samples-stack/blob/main/SAMPLES.md">The catalogue as a page</a> ·
+    <a href="https://github.com/abap2UI5/abap2UI5">abap2UI5</a> ·
+    <a href="https://abap2ui5.github.io/docs/">Documentation</a>
+  </p>
+</footer>
+
+<script src="stack.js"></script>
+</body>
+</html>

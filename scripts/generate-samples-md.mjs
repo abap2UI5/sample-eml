@@ -30,7 +30,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { scanSamples, scanOverview } from './lib/scan-samples.mjs';
+import { scanSamples, scanOverview, sampleTitle } from './lib/scan-samples.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, 'SAMPLES.md');
@@ -54,10 +54,10 @@ const cell = (s) => s.replace(/\|/g, '\\|').trim();
  * better than DESCRIPT alone and one step short of right: it put a sample's
  * description in a different class from the sample. */
 function row(s, section) {
-  const repeats = s.header === section;
-  const head = repeats
-    ? (cell(s.sub) || `**${cell(s.header)}**`)
-    : (s.sub ? `**${cell(s.header)}** — ${cell(s.sub)}` : `**${cell(s.header)}**`);
+  const { title, sub, fromSub } = sampleTitle(s, section);
+  const head = sub
+    ? `**${cell(title)}** — ${cell(sub)}`
+    : (fromSub ? cell(title) : `**${cell(title)}**`);
   const summary = s.summary ? `<br>${cell(s.summary)}` : '';
   const keywords = s.keywords ? `<br><sub>${cell(s.keywords)}</sub>` : '';
   return `| ${head}${summary}${keywords} | [\`${s.cls.toUpperCase()}\`](${s.rel}) |`;

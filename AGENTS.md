@@ -310,6 +310,33 @@ gone.
 6. `npm run samples:md` and commit `SAMPLES.md` with it (§6).
 7. `npm run check`.
 
+## 8. The page in `web/`
+
+**<https://abap2ui5.github.io/samples-stack/>** — the catalogue as a searchable
+page, for somebody who has installed nothing yet and is asking whether their
+system can run any of it. Four files: `index.html`, `stack.css`, `stack.js` and
+the generated `web/apps.json`. [`web/README.md`](web/README.md) has the detail;
+what matters here:
+
+- **It introduces no new source of truth.** Every fact on it is read out of
+  something the repository already keeps — the scan (`@summary`, `@keywords`,
+  the ABAP-Doc header, `DESCRIPT`), `.github/packages.json` (branch, release)
+  and the README's package table (what a package plays together with). Adding a
+  sample or a package therefore needs **no step for the page**: `npm run
+  samples:md`, and it is on both.
+- **`web/apps.json` is generated and not committed** — `npm run web:index`
+  writes it, `deploy-web` writes it again on every deploy. A committed copy
+  would put a diff of derived data on every sample pull request.
+- **`npm run check:web` is the gate** (its own workflow, and part of `npm run
+  check`): it runs the generator with `--check`, which fails on a package with
+  no README row, a row whose cells no longer parse, or an app in a directory
+  that is no package. All three break the page without touching `web/`, and
+  none of them shows up before a deploy — which happens after the merge.
+- **No playground link, unlike the sibling repositories' pages.** The playground
+  runs a class with no system behind it, and a system is what every sample here
+  needs. Each app would open there and fail, so the cards link to the source,
+  to the package README's *What you need*, and to the one-package branch.
+
 <!-- The section below is SHARED. Its source is
      abap2UI5/abap2UI5 .github/shared/agents-metadata.md - change it THERE
      first, or the change is drift. abap2UI5's `npm run check:shared`
