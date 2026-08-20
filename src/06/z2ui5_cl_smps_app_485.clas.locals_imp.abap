@@ -1,3 +1,47 @@
+" The lock helpers below fail the way a classic function module fails - with a
+" message in sy-msg*, not with an exception - so they need one of their own to
+" carry that text out to the app. It is local on purpose: this repository ships
+" no exception class (see the note in z2ui5_cl_smps_context), and the framework's
+" z2ui5_cx_util_error, which this sample used to borrow, sits in abap2UI5's
+" frozen src/99 - shipped so old installations keep compiling, with no new
+" consumers allowed. Unchecked (cx_no_check), so acquire_lock and
+" get_lock_counter keep their signatures and the exception travels through
+" on_event to the handler in z2ui5_if_app~main.
+CLASS lcx_error DEFINITION INHERITING FROM cx_no_check FINAL CREATE PUBLIC.
+  PUBLIC SECTION.
+
+    METHODS constructor
+      IMPORTING
+        val TYPE string OPTIONAL
+          PREFERRED PARAMETER val.
+
+    METHODS if_message~get_text REDEFINITION.
+
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+    DATA text TYPE string.
+ENDCLASS.
+
+
+CLASS lcx_error IMPLEMENTATION.
+
+  METHOD constructor.
+
+    super->constructor( ).
+    CLEAR textid.
+    text = val.
+
+  ENDMETHOD.
+
+  METHOD if_message~get_text.
+
+    result = COND #( WHEN text IS INITIAL THEN `UNKNOWN_ERROR` ELSE text ).
+
+  ENDMETHOD.
+
+ENDCLASS.
+
+
 CLASS lcl_locking DEFINITION CREATE PRIVATE.
   PUBLIC SECTION.
 
@@ -74,7 +118,7 @@ CLASS lcl_locking IMPLEMENTATION.
         OTHERS         = 3.
     IF sy-subrc <> 0.
       MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4 INTO DATA(error_text).
-      RAISE EXCEPTION TYPE z2ui5_cx_util_error EXPORTING val = error_text.
+      RAISE EXCEPTION TYPE lcx_error EXPORTING val = error_text.
     ENDIF.
 
   ENDMETHOD.
@@ -99,7 +143,7 @@ CLASS lcl_locking IMPLEMENTATION.
         OTHERS                = 3.
     IF sy-subrc <> 0.
       MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4 INTO DATA(error_text).
-      RAISE EXCEPTION TYPE z2ui5_cx_util_error EXPORTING val = error_text.
+      RAISE EXCEPTION TYPE lcx_error EXPORTING val = error_text.
     ENDIF.
 
     result = VALUE #( enqueue_table[ 1 ]-gusevb OPTIONAL ).
