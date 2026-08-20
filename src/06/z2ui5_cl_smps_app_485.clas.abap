@@ -163,8 +163,10 @@ CLASS z2ui5_cl_smps_app_485 IMPLEMENTATION.
 
         TRY.
             on_event( client ).
-          " abap2ui5lint-disable-next-line non-released-api -- z2ui5_cx_util_error is the exception the framework itself raises out of main( ); catching it is the only way to show the error handling this sample is about
-          CATCH z2ui5_cx_util_error INTO DATA(x_error).
+          " a lock that could not be taken is the outcome this sample is about,
+          " so it is shown in the MessageStrip of the view rather than in a
+          " popup - see lcx_error in the local implementations
+          CATCH lcx_error INTO DATA(x_error).
             error-text = x_error->get_text( ).
             error-flag = abap_true.
         ENDTRY.
