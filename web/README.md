@@ -10,6 +10,7 @@ system actually runs. Published by the
 web/index.html   the page — one file, no framework
 web/stack.css    one stylesheet, light and dark off one set of custom properties
 web/stack.js     filtering and drawing — plain ES2020, no dependencies
+web/favicon.ico  the abap2UI5 logo in the tab (see below)
 web/apps.json    generated, NOT committed (see below)
 ```
 
@@ -48,6 +49,22 @@ question: ABAP Cloud drops the three on-premise packages, a Standard release
 keeps every package at or below it. The counts are in the labels, so what an
 older system costs is visible before the click. Filters live in the URL, so a
 search is linkable.
+
+## The icon in the tab
+
+`favicon.ico` is the abap2UI5 logo — the same mark
+[the documentation](https://abap2ui5.github.io/docs/) puts in the tab, so the
+four pages of the project read as one project in a row of browser tabs rather
+than as three anonymous ones beside it.
+
+It is the artwork of `docs/public/favicon.ico` in
+[abap2UI5/docs](https://github.com/abap2UI5/docs), rescaled: that file is one
+256 px frame stored uncompressed, 265 KB, which is twenty times this whole page
+for something a browser draws at 16 px. This one carries 16/32/48/64/128 px as
+PNG frames in ~16 KB, so every size the browser asks for is a frame that was
+drawn for it and none of them is squashed — the source is 256 × 251, not
+square, so a single frame is what a browser distorts. Identical in all three
+sample repositories.
 
 ## The bar at the top is shared, and so is the strip at the bottom
 
