@@ -95,7 +95,7 @@ What that costs you when you edit:
 
 ```sh
 npm ci
-npm run check        # abaplint + abap2UI5-linter + overview + keywords + abapdoc + SAMPLES.md + app-rules
+npm run check        # abaplint + abap2UI5-linter + overview + keywords + abapdoc + SAMPLES.md + catalogue.json + app-rules
 ```
 
 Individually: `npm run lint` (abaplint), `npm run check:abap2ui5` (the app
@@ -295,6 +295,19 @@ gone.
   makes that a configuration change over there rather than a second parser.
   Changing the shape is not a cosmetic decision — a row that stops matching is
   a row that silently is not there.
+- **[`catalogue.json`](catalogue.json) is the catalogue as data** — generated
+  by `npm run catalogue`, checked by `npm run check:catalogue`, **not** edited
+  by hand. SAMPLES.md is the reading copy for a person; this is the same
+  catalogue for a program: one entry per sample with class, path, package,
+  technology, `@summary`, `@keywords`, and the package's *Runs on* and *Plays
+  together with* facts repeated on the entry — so "which sample shows X with
+  RAP, and what does my system need for it" is answered from one committed
+  file, one `raw.githubusercontent.com` fetch away, without running anything.
+  It introduces no source of truth: everything in it comes out of the same
+  scan behind SAMPLES.md (`scripts/lib/scan-samples.mjs`) and the same package
+  merge behind the page (`scripts/lib/read-packages.mjs`). Committed, unlike
+  `web/apps.json`, because its reader runs no generator — which is exactly why
+  the freshness check exists.
 
 ## 7. When you add a sample
 
@@ -307,7 +320,8 @@ gone.
 4. Give it a `" @keywords` line as its first line (§6) — what somebody would
    type who does not know your sample exists.
 5. Say what it needs in the package README if it needs anything new.
-6. `npm run samples:md` and commit `SAMPLES.md` with it (§6).
+6. `npm run samples:md` and `npm run catalogue`, and commit `SAMPLES.md` and
+   `catalogue.json` with it (§6).
 7. `npm run check`.
 
 ## 8. The page in `web/`

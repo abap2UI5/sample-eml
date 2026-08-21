@@ -236,6 +236,7 @@ they take seconds.
 | `check-abap2UI5` | [`abap2ui5lint`](https://github.com/abap2UI5/linter) — the app class and the view it produces, together; also writes the two badges above |
 | `check-overview` | the two hand-kept indexes: every sample is listed in the overview app, and the package table matches `.github/packages.json` |
 | `check-samples-md` | [`SAMPLES.md`](SAMPLES.md) still is what the generator would write — and every app that exists is in an entry |
+| `check-catalogue` | [`catalogue.json`](catalogue.json) still is what the generator would write — the same catalogue as data, committed for tooling that fetches one file instead of scanning the tree |
 | `check-keywords` | every app carries `@keywords` and `@summary`, and the overview's detail line still is the class's `@summary` |
 | `check-abapdoc` | every `"!` block documents the declaration below it, rather than attaching to nothing |
 | `check-app-rules` | the shared abaplint rule block still matches its source in [abap2UI5](https://github.com/abap2UI5/abap2UI5) |
