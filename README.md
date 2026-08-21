@@ -51,6 +51,27 @@ for and try it out — the others can wait until you need them.
 > your system runs, and every card says what the sample needs from that system
 > before you install anything. ([`web/`](web/README.md))
 
+## Which package do I need?
+
+Most readers need exactly one. The nine areas are unrelated technologies, none
+depends on another — so find the row that says what you came to do, take that
+package, and skip the rest:
+
+| You want to … | Package | It needs |
+|---|---|---|
+| Bind a view straight to an OData V2 service you already run | [`src/01`](src/01/README.md) — OData | an activated OData V2 service |
+| Get columns, filters and value help for free from OData metadata — SmartTable, SmartField, SmartFilterBar | [`src/02`](src/02/README.md) — Smart Controls | SAPUI5 + an activated Gateway service |
+| Put a screen in front of a RAP business object, in plain ABAP with EML | [`src/03`](src/03/README.md) — RAP | ≥ 1909; the business object ships with the package |
+| Add draft handling on top — edit, resume, discard, activate | [`src/04`](src/04/README.md) — RAP with Draft | ≥ 1909; the draft business object ships with the package |
+| React to what a business object announces, while it happens | [`src/05`](src/05/README.md) — Business Events | ≥ 2021, the release that carries RAP business events |
+| Keep session state and an ABAP `ENQUEUE` lock alive between two clicks | [`src/06`](src/06/README.md) — Stateful Sessions / Locks | on-premise; the lock table ships with the package |
+| Push messages from ABAP into every open browser tab, without JavaScript | [`src/07`](src/07/README.md) — AMC/APC | on-premise; activate one ICF node in `SICF` |
+| Play or serve a file the MIME repository already holds | [`src/08`](src/08/README.md) — MIME Play Audio | on-premise; activate one ICF service in `SICF` |
+| Expose your app in the Fiori Launchpad — tile, startup parameters, cross-app navigation | [`src/09`](src/09/README.md) — Launchpad | a launchpad with a tile pointing at abap2UI5 |
+
+Each package README opens with a **What you need** section that turns the last
+column into concrete steps; the table below adds the exact release floors.
+
 ## What is in here
 
 | Package | Topic | Plays together with | Runs on |
@@ -234,7 +255,7 @@ they take seconds.
 |---|---|
 | `abap-standard` | `abaplint ./abaplint.jsonc` — syntax `v757`, the on-premise release |
 | `check-abap2UI5` | [`abap2ui5lint`](https://github.com/abap2UI5/linter) — the app class and the view it produces, together; also writes the two badges above |
-| `check-overview` | the two hand-kept indexes: every sample is listed in the overview app, and the package table matches `.github/packages.json` |
+| `check-overview` | the hand-kept indexes: every sample is listed in the overview app, the package table matches `.github/packages.json`, and the *Which package do I need?* table routes to every package |
 | `check-samples-md` | [`SAMPLES.md`](SAMPLES.md) still is what the generator would write — and every app that exists is in an entry |
 | `check-catalogue` | [`catalogue.json`](catalogue.json) still is what the generator would write — the same catalogue as data, committed for tooling that fetches one file instead of scanning the tree |
 | `check-keywords` | every app carries `@keywords` and `@summary`, and the overview's detail line still is the class's `@summary` |
