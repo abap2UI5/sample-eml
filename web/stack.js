@@ -201,8 +201,19 @@ function card(app, tokens) {
     `<span class="badge plain" title="${esc(p.runsOn)}">≥ ${esc(p.release)}</span>`,
   ];
 
+  /* The render gate's photograph of the sample's first screen, written by
+   * scripts/generate-screenshots.mjs into thumbs/ on every deploy - generated
+   * like apps.json, never committed. Not every sample has one (a view the
+   * headless harness cannot render is skipped there - sap.ui.comp and the
+   * z2ui5.cc custom controls, mostly), and a local checkout has none until
+   * the script has run, so a picture that does not load removes itself: the
+   * card is complete without it. */
+  const shot = `<img class="shot" loading="lazy" alt="" aria-hidden="true"
+      src="thumbs/${esc(app.cls.toLowerCase())}.png" onerror="this.remove()">`;
+
   return `
     <article class="card">
+      ${shot}
       <h2>${highlight(app.title, tokens)}</h2>
       ${app.sub ? `<p class="sub">${highlight(app.sub, tokens)}</p>` : ''}
       <p class="cls">${highlight(app.cls, tokens)}</p>

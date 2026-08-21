@@ -246,6 +246,25 @@ main { max-width: var(--wide); margin: 0 auto; padding: 0 var(--gutter); }
   border-radius: var(--radius);
 }
 
+/* The thumbnail: the render gate's photograph of the first screen. The
+   sibling pages float it beside the text; these cards are narrow grid columns
+   (and flex columns, where a float is just another item), so here it is a
+   banner across the top instead. Shot at 800x600 and cropped from the top by
+   object-fit, so nothing is squashed. Always on a white ground - the
+   screenshots are taken in the light theme, and a transparent edge on a dark
+   card would read as a rendering mistake. An <img> that fails to load has
+   removed itself (stack.js), so there is no broken-picture state to style. */
+.card .shot {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top;
+  margin: 0 0 .6rem;
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius) - 4px);
+  background: #fff;
+}
+
 .card h2 {
   margin: 0;
   font-size: 1.05rem;

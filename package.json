@@ -21,7 +21,8 @@
     "check:prose": "node scripts/check-prose-names.mjs",
     "check:family-nav": "node scripts/check-family-nav.mjs",
     "web:index": "node scripts/generate-web-index.mjs",
-    "check:web": "node scripts/generate-web-index.mjs --check"
+    "check:web": "node scripts/generate-web-index.mjs --check",
+    "screenshots": "node scripts/generate-screenshots.mjs"
   },
   "repository": {
     "type": "git",
