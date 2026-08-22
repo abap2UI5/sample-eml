@@ -4,3 +4,7 @@ output
 # derived: the catalogue behind the page in web/, written by
 # scripts/generate-web-index.mjs on every deploy (AGENTS.md section 8)
 web/apps.json
+
+# derived: one thumbnail per sample, photographed by
+# scripts/generate-screenshots.mjs on every deploy (AGENTS.md section 8)
+web/thumbs/

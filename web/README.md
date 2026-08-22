@@ -12,6 +12,7 @@ web/stack.css    one stylesheet, light and dark off one set of custom properties
 web/stack.js     filtering and drawing — plain ES2020, no dependencies
 web/favicon.ico  the abap2UI5 logo in the tab (see below)
 web/apps.json    generated, NOT committed (see below)
+web/thumbs/      generated, NOT committed — one thumbnail per sample (see below)
 ```
 
 ## What it answers
@@ -131,14 +132,32 @@ holds what a pull request can break without touching this folder: a package
 with no README row, a row whose cells no longer parse, an app in a directory
 that is no package of `.github/packages.json`.
 
+## `thumbs/` is not committed either
+
+One thumbnail per sample, photographed by `npm run screenshots`
+(`scripts/generate-screenshots.mjs`): the abap2UI5-linter's render harness —
+the same headless reconstruction `npm run check:abap2ui5`'s render gate
+clears — renders each class's main view with mock data and no system behind
+it, and the deploy writes the pictures fresh on every run. It needs the
+devDependencies and a playwright chromium, which is why `deploy-web` runs
+`npm ci` where the catalogue alone would not need it.
+
+Not every card has a picture, by design: a view the harness cannot render is
+reported and skipped — the `sap.ui.comp` smart controls (SAPUI5-only, not in
+the harness's OpenUI5 runtime) and the `z2ui5.cc` custom controls, mostly —
+and the `<img>` removes itself when its file is missing, so a card without a
+thumbnail is complete, not broken. AGENTS.md §8 carries the measured count.
+
 ## Running it locally
 
 Nothing to build:
 
 ```bash
 npm run web:index
+npm run screenshots                            # optional: writes web/thumbs/
 python3 -m http.server 8099 --directory web    # any static server will do
 ```
 
-`file://` does not work — the page `fetch`es `apps.json`. Every outgoing link is
+`file://` does not work — the page `fetch`es `apps.json`. The thumbnails are
+optional because the page is complete without them. Every outgoing link is
 absolute (GitHub), so they work from a local server exactly as in production.

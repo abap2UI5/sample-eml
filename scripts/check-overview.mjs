@@ -7,18 +7,26 @@
 // documentation). The price is that the compiler no longer notices a renamed
 // or a newly added sample - this check is what notices instead.
 //
-// Four directions:
+// Five directions:
 //   1. every sample class in the tree is listed in the overview  (always)
 //   2. every class the overview names exists in the tree         (full tree only)
 //   3. every package of .github/packages.json is in the README
 //      table with the release it declares                        (full tree only)
 //   4. every class the overview references STATICALLY survives on
 //      every generated package branch                            (full tree only)
+//   5. the README's "Which package do I need?" table routes to
+//      every package exactly once                                (full tree only)
 //
 // (3) is the second index this repository keeps by hand: packages.json drives
 // the generated per-package branches and the release each one is checked at,
 // the README table tells the reader the same thing in prose. They drift apart
 // silently, so they are compared here.
+//
+// (5) is the third: the decision table phrases each package from the reader's
+// goal, which no generator can write, so it is prose kept by hand. A package
+// added without a row is a package nobody is routed to, and a row pointing at
+// a directory that is gone routes to nothing - both are the same silent drift
+// as (3), so they are gated the same way.
 //
 // (4) is the rule the class documentation states and nothing enforced: the
 // overview ships on every branch, but a branch carries only its own package
@@ -132,9 +140,8 @@ if (complete) {
     }
   }
 
-  const rows = readFileSync('README.md', 'utf8')
-    .split('\n')
-    .filter((line) => line.startsWith('| [`src/'));
+  const readme = readFileSync('README.md', 'utf8');
+  const rows = readme.split('\n').filter((line) => line.startsWith('| [`src/'));
 
   for (const entry of packages) {
     const row = rows.find((line) => line.startsWith(`| [\`src/${entry.dir}\`]`));
@@ -145,6 +152,24 @@ if (complete) {
         `README.md row for src/${entry.dir} does not carry the release ` +
           `.github/packages.json declares ("${entry.runsOn}")`,
       );
+    }
+  }
+
+  // the decision table - "You want to ... -> package". Its rows start with the
+  // reader's goal, not with the directory, so they are found by the link they
+  // carry rather than by the row shape the package table above is found by
+  const aid = readme.split(/\n## /).find((section) => section.startsWith('Which package do I need'));
+  if (aid === undefined) {
+    errors.push('README.md has no "Which package do I need?" section');
+  } else {
+    for (const entry of packages) {
+      const links = (aid.match(new RegExp(`\\[\`src/${entry.dir}\`\\]`, 'g')) ?? []).length;
+      if (links !== 1) {
+        errors.push(
+          `the "Which package do I need?" table must route to src/${entry.dir} exactly once, ` +
+            `but points at it ${links} time(s)`,
+        );
+      }
     }
   }
 }

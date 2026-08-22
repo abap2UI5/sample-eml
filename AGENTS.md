@@ -95,13 +95,14 @@ What that costs you when you edit:
 
 ```sh
 npm ci
-npm run check        # abaplint + abap2UI5-linter + overview + keywords + abapdoc + SAMPLES.md + app-rules
+npm run check        # abaplint + abap2UI5-linter + overview + keywords + abapdoc + SAMPLES.md + catalogue.json + app-rules
 ```
 
 Individually: `npm run lint` (abaplint), `npm run check:abap2ui5` (the app
 class and the view it builds, including a headless render of every view),
-`npm run check:overview` (the four consistency directions between the overview
-app, the tree, `packages.json` and the README table).
+`npm run check:overview` (the five consistency directions between the overview
+app, the tree, `packages.json` and the two README tables — the package table
+and the *Which package do I need?* decision table).
 
 `npm run fmt:chains` applies the house chain layout. It rewrites whitespace
 between chain segments only — but it needs the ABAP to be *balanced* to know
@@ -295,6 +296,19 @@ gone.
   makes that a configuration change over there rather than a second parser.
   Changing the shape is not a cosmetic decision — a row that stops matching is
   a row that silently is not there.
+- **[`catalogue.json`](catalogue.json) is the catalogue as data** — generated
+  by `npm run catalogue`, checked by `npm run check:catalogue`, **not** edited
+  by hand. SAMPLES.md is the reading copy for a person; this is the same
+  catalogue for a program: one entry per sample with class, path, package,
+  technology, `@summary`, `@keywords`, and the package's *Runs on* and *Plays
+  together with* facts repeated on the entry — so "which sample shows X with
+  RAP, and what does my system need for it" is answered from one committed
+  file, one `raw.githubusercontent.com` fetch away, without running anything.
+  It introduces no source of truth: everything in it comes out of the same
+  scan behind SAMPLES.md (`scripts/lib/scan-samples.mjs`) and the same package
+  merge behind the page (`scripts/lib/read-packages.mjs`). Committed, unlike
+  `web/apps.json`, because its reader runs no generator — which is exactly why
+  the freshness check exists.
 
 ## 7. When you add a sample
 
@@ -307,15 +321,17 @@ gone.
 4. Give it a `" @keywords` line as its first line (§6) — what somebody would
    type who does not know your sample exists.
 5. Say what it needs in the package README if it needs anything new.
-6. `npm run samples:md` and commit `SAMPLES.md` with it (§6).
+6. `npm run samples:md` and `npm run catalogue`, and commit `SAMPLES.md` and
+   `catalogue.json` with it (§6).
 7. `npm run check`.
 
 ## 8. The page in `web/`
 
 **<https://abap2ui5.github.io/samples-stack/>** — the catalogue as a searchable
 page, for somebody who has installed nothing yet and is asking whether their
-system can run any of it. Four files: `index.html`, `stack.css`, `stack.js` and
-the generated `web/apps.json`. [`web/README.md`](web/README.md) has the detail;
+system can run any of it. Three hand-written files — `index.html`, `stack.css`,
+`stack.js` — plus two generated-at-deploy pieces, `web/apps.json` and the
+`web/thumbs/` thumbnails. [`web/README.md`](web/README.md) has the detail;
 what matters here:
 
 - **It introduces no new source of truth.** Every fact on it is read out of
@@ -327,6 +343,27 @@ what matters here:
 - **`web/apps.json` is generated and not committed** — `npm run web:index`
   writes it, `deploy-web` writes it again on every deploy. A committed copy
   would put a diff of derived data on every sample pull request.
+- **`web/thumbs/` follows the same rule: one thumbnail per sample, generated
+  at deploy, never committed.** `scripts/generate-screenshots.mjs` (`npm run
+  screenshots`) photographs each app's main view with the abap2UI5-linter's
+  render harness — the view statically, seeded with mock data, no Gateway,
+  RAP or APC anywhere — so what a card shows is what the render gate checks.
+  It is a deploy step, not a gate, and it is in no check aggregate; it is the
+  one script here that needs the devDependencies and a playwright chromium.
+  A view the harness cannot render is reported and skipped, and the page
+  treats the missing file as "no picture" (the `<img>` removes itself), so a
+  card without a thumbnail is normal, not broken. Measured over the corpus
+  (2026-08): **19 of 32 app views render.** The 13 skips are three stable
+  categories — `sap.ui.comp` controls (SAPUI5-only, absent from the
+  harness's OpenUI5 runtime: 7 of the 9 Smart Controls samples), `z2ui5.cc`
+  custom controls that do not load headless (the WebSocket, MIME-audio and
+  Smart Multi Input samples), and three RAP samples whose `ObjectStatus`
+  gets an empty `state` from the mock model. So the Smart Controls, AMC/APC
+  and MIME cards are mostly or wholly picture-less, and that is expected —
+  a change to the harness, not to those classes, is what would fix it. Only
+  a run that photographs *nothing* fails, because that is a harness problem;
+  even then the deploy publishes (`continue-on-error`), since a page without
+  pictures beats no page.
 - **`npm run check:web` is the gate** (its own workflow, and part of `npm run
   check`): it runs the generator with `--check`, which fails on a package with
   no README row, a row whose cells no longer parse, or an app in a directory

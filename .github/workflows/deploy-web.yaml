@@ -5,12 +5,16 @@ name: deploy-web
 # https://abap2ui5.github.io/samples-stack/ — every sample of this repository,
 # searchable by the technology it plays with and by the release your system
 # runs, with what it needs from that system on every card. It is static: three
-# hand-written files plus web/apps.json, which this workflow generates from the
-# tree on every deploy, so the page is never staler than the samples it
-# describes and a sample pull request carries no diff of derived data.
+# hand-written files plus two generated-at-deploy pieces, web/apps.json and
+# the web/thumbs/ thumbnails, which this workflow writes from the tree on
+# every deploy, so the page is never staler than the samples it describes and
+# a sample pull request carries no diff of derived data.
 #
-# No dependencies are installed — the generator is plain node over the same
-# scan SAMPLES.md is built from.
+# The catalogue needs no dependencies — the generator is plain node over the
+# same scan SAMPLES.md is built from. The thumbnails do: they are the
+# abap2UI5-linter's render harness photographing each view (the same
+# devDependencies and chromium the check-abap2UI5 workflow drives), which is
+# why npm ci and the browser install sit below.
 #
 # This is the ONLY way the site is published: Settings -> Pages -> Source must
 # be "GitHub Actions". A red "pages build and deployment" run on main is
@@ -30,6 +34,7 @@ on:
       - 'README.md'
       - '.github/packages.json'
       - 'scripts/generate-web-index.mjs'
+      - 'scripts/generate-screenshots.mjs'
       - 'scripts/lib/scan-samples.mjs'
       - '.github/workflows/deploy-web.yaml'
 
@@ -46,21 +51,41 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: '22'
+          cache: 'npm'
 
       - name: The catalogue behind the page
         run: node scripts/generate-web-index.mjs
 
-      # The gate this pipeline needs now that there is nothing here that can
-      # fail to build: a page whose data file is missing deploys exactly like a
-      # working one — it just says "the catalogue could not be loaded" to every
-      # visitor. Assert the five files and a non-trivial index before uploading.
+      # A thumbnail per sample, photographed by the linter's render harness —
+      # the render gate's own view of each class, not a staged picture, and
+      # the closest thing to "seeing it run" a corpus without a playground
+      # link can offer. Best effort by design, in both directions: the script
+      # skips a view the headless harness cannot render (sap.ui.comp,
+      # z2ui5.cc custom controls — its card simply shows no picture, the page
+      # treats a missing file as exactly that), and a wholesale failure here —
+      # a browser download flaking, the runtime breaking — must not stop the
+      # samples themselves from publishing. continue-on-error is that second
+      # half; the step still fails visibly in the run when it happens.
+      - run: npm ci
+      - name: Install chromium for the render harness
+        run: npx playwright install chromium --with-deps
+      - name: One thumbnail per sample
+        continue-on-error: true
+        run: node scripts/generate-screenshots.mjs
+
+      # The gate this pipeline needs: a page whose data file is missing
+      # deploys exactly like a working one — it just says "the catalogue could
+      # not be loaded" to every visitor. Assert the five files and a
+      # non-trivial index before uploading. The thumbnails are deliberately
+      # NOT asserted — a card without its picture is complete (the <img>
+      # removes itself), which is what lets the step above be best effort.
       - name: Check the artefact is complete
         run: |
           cd web
